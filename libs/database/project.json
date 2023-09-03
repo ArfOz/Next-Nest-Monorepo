@@ -1,0 +1,53 @@
+{
+  "sourceRoot": "libs/database/src",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/database/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/database"],
+      "options": {
+        "jestConfig": "libs/database/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "migrate": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "npx prisma migrate dev --schema libs/database/src/prisma/schema.prisma",
+        "cwd": "./"
+      }
+    },
+    "create:migrate": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "npx prisma migrate dev --create-only --schema libs/database/src/prisma/schema.prisma",
+        "cwd": "./"
+      }
+    },
+    "generate": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "npx prisma generate --schema libs/database/src/prisma/schema.prisma",
+        "cwd": "./"
+      }
+    },
+    "reset": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "npx prisma migrate reset --schema libs/database/src/prisma/schema.prisma",
+        "cwd": "./"
+      }
+    }
+  },
+  "tags": []
+}
