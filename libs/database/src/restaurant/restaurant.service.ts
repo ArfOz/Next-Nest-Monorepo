@@ -7,6 +7,6 @@ export class RestaurantService {
   constructor(private prisma: PrismaService) {}
   async findUnique(where: Prisma.RestaurantsWhereUniqueInput) {
     const data = await this.prisma.restaurants.findUnique({ where });
-    return null;
+    return data;
   }
 }
