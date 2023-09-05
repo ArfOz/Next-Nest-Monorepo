@@ -12,5 +12,7 @@ datasource db {
 
 model Restaurants {
   id   String  @id @default(auto()) @map("_id") @db.ObjectId
-  name String?
+  name String
+  Lat  String?
+  Lon  String?
 }

@@ -14,4 +14,9 @@ export class RestaurantDBService {
     const data = await this.prisma.restaurants.findMany();
     return data;
   }
+
+  async addRestaurant(data: Prisma.RestaurantsCreateInput) {
+    const response = await this.prisma.restaurants.create({ data });
+    return response;
+  }
 }
