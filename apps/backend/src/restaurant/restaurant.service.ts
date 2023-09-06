@@ -1,6 +1,7 @@
 import { RestaurantDBService } from '@database';
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { AddRestaurantJsonDto } from './dtos';
 
 @Injectable()
 export class RestaurantService {
@@ -15,7 +16,7 @@ export class RestaurantService {
         return data;
     }
 
-    async addRestaurant(data: Prisma.RestaurantsCreateInput) {
+    async addRestaurant(data: AddRestaurantJsonDto) {
         const response = await this.restaurantDBService.addRestaurant(data);
         return response;
     }

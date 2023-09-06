@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { RestaurantService } from './restaurant.service';
 import { AllowUnauthorizedRequest, StaticTokenRequired } from '@exceptions';
+import { AddRestaurantJsonDto } from './dtos';
 
 @Controller('restaurant')
 export class RestaurantController {
@@ -20,7 +21,7 @@ export class RestaurantController {
 
     @StaticTokenRequired()
     @Post('addrestaurant')
-    addRestaurant(@Body() input: any) {
+    addRestaurant(@Body() input: AddRestaurantJsonDto) {
         return this.restaurantService.addRestaurant(input);
     }
 }
