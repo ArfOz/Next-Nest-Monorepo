@@ -45,7 +45,15 @@ export class AuthGuard implements CanActivate {
             context.getHandler(),
         );
 
-        return this.validateRequest(req, staticTokenRequired);
+        const allowUnauthorizedRequest = this.reflector.get<boolean>(
+            'allowUnauthorizedRequest',
+            context.getHandler(),
+        );
+
+        return (
+            allowUnauthorizedRequest ||
+            this.validateRequest(req, staticTokenRequired)
+        );
     }
 
     private async validateRequest(

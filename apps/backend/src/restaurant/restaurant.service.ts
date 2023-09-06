@@ -1,5 +1,4 @@
 import { RestaurantDBService } from '@database';
-import { StaticTokenRequired } from '@exceptions';
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
@@ -16,7 +15,6 @@ export class RestaurantService {
         return data;
     }
 
-    @StaticTokenRequired()
     async addRestaurant(data: Prisma.RestaurantsCreateInput) {
         const response = await this.restaurantDBService.addRestaurant(data);
         return response;
