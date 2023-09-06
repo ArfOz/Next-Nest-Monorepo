@@ -5,11 +5,6 @@ export class AddRestaurantJsonDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    id?: string;
-
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsString()
     name: string;
 
     @ApiProperty()
