@@ -1,7 +1,6 @@
-import { AllowUnauthorizedRequest } from './../../../../libs/exceptions/src/unauthorized-request.decorator';
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { RestaurantService } from './restaurant.service';
-import { StaticTokenRequired } from '@exceptions';
+import { AllowUnauthorizedRequest, StaticTokenRequired } from '@exceptions';
 
 @Controller('restaurant')
 export class RestaurantController {
