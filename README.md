@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # App
 
 <a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
@@ -21,10 +20,15 @@ To execute tasks with Nx use the following syntax:
 nx <target> <project> <...options>
 ```
 
+
+
 You can also run multiple targets:
 
 ```
 nx run-many -t <target1> <target2>
+Frontend: npm run start:frontend
+Backend: npm run start:backend
+Frontend and Backend : npm run start:all
 ```
 
 ..or add `-p` to filter specific projects
@@ -56,6 +60,3 @@ Nx comes with local caching already built-in (check your `nx.json`). On CI you m
 - [Join the community](https://nx.dev/community)
 - [Subscribe to the Nx Youtube Channel](https://www.youtube.com/@nxdevtools)
 - [Follow us on Twitter](https://twitter.com/nxdevtools)
-=======
-# next-nest-monorepo
->>>>>>> 201671cf78620995fdc1ded942fc140b277962db

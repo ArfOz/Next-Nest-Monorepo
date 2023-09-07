@@ -2,19 +2,27 @@
   "compileOnSave": false,
   "compilerOptions": {
     "rootDir": ".",
+    "strictPropertyInitialization": false,
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2020", "dom"],
+    "lib": ["es2017", "dom", "ES2021.String"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "resolveJsonModule": true,
+    "paths": {
+      "@database": ["libs/database/src/index.ts"],
+      "@guard": ["libs/guard/src/index.ts"],
+      "@config/*": ["libs/config/*"],
+      "@exceptions": ["libs/exceptions/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
