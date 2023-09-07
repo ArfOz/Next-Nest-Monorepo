@@ -2,14 +2,19 @@
 import React, { useEffect, useState } from 'react';
 import GoogleMapReact from 'google-map-react';
 import MyMarker from './MyMarker';
+import { CitiesJsonDto } from '../Dtos';
 
 // const AnyReactComponent = ({ text }: { text: string }) => <div>{text}</div>
 
-export default function SimpleMap({ cities }) {
+export default function SimpleMap({
+    cities,
+}: {
+    cities: Array<CitiesJsonDto>;
+}) {
     const defaultProps = {
         center: {
-            lat: 38,
-            lng: 36,
+            lat: parseFloat(cities[0].Lat),
+            lng: parseFloat(cities[0].Lon),
         },
         zoom: 11,
     };
@@ -23,8 +28,13 @@ export default function SimpleMap({ cities }) {
                 defaultZoom={defaultProps.zoom}
                 // onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
             >
-                {cities.map((blog) => (
-                    <MyMarker lat={blog.Lat} lng={blog.Lon} tooltip={'title'} />
+                {cities.map((city) => (
+                    <MyMarker
+                        key={city.id}
+                        lat={city.Lat}
+                        lng={city.Lon}
+                        tooltip={'title'}
+                    />
                 ))}
                 {/* <MyMarker lat={38} lng={36} tooltip={'title'} /> */}
             </GoogleMapReact>

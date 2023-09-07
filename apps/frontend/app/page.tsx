@@ -1,3 +1,4 @@
+import { CitiesJsonDto } from './Dtos';
 import SimpleMap from './components/HomePage';
 
 async function getData() {
@@ -7,12 +8,11 @@ async function getData() {
         })
     ).json();
 
-    console.log('arif', await data);
     return data;
 }
 
 const page = async () => {
-    const data = await getData();
+    const data: Array<CitiesJsonDto> = await getData();
     return <SimpleMap cities={data} />;
 };
 
