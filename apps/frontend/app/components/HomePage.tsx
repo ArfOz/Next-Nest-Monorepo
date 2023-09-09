@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import GoogleMapReact from 'google-map-react';
 import MyMarker from './MyMarker';
 import { CitiesJsonDto } from '../Dtos';

@@ -7,7 +7,6 @@ async function getData() {
             cache: 'no-cache',
         })
     ).json();
-
     return data;
 }
 
