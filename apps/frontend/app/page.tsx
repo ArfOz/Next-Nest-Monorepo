@@ -10,9 +10,9 @@ async function getData() {
     return data;
 }
 
-const page = async () => {
+const Page = async () => {
     const data: Array<CitiesJsonDto> = await getData();
     return <SimpleMap cities={data} />;
 };
 
-export default page;
+export default Page;
