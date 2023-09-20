@@ -1,7 +1,7 @@
 import React from "react";
 import { FaMapMarkerAlt } from 'react-icons/fa';
 
-const MyMarker = ({  tooltip, $hover }) => {
+const MyMarker = ({  lng, lat, tooltip, $hover }) => {
   const handleClick = () => {
     console.log(`You clicked on ${tooltip}`);
   };

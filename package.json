@@ -5,6 +5,7 @@
   "scripts": {
     "start:frontend": "nx serve frontend",
     "start:backend": "nx serve backend",
+    "build:frontend": "nx build frontend",
     "build:backend": "nx build backend",
     "start:all": "nx run-many --target=serve --all",
     "database:generate": "npx prisma generate --schema=./libs/database/src/prisma/schema.prisma",

@@ -1,9 +1,18 @@
 version: "3.8"
 services:
   backend:
-    build: .
+    build: 
+      dockerfile: ./apps/backend/Dockerfile
     ports:
       - '3000:3000'
+    
+  # frontend:
+  #   build: 
+  #     dockerfile: ./apps/frontend/Dockerfile
+  #   ports:
+  #     - '4200:4200'
+  #   depends_on:
+  #     - backend
   #   image: frontend
   #   ports:
   #     - "8081:3333"
