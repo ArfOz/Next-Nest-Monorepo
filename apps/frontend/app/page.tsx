@@ -1,17 +1,29 @@
 import { CitiesJsonDto } from './Dtos';
 import SimpleMap from './components/HomePage';
 
-async function getData() {
-    const data = (
-        await fetch('http://localhost:3000/api/restaurant/getall', {
-            cache: 'no-cache',
-        })
-    ).json();
-    return data;
+const defaultCity = {
+    id: '64f8f470cfdc52d6f006d1e4',
+    name: 'Mission Chinese Food',
+    Lat: '40.713829',
+    Lon: '-73.989667',
+};
+
+async function GetData() {
+    let data;
+    try {
+        data = (
+            await fetch('http://localhost:3300/api/restaurant/getall', {
+                cache: 'no-cache',
+            })
+        ).json();
+    } catch (error) {
+        console.log(error);
+    }
+    return data || [defaultCity];
 }
 
 const Page = async () => {
-    const data: Array<CitiesJsonDto> = await getData();
+    const data: Array<CitiesJsonDto> = await GetData();
     return <SimpleMap cities={data} />;
 };
 
