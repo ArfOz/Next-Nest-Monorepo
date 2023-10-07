@@ -12,7 +12,7 @@ async function GetData() {
     let data;
     try {
         data = (
-            await fetch('http://localhost:3300/api/restaurant/getall', {
+            await fetch('http://backend:3300/api/restaurant/getall', {
                 cache: 'no-cache',
             })
         ).json();

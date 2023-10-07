@@ -21,7 +21,9 @@
       "@config/*": ["libs/config/*"],
       "@database": ["libs/database/src/index.ts"],
       "@exceptions": ["libs/exceptions/src/index.ts"],
-      "@guard": ["libs/guard/src/index.ts"]
+      "@guard": ["libs/guard/src/index.ts"],
+      "my-app/feature-main": ["libs/my-app/feature-main/src/index.ts"],
+      "my-app/feature-main/server": ["libs/my-app/feature-main/src/server.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

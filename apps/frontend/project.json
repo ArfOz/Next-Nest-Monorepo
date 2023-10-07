@@ -16,14 +16,16 @@
           "outputPath": "apps/frontend"
         },
         "production": {}
-      }
+      },
+      "dependsOn": ["^build"]
     },
     "serve": {
       "executor": "@nx/next:server",
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "frontend:build",
-        "dev": true
+        "dev": true,
+        "port": 3000
       },
       "configurations": {
         "development": {
@@ -32,7 +34,8 @@
         },
         "production": {
           "buildTarget": "frontend:build:production",
-          "dev": false
+          "dev": false,
+          "port": 3000
         }
       }
     },
@@ -63,27 +66,26 @@
         "lintFilePatterns": ["apps/frontend/**/*.{ts,tsx,js,jsx}"]
       }
     },
+
     "container": {
       "executor": "@nx-tools/nx-container:build",
       "dependsOn": ["build"],
+      "defaultConfiguration": "local",
       "options": {
         "engine": "docker",
-        "metadata": {
-          "images": ["undefined/frontend"],
-          "load": true,
-          "tags": [
-            "type=schedule",
-            "type=ref,event=branch",
-            "type=ref,event=tag",
-            "type=ref,event=pr",
-            "type=sha,prefix=sha-"
-          ]
+        "context": "dist/apps/frontend",
+        "file": "apps/frontend/Dockerfile"
+      },
+      "configurations": {
+        "local": {
+          "tags": ["frontend:latest"],
+          "push": false
+        },
+        "production": {
+          "tags": ["my.image-registry.com/frontend:latest"],
+          "push": true
         }
       }
-    },
-    "docker-build": {
-      "dependsOn": ["build"],
-      "command": "docker build -f apps/frontend/Dockerfile . -t frontend"
     }
   },
   "tags": []
