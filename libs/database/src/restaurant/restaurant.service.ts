@@ -4,19 +4,19 @@ import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class RestaurantDBService {
-  constructor(private prisma: PrismaService) {}
-  async findUnique(where: Prisma.RestaurantsWhereUniqueInput) {
-    const data = await this.prisma.restaurants.findUnique({ where });
-    return data;
-  }
+    constructor(private prisma: PrismaService) {}
+    async findUnique(where: Prisma.RestaurantsWhereUniqueInput) {
+        const data = await this.prisma.restaurants.findUnique({ where });
+        return data;
+    }
 
-  async getAll() {
-    const data = await this.prisma.restaurants.findMany();
-    return data;
-  }
+    async getAll() {
+        const data = await this.prisma.restaurants.findMany();
+        return data;
+    }
 
-  async addRestaurant(data: Prisma.RestaurantsCreateInput) {
-    const response = await this.prisma.restaurants.create({ data });
-    return response;
-  }
+    async addRestaurant(data: Prisma.RestaurantsCreateInput) {
+        const response = await this.prisma.restaurants.create({ data });
+        return response;
+    }
 }

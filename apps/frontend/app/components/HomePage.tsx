@@ -34,6 +34,7 @@ export default function SimpleMap({
                         lat={city.Lat}
                         lng={city.Lon}
                         tooltip={'title'}
+                        $hover={''}
                     />
                 ))}
                 {/* <MyMarker lat={38} lng={36} tooltip={'title'} /> */}
