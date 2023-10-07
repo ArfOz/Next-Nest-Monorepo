@@ -6,8 +6,8 @@ WORKDIR /usr/src/app
 COPY .npmrc package.json ./
 RUN npm install --force
 
-# Production image, copy all the files and run next
-FROM node:16-alpine as runner
+# # Production image, copy all the files and run next
+# FROM node:16-alpine as runner
 RUN apk add --no-cache dumb-init
 
 ENV NODE_ENV production
