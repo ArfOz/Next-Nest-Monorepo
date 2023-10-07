@@ -1,19 +1,13 @@
 # Install dependencies only when needed
-FROM docker.io/node:lts-alpine as deps
+FROM docker.io/node:16-alpine as deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 WORKDIR /usr/src/app
 COPY .npmrc package.json ./
-# RUN npm install -g npm@10.2.0
 RUN npm install --force
 
-# Silinebilir
-# RUN npm i nx@16.7.4 --global
-# RUN npm i -d @nrwl/nx-cloud
-# RUN nx g @nrwl/nx-cloud:init
-
 # Production image, copy all the files and run next
-FROM docker.io/node:lts-alpine as runner
+FROM docker.io/node:16-alpine as runner
 RUN apk add --no-cache dumb-init
 
 ENV NODE_ENV production
@@ -35,7 +29,7 @@ RUN chown -R node:node .
 USER node
 EXPOSE 3000
 
-WORKDIR /usr/src/app/dist/apps/frontend
+# WORKDIR /usr/src/app/dist/apps/frontend
 # If you are using the custom server implementation:
 # CMD ["dumb-init", "node", "server/main.js"]
 
