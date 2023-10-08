@@ -33,7 +33,7 @@ export default function SimpleMap({
                         key={city.id}
                         lat={city.Lat}
                         lng={city.Lon}
-                        tooltip={'title'}
+                        tooltip={city.name}
                         $hover={''}
                     />
                 ))}
