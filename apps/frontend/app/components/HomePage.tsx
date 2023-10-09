@@ -16,24 +16,24 @@ const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
     });
     const [mapRef, setMapRef] = useState();
     const [isOpen, setIsOpen] = useState(false);
-    const [infoWindowData, setInfoWindowData] = useState();
-    const markers = [
-        { address: 'Address1', lat: 18.5204, lng: 73.8567 },
-        { address: 'Address2', lat: 18.5314, lng: 73.8446 },
-        { address: 'Address3', lat: 18.5642, lng: 73.7769 },
-    ];
+    const [infoWindowData, setInfoWindowData] = useState({
+        Id: String,
+        Name: String,
+    });
 
     const onMapLoad = (map: any) => {
         setMapRef(map);
         const bounds = new google.maps.LatLngBounds();
-        markers?.forEach(({ lat, lng }) => bounds.extend({ lat, lng }));
+        cities?.forEach(({ Lat, Lon }) =>
+            bounds.extend({ lat: parseFloat(Lat), lng: parseFloat(Lon) }),
+        );
         map.fitBounds(bounds);
     };
 
-    const handleMarkerClick = () => {
-        // mapRef?.panTo({ lat, lng });
-        // setInfoWindowData({ id, address });
-        // setIsOpen(true);
+    const handleMarkerClick = (Id, Lat, Lon, Name) => {
+        mapRef?.panTo({ lat: parseFloat(Lat), lng: parseFloat(Lon) });
+        setInfoWindowData({ Id, Name });
+        setIsOpen(true);
     };
 
     return (
@@ -54,18 +54,23 @@ const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
                                 lng: parseFloat(city.Lon),
                             }}
                             onClick={() => {
-                                handleMarkerClick();
+                                handleMarkerClick(
+                                    city.id,
+                                    city.Lat,
+                                    city.Lon,
+                                    city.name,
+                                );
                             }}
                         >
-                            {/* {isOpen && infoWindowData?.id === id && (
+                            {isOpen && infoWindowData?.Id === city.id && (
                                 <InfoWindow
                                     onCloseClick={() => {
                                         setIsOpen(false);
                                     }}
                                 >
-                                    <h3>{infoWindowData.city}</h3>
+                                    <h3>{infoWindowData?.Name}</h3>
                                 </InfoWindow>
-                            )} */}
+                            )}
                         </Marker>
                     ))}
                 </GoogleMap>
