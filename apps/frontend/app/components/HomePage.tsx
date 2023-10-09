@@ -14,14 +14,16 @@ const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY || '',
     });
-    const [mapRef, setMapRef] = useState();
+    const [mapRef, setMapRef] = useState({
+        panTo: { lat: 0, lng: 0 },
+    });
     const [isOpen, setIsOpen] = useState(false);
     const [infoWindowData, setInfoWindowData] = useState({
-        Id: String,
-        Name: String,
+        Id: '',
+        Name: '',
     });
 
-    const onMapLoad = (map: any) => {
+    const onMapLoad = (map) => {
         setMapRef(map);
         const bounds = new google.maps.LatLngBounds();
         cities?.forEach(({ Lat, Lon }) =>
@@ -30,7 +32,12 @@ const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
         map.fitBounds(bounds);
     };
 
-    const handleMarkerClick = (Id, Lat, Lon, Name) => {
+    const handleMarkerClick = (
+        Id: string,
+        Lat: string,
+        Lon: string,
+        Name: string,
+    ) => {
         mapRef?.panTo({ lat: parseFloat(Lat), lng: parseFloat(Lon) });
         setInfoWindowData({ Id, Name });
         setIsOpen(true);
