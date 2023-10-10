@@ -15,8 +15,8 @@ export class CommentsDBService {
     //     return data;
     // }
 
-    // async addComments(data: Prisma.CommentssCreateInput) {
-    //     const response = await this.prisma.Commentss.create({ data });
-    //     return response;
-    // }
+    async addComments(data: Prisma.CommentsCreateInput) {
+        const response = await this.prisma.comments.create({ data });
+        return response;
+    }
 }

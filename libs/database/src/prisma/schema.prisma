@@ -22,5 +22,5 @@ model Comments {
   restaurant_id String
   name          String
   comment       String
-  Stars         Int
+  stars         Int
 }
