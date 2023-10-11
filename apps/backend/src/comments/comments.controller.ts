@@ -5,7 +5,7 @@ import { CommentsService } from './comments.service';
 @Controller('comments')
 export class CommentsController {
     constructor(private readonly commentsService: CommentsService) {}
-    @Post('addrestaurant')
+    @Post('addcomments')
     addRestaurant(@Body() input: AddCommentsJsonDto) {
         return this.commentsService.addRestaurant(input);
     }

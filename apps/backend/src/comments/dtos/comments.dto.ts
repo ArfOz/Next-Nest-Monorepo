@@ -5,7 +5,7 @@ export class AddCommentsJsonDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    restaurantId: string;
+    restaurant_id: string;
 
     @ApiProperty()
     @IsNotEmpty()
@@ -15,15 +15,10 @@ export class AddCommentsJsonDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    Lon?: string | null;
-
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsString()
     comment: string;
 
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    Stars: number;
+    stars: number;
 }
