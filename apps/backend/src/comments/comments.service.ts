@@ -6,7 +6,8 @@ import { AddCommentsJsonDto } from './dtos';
 export class CommentsService {
     constructor(private readonly restaurantDBService: CommentsDBService) {}
 
-    async addRestaurant(data: AddCommentsJsonDto) {
+    async addComments(data: AddCommentsJsonDto) {
+        console.log('geldi');
         const response = await this.restaurantDBService.addComments(data);
         return response;
     }
