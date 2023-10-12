@@ -14,7 +14,6 @@ export class CommentsDBService {
         const data = await this.prisma.comments.findMany({
             where,
         });
-        console.log('dataaaaaaaaaaa', data);
         return data;
     }
 

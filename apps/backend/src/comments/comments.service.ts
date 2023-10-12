@@ -11,7 +11,6 @@ export class CommentsService {
     ) {}
 
     async addComments(data: AddCommentsJsonDto) {
-        console.log('geldi');
         const response = await this.commentDBService.addComments(data);
         return response;
     }
