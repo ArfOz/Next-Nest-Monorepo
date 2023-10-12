@@ -20,4 +20,12 @@ export class RestaurantService {
         const response = await this.restaurantDBService.addRestaurant(data);
         return response;
     }
+
+    async getRestaurant(restaurantId: string) {
+        console.log('restairant', restaurantId);
+        const response = await this.restaurantDBService.findUnique({
+            id: restaurantId,
+        });
+        return response;
+    }
 }

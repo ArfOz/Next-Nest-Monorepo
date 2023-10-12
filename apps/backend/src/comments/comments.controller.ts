@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { AddCommentsJsonDto } from './dtos';
 import { CommentsService } from './comments.service';
 import { AllowUnauthorizedRequest } from '@exceptions';
@@ -11,5 +11,11 @@ export class CommentsController {
     @Post('addcomments')
     addComments(@Body() input: AddCommentsJsonDto) {
         return this.commentsService.addComments(input);
+    }
+
+    @AllowUnauthorizedRequest()
+    @Get('getcomments/:id')
+    getComments(@Param() params: any) {
+        return this.commentsService.getComments(params.id);
     }
 }
