@@ -10,10 +10,13 @@ export class CommentsDBService {
         return data;
     }
 
-    // async findMany(where: Prisma.CommentsWhereInput) {
-    //     const data = await this.prisma.comments.findMany();
-    //     return data;
-    // }
+    async findMany(where: Prisma.CommentsWhereInput) {
+        const data = await this.prisma.comments.findMany({
+            where,
+        });
+        console.log('dataaaaaaaaaaa', data);
+        return data;
+    }
 
     async addComments(data: Prisma.CommentsCreateInput) {
         const response = await this.prisma.comments.create({ data });

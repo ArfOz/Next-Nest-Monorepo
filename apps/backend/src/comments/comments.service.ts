@@ -20,7 +20,6 @@ export class CommentsService {
         const filter: Prisma.CommentsWhereUniqueInput = {
             id: commentId,
         };
-        console.log('filter', filter);
         const comment = await this.commentDBService.findUnique(filter);
 
         return comment;

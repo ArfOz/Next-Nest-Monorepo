@@ -8,7 +8,7 @@ export class RestaurantController {
     constructor(private readonly restaurantService: RestaurantService) {}
 
     @AllowUnauthorizedRequest()
-    @Get('getrestaurant')
+    @Get('test')
     getData() {
         return this.restaurantService.getData();
     }

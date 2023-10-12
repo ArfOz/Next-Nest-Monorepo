@@ -1,11 +1,14 @@
-import { RestaurantDBService } from '@database';
+import { CommentsDBService, RestaurantDBService } from '@database';
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { AddRestaurantJsonDto } from './dtos';
 
 @Injectable()
 export class RestaurantService {
-    constructor(private readonly restaurantDBService: RestaurantDBService) {}
+    constructor(
+        private readonly commentDBService: CommentsDBService,
+        private readonly restaurantDBService: RestaurantDBService,
+    ) {}
 
     getData(): { message: string } {
         return { message: 'Hello API' };
@@ -22,9 +25,15 @@ export class RestaurantService {
     }
 
     async getRestaurant(restaurantId: string) {
-        const response = await this.restaurantDBService.findUnique({
+        console.log('restaurant:id', restaurantId);
+        const restaurant = await this.restaurantDBService.findUnique({
             id: restaurantId,
         });
-        return response;
+
+        const where: Prisma.CommentsWhereInput = {
+            restaurant_id: restaurantId,
+        };
+        const comments = await this.commentDBService.findMany(where);
+        return { restaurant, comments };
     }
 }
