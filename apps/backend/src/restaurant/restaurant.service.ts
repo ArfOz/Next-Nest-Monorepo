@@ -22,7 +22,6 @@ export class RestaurantService {
     }
 
     async getRestaurant(restaurantId: string) {
-        console.log('restairant', restaurantId);
         const response = await this.restaurantDBService.findUnique({
             id: restaurantId,
         });

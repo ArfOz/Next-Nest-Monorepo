@@ -16,16 +16,13 @@ export class CommentsService {
         return response;
     }
 
-    async getComments(restaurantId: string) {
-        const filter: Prisma.CommentsWhereInput = {
-            restaurant_id: restaurantId,
+    async getComment(commentId: string) {
+        const filter: Prisma.CommentsWhereUniqueInput = {
+            id: commentId,
         };
+        console.log('filter', filter);
+        const comment = await this.commentDBService.findUnique(filter);
 
-        const comments = await this.commentDBService.findMany(filter);
-        const restaurant = await this.restaurantDBService.findUnique({
-            id: restaurantId,
-        });
-        console.log('arif', restaurant, restaurantId);
-        return restaurant;
+        return comment;
     }
 }

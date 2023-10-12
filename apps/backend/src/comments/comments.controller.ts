@@ -14,8 +14,8 @@ export class CommentsController {
     }
 
     @AllowUnauthorizedRequest()
-    @Get('getcomments/:id')
-    getComments(@Param() params: any) {
-        return this.commentsService.getComments(params.id);
+    @Get('getcomment/:id')
+    getComments(@Param('id') id: string) {
+        return this.commentsService.getComment(id);
     }
 }

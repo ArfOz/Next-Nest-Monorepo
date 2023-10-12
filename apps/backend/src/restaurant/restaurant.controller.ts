@@ -27,9 +27,7 @@ export class RestaurantController {
 
     @AllowUnauthorizedRequest()
     @Get('getrestaurant/:id')
-    async getRestaurant(@Param() params: any) {
-        const response = await this.restaurantService.getRestaurant(params.id);
-        console.log('response', response);
-        return response;
+    async getRestaurant(@Param('id') id: string) {
+        return await this.restaurantService.getRestaurant(id);
     }
 }
