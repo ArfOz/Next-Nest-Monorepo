@@ -6,7 +6,9 @@ import { Prisma } from '@prisma/client';
 export class RestaurantDBService {
     constructor(private prisma: PrismaService) {}
     async findUnique(where: Prisma.RestaurantsWhereUniqueInput) {
-        const data = await this.prisma.restaurants.findUnique({ where });
+        const data = await this.prisma.restaurants.findUnique({
+            where,
+        });
         return data;
     }
 

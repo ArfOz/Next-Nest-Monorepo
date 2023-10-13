@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { RestaurantService } from './restaurant.service';
 import { AllowUnauthorizedRequest, StaticTokenRequired } from '@exceptions';
 import { AddRestaurantJsonDto } from './dtos';
@@ -8,7 +8,7 @@ export class RestaurantController {
     constructor(private readonly restaurantService: RestaurantService) {}
 
     @AllowUnauthorizedRequest()
-    @Get('getrestaurant')
+    @Get('test')
     getData() {
         return this.restaurantService.getData();
     }
@@ -23,5 +23,11 @@ export class RestaurantController {
     @Post('addrestaurant')
     addRestaurant(@Body() input: AddRestaurantJsonDto) {
         return this.restaurantService.addRestaurant(input);
+    }
+
+    @AllowUnauthorizedRequest()
+    @Get('getrestaurant/:id')
+    async getRestaurant(@Param('id') id: string) {
+        return await this.restaurantService.getRestaurant(id);
     }
 }
