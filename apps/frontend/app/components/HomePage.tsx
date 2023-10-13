@@ -26,19 +26,19 @@ const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
     const onMapLoad = (map) => {
         setMapRef(map);
         const bounds = new google.maps.LatLngBounds();
-        cities?.forEach(({ Lat, Lon }) =>
-            bounds.extend({ lat: parseFloat(Lat), lng: parseFloat(Lon) }),
+        cities?.forEach(({ lat, lon }) =>
+            bounds.extend({ lat: parseFloat(lat), lng: parseFloat(lon) }),
         );
         map.fitBounds(bounds);
     };
 
     const handleMarkerClick = (
         Id: string,
-        Lat: string,
-        Lon: string,
+        lat: string,
+        lon: string,
         Name: string,
     ) => {
-        mapRef?.panTo({ lat: parseFloat(Lat), lng: parseFloat(Lon) });
+        mapRef?.panTo({ lat: parseFloat(lat), lng: parseFloat(lon) });
         setInfoWindowData({ Id, Name });
         setIsOpen(true);
     };
@@ -57,14 +57,14 @@ const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
                         <Marker
                             key={city.id}
                             position={{
-                                lat: parseFloat(city.Lat),
-                                lng: parseFloat(city.Lon),
+                                lat: parseFloat(city.lat),
+                                lng: parseFloat(city.lon),
                             }}
                             onClick={() => {
                                 handleMarkerClick(
                                     city.id,
-                                    city.Lat,
-                                    city.Lon,
+                                    city.lat,
+                                    city.lon,
                                     city.name,
                                 );
                             }}

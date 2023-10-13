@@ -4,19 +4,19 @@ import SimpleMap from './components/HomePage';
 const defaultCity = {
     id: '64f8f470cfdc52d6f006d1e4',
     name: 'Mission Chinese Food',
-    Lat: '40.713829',
-    Lon: '-73.989667',
+    lat: '40.713829',
+    lon: '-73.989667',
 };
 
 async function GetData() {
     let data;
     try {
-        data = (
-            // Change url for docker 
-            await fetch('http://localhost:3300/api/restaurant/getall', {
-                cache: 'no-cache',
-            })
-        ).json();
+        data = // Change url for docker
+            (
+                await fetch('http://localhost:3300/api/restaurant/getall', {
+                    cache: 'no-cache',
+                })
+            ).json();
     } catch (error) {
         console.log(error);
     }
