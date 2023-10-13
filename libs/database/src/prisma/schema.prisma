@@ -13,6 +13,15 @@ datasource db {
 model Restaurants {
   id   String  @id @default(auto()) @map("_id") @db.ObjectId
   name String
-  Lat  String?
-  Lon  String?
+  lat  String?
+  lon  String?
+}
+
+model Comments {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  restaurant_id String
+  name          String
+  comment       String
+  stars         Int
+  date          DateTime @default(now())
 }
