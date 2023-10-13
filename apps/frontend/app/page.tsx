@@ -1,30 +1,31 @@
-'use client'
-import React from 'react'
-import GoogleMapReact from 'google-map-react'
-import MyMarker from './components/MyMarker'
+import { CitiesJsonDto } from './Dtos';
+import SimpleMap from './components/HomePage';
 
-// const AnyReactComponent = ({ text }: { text: string }) => <div>{text}</div>
+const defaultCity = {
+    id: '64f8f470cfdc52d6f006d1e4',
+    name: 'Mission Chinese Food',
+    Lat: '40.713829',
+    Lon: '-73.989667',
+};
 
-export default function SimpleMap() {
-  const defaultProps = {
-    center: {
-      lat: 38,
-      lng: 36
-    },
-    zoom: 11
-  }
-
-  return (
-    // Important! Always set the container height explicitly
-    <div style={{ height: '100vh', width: '100%' }}>
-      <GoogleMapReact
-        bootstrapURLKeys={{ key: '' }}
-        defaultCenter={defaultProps.center}
-        defaultZoom={defaultProps.zoom}
-        // onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
-      >
-        <MyMarker lat={38} lng={36} tooltip={'title'} />
-      </GoogleMapReact>
-    </div>
-  )
+async function GetData() {
+    let data;
+    try {
+        data = (
+            // Change url for docker 
+            await fetch('http://localhost:3300/api/restaurant/getall', {
+                cache: 'no-cache',
+            })
+        ).json();
+    } catch (error) {
+        console.log(error);
+    }
+    return data || [defaultCity];
 }
+
+const Page = async () => {
+    const data: Array<CitiesJsonDto> = await GetData();
+    return <SimpleMap cities={data} />;
+};
+
+export default Page;
