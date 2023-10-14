@@ -9,6 +9,7 @@ import {
 import { useState } from 'react';
 import '../App.css';
 import { CitiesJsonDto } from '../Dtos';
+import Link from 'next/link';
 
 const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
     const { isLoaded } = useLoadScript({
@@ -75,7 +76,13 @@ const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
                                         setIsOpen(false);
                                     }}
                                 >
-                                    <h3>{infoWindowData?.Name}</h3>
+                                    <>
+                                        <h3>{infoWindowData?.Name}</h3>
+                                        <Link href={`/${city.id}`}>
+                                            Click for more details
+                                        </Link>
+                                        ;
+                                    </>
                                 </InfoWindow>
                             )}
                         </Marker>
