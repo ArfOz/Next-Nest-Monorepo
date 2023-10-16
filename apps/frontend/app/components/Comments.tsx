@@ -1,145 +1,100 @@
 'use client';
 import React from 'react';
 import { CommentDetails } from '../Dtos/CityDetails.dto';
-import Image from 'next/image';
 
 export const Comments = ({ Comment }: { Comment: CommentDetails }) => {
     return (
         <>
-            <section className="relative flex items-center justify-center min-h-screen antialiased bg-white bg-gray-100 min-w-screen">
-                <div className="container px-0 mx-auto sm:px-5">
-                    <div className="flex-col w-full py-4 mx-auto bg-white border-b-2 border-r-2 border-gray-200 sm:px-4 sm:py-4 md:px-4 sm:rounded-lg sm:shadow-sm md:w-2/3">
-                        <div className="flex flex-row">
-                            {/* <Image className="object-cover w-12 h-12 border-2 border-gray-300 rounded-full" alt="Noob master's avatar"
-                    src="https://images.unsplash.com/photo-1517070208541-6ddc4d3efbcb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&faces=1&faceindex=1&facepad=2.5&w=500&h=500&q=80"> */}
-                            <div className="flex-col mt-1">
-                                <div className="flex items-center flex-1 px-4 font-bold leading-tight">
-                                    Noob master
-                                    <span className="ml-2 text-xs font-normal text-gray-500">
-                                        2 weeks ago
-                                    </span>
+            <div>
+                <div className="bg-white shadow-2xl w-96">
+                    <div className="mx-auto max-w-7xl ">
+                        <div
+                            className="mx-5 grid max-w-2xl  
+                                    grid-cols-1 gap-x-8  
+                                    gap-y-16 p-10 lg:grid-cols-1"
+                        >
+                            <article
+                                className="flex max-w-xl flex-col  
+                                            items-start justify-between"
+                            >
+                                <div className="flex items-center gap-x-4 text-xs">
+                                    <div
+                                        // dateTime="2023-03-16"
+                                        className="text-gray-500"
+                                    >
+                                        {new Date(Date.parse(Comment.date))
+                                            .toDateString()
+                                            .toString()}
+                                    </div>
+                                    <a
+                                        href="#"
+                                        className="relative z-10 rounded-full  
+                                               bg-gray-50 px-3 py-1.5  
+                                               font-medium text-gray-600  
+                                               hover:bg-gray-100"
+                                    >
+                                        {Comment.stars}
+                                    </a>
                                 </div>
-                                <div className="flex-1 px-2 ml-2 text-sm font-medium leading-loose text-gray-600">
-                                    Wow!!! how you did you create this?
+                                <div className="group relative">
+                                    <h3
+                                        className="mt-3 text-lg font-semibold  
+                                               leading-6 text-gray-900  
+                                               group-hover:text-gray-600"
+                                    >
+                                        <a href="#">
+                                            <span className="absolute inset-0"></span>
+                                            {Comment.name}
+                                        </a>
+                                    </h3>
+                                    <p
+                                        className="mt-5 line-clamp-3 text-sm  
+                                              leading-6 text-gray-600"
+                                    >
+                                        {Comment.comment}
+                                    </p>
                                 </div>
-                                <button className="inline-flex items-center px-1 pt-2 ml-1 flex-column">
+                                <div
+                                    className="relative mt-8 flex  
+                                            items-center gap-x-4"
+                                >
                                     <svg
-                                        className="w-5 h-5 ml-2 text-gray-600 cursor-pointer fill-current hover:text-gray-900"
-                                        viewBox="0 0 95 78"
+                                        fill="#000000"
+                                        viewBox="0 0 32 32"
+                                        className="h-10 w-10 rounded-full"
                                         xmlns="http://www.w3.org/2000/svg"
                                     >
-                                        <path
-                                            d="M29.58 0c1.53.064 2.88 1.47 2.879 3v11.31c19.841.769 34.384 8.902 41.247 20.464 7.212 12.15 5.505 27.83-6.384 40.273-.987 1.088-2.82 1.274-4.005.405-1.186-.868-1.559-2.67-.814-3.936 4.986-9.075 2.985-18.092-3.13-24.214-5.775-5.78-15.377-8.782-26.914-5.53V53.99c-.01 1.167-.769 2.294-1.848 2.744-1.08.45-2.416.195-3.253-.62L.85 30.119c-1.146-1.124-1.131-3.205.032-4.312L27.389.812c.703-.579 1.49-.703 2.19-.812zm-3.13 9.935L7.297 27.994l19.153 18.84v-7.342c-.002-1.244.856-2.442 2.034-2.844 14.307-4.882 27.323-1.394 35.145 6.437 3.985 3.989 6.581 9.143 7.355 14.715 2.14-6.959 1.157-13.902-2.441-19.964-5.89-9.92-19.251-17.684-39.089-17.684-1.573 0-3.004-1.429-3.004-3V9.936z"
-                                            // fill-rule="nonzero"
-                                        />
-                                    </svg>
-                                </button>
-                                <button className="inline-flex items-center px-1 -ml-1 flex-column">
-                                    <svg
-                                        className="w-5 h-5 text-gray-600 cursor-pointer hover:text-gray-700"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path
+                                        <g
+                                            id="SVGRepo_bgCarrier"
+                                            stroke-width="0"
+                                        ></g>
+                                        <g
+                                            id="SVGRepo_tracerCarrier"
                                             stroke-linecap="round"
                                             stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
-                                        ></path>
+                                        ></g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path d="M 16 4 C 9.382813 4 4 9.382813 4 16 C 4 22.617188 9.382813 28 16 28 C 22.617188 28 28 22.617188 28 16 C 28 9.382813 22.617188 4 16 4 Z M 16 6 C 21.535156 6 26 10.464844 26 16 C 26 21.535156 21.535156 26 16 26 C 10.464844 26 6 21.535156 6 16 C 6 10.464844 10.464844 6 16 6 Z M 11.5 12 C 10.671875 12 10 12.671875 10 13.5 C 10 14.328125 10.671875 15 11.5 15 C 12.328125 15 13 14.328125 13 13.5 C 13 12.671875 12.328125 12 11.5 12 Z M 18 13 L 18 15 L 23 15 L 23 13 Z M 20.96875 17.03125 C 20.96875 18.714844 20.292969 19.882813 19.3125 20.71875 C 18.332031 21.554688 17.035156 22 16 22 C 13.878906 22 12.4375 21.140625 11.3125 20.03125 L 9.90625 21.46875 C 11.300781 22.839844 13.320313 24 16 24 C 17.554688 24 19.261719 23.414063 20.625 22.25 C 21.988281 21.085938 22.96875 19.289063 22.96875 17.03125 Z"></path>
+                                        </g>
                                     </svg>
-                                </button>
-                            </div>
-                        </div>
-                        {/* <hr className="my-2 ml-16 border-gray-200"> */}
-                        <div className="flex flex-row pt-1 md-10 md:ml-16">
-                            {/* <img className="w-12 h-12 border-2 border-gray-300 rounded-full" alt="Emily's avatar"
-                    src="https://images.unsplash.com/photo-1581624657276-5807462d0a3a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&fit=facearea&faces=1&faceindex=1&facepad=2.5&w=500&h=500&q=80"> */}
-                            <div className="flex-col mt-1">
-                                <div className="flex items-center flex-1 px-4 font-bold leading-tight">
-                                    Emily
-                                    <span className="ml-2 text-xs font-normal text-gray-500">
-                                        5 days ago
-                                    </span>
+                                    <div className="text-sm leading-6">
+                                        <p className="font-semibold text-gray-900">
+                                            <a href="#">
+                                                <span className="absolute inset-0"></span>
+                                                Author name
+                                                {/* {Comment.} */}
+                                            </a>
+                                        </p>
+                                        <p className="text-gray-600">
+                                            {/* {props.content.designation} */}
+                                        </p>
+                                    </div>
                                 </div>
-                                <div className="flex-1 px-2 ml-2 text-sm font-medium leading-loose text-gray-600">
-                                    I created it using TailwindCSS
-                                </div>
-                                <button className="inline-flex items-center px-1 pt-2 ml-1 flex-column">
-                                    <svg
-                                        className="w-5 h-5 ml-2 text-gray-600 cursor-pointer fill-current hover:text-gray-900"
-                                        viewBox="0 0 95 78"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path
-                                            d="M29.58 0c1.53.064 2.88 1.47 2.879 3v11.31c19.841.769 34.384 8.902 41.247 20.464 7.212 12.15 5.505 27.83-6.384 40.273-.987 1.088-2.82 1.274-4.005.405-1.186-.868-1.559-2.67-.814-3.936 4.986-9.075 2.985-18.092-3.13-24.214-5.775-5.78-15.377-8.782-26.914-5.53V53.99c-.01 1.167-.769 2.294-1.848 2.744-1.08.45-2.416.195-3.253-.62L.85 30.119c-1.146-1.124-1.131-3.205.032-4.312L27.389.812c.703-.579 1.49-.703 2.19-.812zm-3.13 9.935L7.297 27.994l19.153 18.84v-7.342c-.002-1.244.856-2.442 2.034-2.844 14.307-4.882 27.323-1.394 35.145 6.437 3.985 3.989 6.581 9.143 7.355 14.715 2.14-6.959 1.157-13.902-2.441-19.964-5.89-9.92-19.251-17.684-39.089-17.684-1.573 0-3.004-1.429-3.004-3V9.936z"
-                                            // fill-rule="nonzero"
-                                        />
-                                    </svg>
-                                </button>
-                                <button className="inline-flex items-center px-1 -ml-1 flex-column">
-                                    <svg
-                                        className="w-5 h-5 text-gray-600 cursor-pointer hover:text-gray-700"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                    >
-                                        <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="flex-col w-full py-4 mx-auto mt-3 bg-white border-b-2 border-r-2 border-gray-200 sm:px-4 sm:py-4 md:px-4 sm:rounded-lg sm:shadow-sm md:w-2/3">
-                        <div className="flex flex-row md-10">
-                            {/* <img className="w-12 h-12 border-2 border-gray-300 rounded-full" alt="Anonymous's avatar"
-                    src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&faces=1&faceindex=1&facepad=2.5&w=500&h=500&q=80"> */}
-                            <div className="flex-col mt-1">
-                                <div className="flex items-center flex-1 px-4 font-bold leading-tight">
-                                    Anonymous
-                                    <span className="ml-2 text-xs font-normal text-gray-500">
-                                        3 days ago
-                                    </span>
-                                </div>
-                                <div className="flex-1 px-2 ml-2 text-sm font-medium leading-loose text-gray-600">
-                                    Very cool! Ill have to learn more about
-                                    Tailwind.
-                                </div>
-                                <button className="inline-flex items-center px-1 pt-2 ml-1 flex-column">
-                                    <svg
-                                        className="w-5 h-5 ml-2 text-gray-600 cursor-pointer fill-current hover:text-gray-900"
-                                        viewBox="0 0 95 78"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path
-                                            d="M29.58 0c1.53.064 2.88 1.47 2.879 3v11.31c19.841.769 34.384 8.902 41.247 20.464 7.212 12.15 5.505 27.83-6.384 40.273-.987 1.088-2.82 1.274-4.005.405-1.186-.868-1.559-2.67-.814-3.936 4.986-9.075 2.985-18.092-3.13-24.214-5.775-5.78-15.377-8.782-26.914-5.53V53.99c-.01 1.167-.769 2.294-1.848 2.744-1.08.45-2.416.195-3.253-.62L.85 30.119c-1.146-1.124-1.131-3.205.032-4.312L27.389.812c.703-.579 1.49-.703 2.19-.812zm-3.13 9.935L7.297 27.994l19.153 18.84v-7.342c-.002-1.244.856-2.442 2.034-2.844 14.307-4.882 27.323-1.394 35.145 6.437 3.985 3.989 6.581 9.143 7.355 14.715 2.14-6.959 1.157-13.902-2.441-19.964-5.89-9.92-19.251-17.684-39.089-17.684-1.573 0-3.004-1.429-3.004-3V9.936z"
-                                            // fill-rule="nonzero"
-                                        />
-                                    </svg>
-                                </button>
-                                <button className="inline-flex items-center px-1 -ml-1 flex-column">
-                                    <svg
-                                        className="w-5 h-5 text-gray-600 cursor-pointer hover:text-gray-700"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
-                                        ></path>
-                                    </svg>
-                                </button>
-                            </div>
+                            </article>
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
         </>
     );
 };
