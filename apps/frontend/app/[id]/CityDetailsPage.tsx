@@ -9,7 +9,7 @@ export const CityDetailsPage = ({ data }: { data: CityDetailsJsonDto }) => {
     return (
         <>
             <RestaurantDetails data={data.restaurant} />
-            <div className="grid grid-cols-4 gap-4 p-8">
+            <div className="flex flex-row flex-wrap gap-4 p-8 content-start">
                 {data.comments.map((comment) => (
                     <Comments key={comment.id} Comment={comment} />
                 ))}

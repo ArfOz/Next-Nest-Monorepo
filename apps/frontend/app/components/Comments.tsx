@@ -38,7 +38,7 @@ export const Comments = ({ Comment }: { Comment: CommentDetails }) => {
                                         <Rating
                                             name="half-rating-read"
                                             defaultValue={Comment.stars}
-                                            precision={0.5}
+                                            precision={0.1}
                                         />
                                     </Stack>
                                 </a>
