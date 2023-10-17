@@ -66,6 +66,9 @@
     "web-vitals": "^3.4.0"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.14",
     "@nestjs/common": "^10.0.2",
     "@nestjs/config": "^3.0.1",
     "@nestjs/core": "^10.0.2",
@@ -81,7 +84,7 @@
     "next": "13.4.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-icons": "^4.10.1",
+    "react-icons": "^4.11.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
     "tslib": "^2.3.0"

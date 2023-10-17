@@ -1,6 +1,8 @@
 'use client';
 import React from 'react';
 import { CommentDetails } from '../Dtos/CityDetails.dto';
+import { Stack } from '@mui/material';
+import Rating from '@mui/material/Rating';
 
 export const Comments = ({ Comment }: { Comment: CommentDetails }) => {
     return (
@@ -32,7 +34,13 @@ export const Comments = ({ Comment }: { Comment: CommentDetails }) => {
                                                font-medium text-gray-600  
                                                hover:bg-gray-100"
                                 >
-                                    {Comment.stars}
+                                    <Stack spacing={1}>
+                                        <Rating
+                                            name="half-rating-read"
+                                            defaultValue={Comment.stars}
+                                            precision={0.5}
+                                        />
+                                    </Stack>
                                 </a>
                             </div>
                             <div className="group relative">
