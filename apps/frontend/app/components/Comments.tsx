@@ -27,21 +27,15 @@ export const Comments = ({ Comment }: { Comment: CommentDetails }) => {
                                         .toDateString()
                                         .toString()}
                                 </div>
-                                <a
-                                    href="#"
-                                    className="relative z-10 rounded-full  
-                                               bg-gray-50 px-3 py-1.5  
-                                               font-medium text-gray-600  
-                                               hover:bg-gray-100"
-                                >
-                                    <Stack spacing={1}>
-                                        <Rating
-                                            name="half-rating-read"
-                                            defaultValue={Comment.stars}
-                                            precision={0.1}
-                                        />
-                                    </Stack>
-                                </a>
+
+                                <Stack spacing={1}>
+                                    <Rating
+                                        name="rea-only"
+                                        value={Comment.stars}
+                                        precision={0.1}
+                                        readOnly
+                                    />
+                                </Stack>
                             </div>
                             <div className="group relative">
                                 <h3

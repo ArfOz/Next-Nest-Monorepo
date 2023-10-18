@@ -45,7 +45,7 @@ const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
         setIsOpen(true);
     };
 
-    const star = AvgCalculator();
+    // const star = AvgCalculator();
 
     return (
         <div className="App">
@@ -81,7 +81,7 @@ const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
                                 >
                                     <>
                                         <h3>{infoWindowData?.Name}</h3>
-                                        {AvgCalculator()}
+                                        {/* {AvgCalculator()} */}
                                         <Link href={`/${city.id}`}>
                                             Click for more details
                                         </Link>
