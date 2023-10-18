@@ -4,31 +4,32 @@ import {
     GoogleMap,
     InfoWindow,
     Marker,
-    useLoadScript,
+    useLoadScript
 } from '@react-google-maps/api';
 import { useState } from 'react';
 import '../App.css';
 import { CitiesJsonDto } from '../Dtos';
 import Link from 'next/link';
+import { AvgCalculator } from '@utils';
 
 const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
     const { isLoaded } = useLoadScript({
-        googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY || '',
+        googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY || ''
     });
     const [mapRef, setMapRef] = useState({
-        panTo: { lat: 0, lng: 0 },
+        panTo: { lat: 0, lng: 0 }
     });
     const [isOpen, setIsOpen] = useState(false);
     const [infoWindowData, setInfoWindowData] = useState({
         Id: '',
-        Name: '',
+        Name: ''
     });
 
     const onMapLoad = (map) => {
         setMapRef(map);
         const bounds = new google.maps.LatLngBounds();
         cities?.forEach(({ lat, lon }) =>
-            bounds.extend({ lat: parseFloat(lat), lng: parseFloat(lon) }),
+            bounds.extend({ lat: parseFloat(lat), lng: parseFloat(lon) })
         );
         map.fitBounds(bounds);
     };
@@ -37,12 +38,14 @@ const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
         Id: string,
         lat: string,
         lon: string,
-        Name: string,
+        Name: string
     ) => {
         mapRef?.panTo({ lat: parseFloat(lat), lng: parseFloat(lon) });
         setInfoWindowData({ Id, Name });
         setIsOpen(true);
     };
+
+    const star = AvgCalculator();
 
     return (
         <div className="App">
@@ -59,14 +62,14 @@ const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
                             key={city.id}
                             position={{
                                 lat: parseFloat(city.lat),
-                                lng: parseFloat(city.lon),
+                                lng: parseFloat(city.lon)
                             }}
                             onClick={() => {
                                 handleMarkerClick(
                                     city.id,
                                     city.lat,
                                     city.lon,
-                                    city.name,
+                                    city.name
                                 );
                             }}
                         >
@@ -78,10 +81,10 @@ const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
                                 >
                                     <>
                                         <h3>{infoWindowData?.Name}</h3>
+                                        {AvgCalculator()}
                                         <Link href={`/${city.id}`}>
                                             Click for more details
                                         </Link>
-                                        ;
                                     </>
                                 </InfoWindow>
                             )}
