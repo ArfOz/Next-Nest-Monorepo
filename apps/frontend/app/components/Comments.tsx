@@ -30,7 +30,7 @@ export const Comments = ({ Comment }: { Comment: CommentDetails }) => {
 
                                 <Stack spacing={1}>
                                     <Rating
-                                        name="rea-only"
+                                        name="read-only"
                                         value={Comment.stars}
                                         precision={0.1}
                                         readOnly
