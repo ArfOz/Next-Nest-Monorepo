@@ -3,6 +3,7 @@ import React from 'react';
 import { CityDetailsJsonDto } from '../Dtos/CityDetails.dto';
 import { Comments } from '../components/Comments';
 import RestaurantDetails from './RestaurantDetails';
+import AddComment from '../components/AddComment';
 
 export const CityDetailsPage = ({ data }: { data: CityDetailsJsonDto }) => {
     return (
@@ -13,6 +14,7 @@ export const CityDetailsPage = ({ data }: { data: CityDetailsJsonDto }) => {
                     <Comments key={comment.id} Comment={comment} />
                 ))}
             </div>
+            <AddComment />
         </>
     );
 };
