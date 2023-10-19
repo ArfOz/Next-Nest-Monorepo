@@ -14,7 +14,7 @@ export const CityDetailsPage = ({ data }: { data: CityDetailsJsonDto }) => {
                     <Comments key={comment.id} Comment={comment} />
                 ))}
             </div>
-            <AddComment />
+            <AddComment restaurant_id={data.restaurant.id} />
         </>
     );
 };

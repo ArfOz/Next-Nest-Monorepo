@@ -1,54 +1,84 @@
 import React, { useState } from 'react';
 import { Rating, Stack } from '@mui/material';
+import { SendCommentDto } from '../Dtos';
 
-// type Props = {};
+type Props = {
+    restaurant_id: string;
+};
 
-const AddComment = () => {
+const AddComment = (props) => {
     const [title, setTitle] = useState('');
     const [comment, setComment] = useState('');
     const [starValue, setStarValue] = useState(3);
+    const [buttonText, setButtonText] = useState('Send Comment');
+
+    const handleValidation = () => {
+        const tempErrors: any = {};
+        let isValid = true;
+
+        if (title.length <= 5) {
+            // tempErrors['fullname'] = true;
+            isValid = false;
+        }
+        if (comment.length <= 20) {
+            // tempErrors['email'] = true;
+            isValid = false;
+        }
+        // if (subject.length <= 0) {
+        //     tempErrors['subject'] = true;
+        //     isValid = false;
+        // }
+        // if (message.length <= 0) {
+        //     tempErrors['message'] = true;
+        //     isValid = false;
+        // }
+
+        // setErrors({ ...tempErrors });
+        // console.log('errors', errors);
+        return isValid;
+    };
 
     const handleSubmit = async (e: { preventDefault: () => void }) => {
         e.preventDefault();
         try {
             console.log('titleeeee', title, comment, starValue);
-            // const isValidForm = handleValidation();
-            // if (isValidForm) {
-            //     setButtonText('Sending');
-            //     const data: MailData = {
-            //         Email: email,
-            //         Fullname: fullname,
-            //         Subject: subject,
-            //         Message: message
-            //     };
-            //     const res = await fetch('/api/sendemail', {
-            //         body: JSON.stringify(data),
-            //         headers: {
-            //             'Content-Type': 'application/json'
-            //         },
-            //         method: 'POST'
-            //     });
-            //     const response = await res.json();
-            //     if (response.Data.Error) {
-            //         setShowSuccessMessage(false);
-            //         setShowFailureMessage(true);
-            //         setButtonText('Send');
-            //         // Reset form fields
-            //         setFullname('');
-            //         setEmail('');
-            //         setMessage('');
-            //         setSubject('');
-            //         return;
-            //     }
-            //     setShowSuccessMessage(true);
-            //     setShowFailureMessage(false);
-            //     setButtonText('Send');
-            //     // Reset form fields
-            //     setFullname('');
-            //     setEmail('');
-            //     setMessage('');
-            //     setSubject('');
-            // }
+            const isValidForm = handleValidation();
+            if (isValidForm) {
+                setButtonText('Sending');
+                const data: SendCommentDto = {
+                    restaurant_id: props,
+                    name: title,
+                    comment,
+                    stars: starValue
+                };
+                const res = await fetch('/api/sendemail', {
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    method: 'POST'
+                });
+                const response = await res.json();
+                if (response.Data.Error) {
+                    setShowSuccessMessage(false);
+                    setShowFailureMessage(true);
+                    setButtonText('Send');
+                    // Reset form fields
+                    setFullname('');
+                    setEmail('');
+                    setMessage('');
+                    setSubject('');
+                    return;
+                }
+                setShowSuccessMessage(true);
+                setShowFailureMessage(false);
+                setButtonText('Send');
+                // Reset form fields
+                setFullname('');
+                setEmail('');
+                setMessage('');
+                setSubject('');
+            }
         } catch (error) {
             console.log(error);
         }
@@ -106,7 +136,7 @@ const AddComment = () => {
                                     name="simple-controlled"
                                     value={starValue}
                                     onChange={(event, newValue) => {
-                                        setStarValue(newValue);
+                                        setStarValue(newValue!);
                                     }}
                                 />
                             </Stack>
@@ -127,7 +157,7 @@ const AddComment = () => {
                     aria-hidden="true"
                 /> */}
                             </span>
-                            Send Comment
+                            {buttonText}
                         </button>
                     </div>
                 </form>
