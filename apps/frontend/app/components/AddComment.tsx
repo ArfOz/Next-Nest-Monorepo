@@ -6,22 +6,30 @@ type Props = {
     restaurant_id: string;
 };
 
-const AddComment = (props) => {
+const AddComment = (props: Props) => {
     const [title, setTitle] = useState('');
     const [comment, setComment] = useState('');
     const [starValue, setStarValue] = useState(3);
     const [buttonText, setButtonText] = useState('Send Comment');
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [showFailureMessage, setShowFailureMessage] = useState(false);
+
+    //   Form validation
+    const [errors, setErrors] = useState({
+        title: '',
+        comment: ''
+    });
 
     const handleValidation = () => {
         const tempErrors: any = {};
         let isValid = true;
 
         if (title.length <= 5) {
-            // tempErrors['fullname'] = true;
+            tempErrors['fullname'] = true;
             isValid = false;
         }
         if (comment.length <= 20) {
-            // tempErrors['email'] = true;
+            tempErrors['comment'] = true;
             isValid = false;
         }
         // if (subject.length <= 0) {
@@ -33,7 +41,7 @@ const AddComment = (props) => {
         //     isValid = false;
         // }
 
-        // setErrors({ ...tempErrors });
+        setErrors({ ...tempErrors });
         // console.log('errors', errors);
         return isValid;
     };
@@ -46,38 +54,43 @@ const AddComment = (props) => {
             if (isValidForm) {
                 setButtonText('Sending');
                 const data: SendCommentDto = {
-                    restaurant_id: props,
+                    restaurant_id: props.restaurant_id,
                     name: title,
                     comment,
                     stars: starValue
                 };
-                const res = await fetch('/api/sendemail', {
-                    body: JSON.stringify(data),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    method: 'POST'
-                });
+                const res = await fetch(
+                    'http://localhost:3300/api/comments/addcomments',
+                    {
+                        body: JSON.stringify(data),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        method: 'POST',
+                        cache: 'no-cache'
+                    }
+                );
                 const response = await res.json();
-                if (response.Data.Error) {
-                    setShowSuccessMessage(false);
-                    setShowFailureMessage(true);
-                    setButtonText('Send');
-                    // Reset form fields
-                    setFullname('');
-                    setEmail('');
-                    setMessage('');
-                    setSubject('');
-                    return;
-                }
+                // if (response.Data.Error) {
+                //     setShowSuccessMessage(false);
+                //     setShowFailureMessage(true);
+                //     setButtonText('Send');
+                //     // Reset form fields
+                //     setFullname('');
+                //     setEmail('');
+                //     setMessage('');
+                //     setSubject('');
+                //     return;
+                // }
+                console.log('resssssss', response);
                 setShowSuccessMessage(true);
                 setShowFailureMessage(false);
                 setButtonText('Send');
                 // Reset form fields
-                setFullname('');
-                setEmail('');
-                setMessage('');
-                setSubject('');
+                setComment('');
+                setTitle('');
+                setStarValue(0);
+                // setSubject('');
             }
         } catch (error) {
             console.log(error);
@@ -109,6 +122,11 @@ const AddComment = (props) => {
                                     setTitle(e.target.value);
                                 }}
                             />
+                            {errors.title && (
+                                <p className="text-red-500">
+                                    Title cannot be less than 5 characaters.
+                                </p>
+                            )}
                         </div>
                         <div>
                             <label htmlFor="comment" className="sr-only">
@@ -129,6 +147,11 @@ const AddComment = (props) => {
                                     setComment(e.target.value);
                                 }}
                             />
+                            {errors.comment && (
+                                <p className="text-red-500">
+                                    Fullname cannot be less than 20 characaters.
+                                </p>
+                            )}
                         </div>
                         <div>
                             <Stack spacing={1}>
