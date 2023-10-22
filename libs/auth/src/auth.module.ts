@@ -1,11 +1,19 @@
+import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { JwtModule } from '@nestjs/jwt';
 import { UsersDBModule } from '@database';
-// import { jwtConstants } from './constants';
+import { JwtModule } from '@nestjs/jwt';
+import { config } from 'process';
 
 @Module({
-    imports: [UsersDBModule],
+    imports: [
+        UsersDBModule,
+        JwtModule.register({
+            global: true,
+            secret: process.env['JWT_SECRET_KEY'],
+            signOptions: { expiresIn: '60s' }
+        })
+    ],
     providers: [AuthService],
     exports: [AuthService]
 })
