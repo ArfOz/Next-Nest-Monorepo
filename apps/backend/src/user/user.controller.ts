@@ -1,15 +1,7 @@
 import { AllowUnauthorizedRequest } from '@exceptions';
-import {
-    Body,
-    Controller,
-    Get,
-    Post,
-    Request,
-    UseGuards
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Request } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserRegisterJson, UserSignInJson } from './dtos';
-import { AuthGuard } from '@guard';
 
 @Controller('user')
 export class UserController {
