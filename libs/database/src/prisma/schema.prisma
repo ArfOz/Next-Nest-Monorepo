@@ -25,3 +25,11 @@ model Comments {
   stars         Int
   date          DateTime @default(now())
 }
+
+model Users {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  username String
+  password String
+  email    String
+  Created  DateTime @default(now())
+}
