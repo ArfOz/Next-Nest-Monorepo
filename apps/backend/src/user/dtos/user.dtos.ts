@@ -12,3 +12,25 @@ export class UserSignInJson {
     @IsString()
     password: string;
 }
+
+export class UserRegisterJson {
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    username: string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    password: string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    email: string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    created: Date;
+}

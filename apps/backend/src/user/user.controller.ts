@@ -8,7 +8,7 @@ import {
     UseGuards
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserSignInJson } from './dtos';
+import { UserRegisterJson, UserSignInJson } from './dtos';
 import { AuthGuard } from '@guard';
 
 @Controller('user')
@@ -16,13 +16,19 @@ export class UserController {
     constructor(private readonly userService: UserService) {}
 
     @AllowUnauthorizedRequest()
+    @Post('register')
+    async Register(@Body() data: UserRegisterJson) {
+        return await this.userService.Register(data);
+    }
+
+    @AllowUnauthorizedRequest()
     @Post('login')
-    async signin(@Body() data: UserSignInJson) {
-        return await this.userService.signin(data.username, data.password);
+    async Signin(@Body() data: UserSignInJson) {
+        return await this.userService.Signin(data.username, data.password);
     }
 
     @Get('profile')
-    getProfile(@Request() req) {
+    async GetProfile(@Request() req) {
         return req.user;
     }
 }
