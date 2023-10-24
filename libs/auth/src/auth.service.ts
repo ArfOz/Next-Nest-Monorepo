@@ -14,7 +14,11 @@ export class AuthService {
     async SignIn(username: string, pass: string) {
         const user = await this.usersService.findOne({ username });
         if (!user) {
-            return 'error occured';
+            throw new UnauthorizedException(
+                UnauthorizedExceptionType.USER_NOT_REGISTERED,
+                new Error('THERE IS NO USER.'),
+                404
+            );
         }
         const isMatch = await bcrypt.compare(pass, user?.password);
 

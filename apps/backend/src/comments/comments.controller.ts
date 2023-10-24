@@ -7,7 +7,7 @@ import { AllowUnauthorizedRequest } from '@exceptions';
 export class CommentsController {
     constructor(private readonly commentsService: CommentsService) {}
 
-    @AllowUnauthorizedRequest()
+    // @AllowUnauthorizedRequest()
     @Post('addcomments')
     addComments(@Body() input: AddCommentsJsonDto) {
         return this.commentsService.addComments(input);
