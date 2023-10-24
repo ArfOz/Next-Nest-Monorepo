@@ -1,5 +1,6 @@
 import { UsersDBService } from '@database';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { UnauthorizedException, UnauthorizedExceptionType } from '@exceptions';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
@@ -18,12 +19,13 @@ export class AuthService {
         const isMatch = await bcrypt.compare(pass, user?.password);
 
         if (!isMatch) {
-            return 'wrong password';
+            throw new UnauthorizedException(
+                UnauthorizedExceptionType.WRONG_PASSWORD,
+                new Error('PASSWORD OR EMAIL IS INCORRECT'),
+                404
+            );
         }
 
-        // if (user?.password !== pass) {
-        //     throw new UnauthorizedException();
-        // }
         const payload = { sub: user.id, username: user.username };
         return {
             access_token: await this.jwtService.signAsync(payload)
