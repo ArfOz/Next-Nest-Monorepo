@@ -5,3 +5,7 @@ export enum UnauthorizedExceptionType {
     NO_USER_ROLE = 'USER_HAS_NO_ROLE',
     WRONG_PASSWORD = 'PASSWORD OR EMAIL IS INCORRECT'
 }
+export enum ForbiddenExceptionType {
+    FORBIDDEN = 'FORBIDDEN',
+    EMAIL_NOT_VERIFIED = 'EMAIL_NOT_VERIFIED'
+}
