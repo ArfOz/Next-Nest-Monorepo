@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CommentsDBService, RestaurantDBService } from '@database';
 import { AddCommentsJsonDto } from './dtos';
 import { Prisma } from '@prisma/client';
+import { UserParamsDto } from './dtos/userparams.dto';
 
 @Injectable()
 export class CommentsService {
@@ -10,9 +11,12 @@ export class CommentsService {
         private readonly restaurantDBService: RestaurantDBService
     ) {}
 
-    async addComments(data: AddCommentsJsonDto) {
-        // data[user_id];
-        const response = await this.commentDBService.addComments(data);
+    async addComments(user: UserParamsDto, data: AddCommentsJsonDto) {
+        const newData: Prisma.CommentsCreateInput = {
+            ...data,
+            user_id: user.Id
+        };
+        const response = await this.commentDBService.addComments(newData);
         return response;
     }
 
