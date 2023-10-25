@@ -7,17 +7,18 @@ import { Prisma } from '@prisma/client';
 export class CommentsService {
     constructor(
         private readonly commentDBService: CommentsDBService,
-        private readonly restaurantDBService: RestaurantDBService,
+        private readonly restaurantDBService: RestaurantDBService
     ) {}
 
     async addComments(data: AddCommentsJsonDto) {
+        // data[user_id];
         const response = await this.commentDBService.addComments(data);
         return response;
     }
 
     async getComment(commentId: string) {
         const filter: Prisma.CommentsWhereUniqueInput = {
-            id: commentId,
+            id: commentId
         };
         const comment = await this.commentDBService.findUnique(filter);
 
