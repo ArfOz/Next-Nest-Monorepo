@@ -15,6 +15,7 @@ export class CommentsController {
         @UserParam() user: UserParamsDto,
         @Body() input: AddCommentsJsonDto
     ) {
+        console.log('controller user', user);
         return this.commentsService.addComments(user, input);
     }
 

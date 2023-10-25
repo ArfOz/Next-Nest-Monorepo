@@ -14,8 +14,9 @@ export class CommentsService {
     async addComments(user: UserParamsDto, data: AddCommentsJsonDto) {
         const newData: Prisma.CommentsCreateInput = {
             ...data,
-            user_id: user.Id
+            user_id: user.sub
         };
+        console.log('new data', newData);
         const response = await this.commentDBService.addComments(newData);
         return response;
     }

@@ -5,25 +5,20 @@ export class UserParamsDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    Id: string;
+    sub: string;
 
     @ApiProperty()
-    @IsString()
     @IsNotEmpty()
+    @IsString()
     username: string;
 
     @ApiProperty()
-    @IsOptional()
+    @IsNotEmpty()
     @IsString()
-    password: string;
+    iat: Date;
 
     @ApiProperty()
-    @IsOptional()
+    @IsNotEmpty()
     @IsString()
-    email: string;
-
-    @ApiProperty()
-    @IsOptional()
-    @IsString()
-    created: Date;
+    exp: Date;
 }
