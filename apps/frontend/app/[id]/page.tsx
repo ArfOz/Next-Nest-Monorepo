@@ -9,8 +9,8 @@ async function GetData(id: string) {
                 await fetch(
                     `http://localhost:3300/api/restaurant/getrestaurant/${id}`,
                     {
-                        cache: 'no-cache',
-                    },
+                        cache: 'no-cache'
+                    }
                 )
             ).json();
     } catch (error) {

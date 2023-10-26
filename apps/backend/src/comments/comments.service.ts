@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CommentsDBService, RestaurantDBService } from '@database';
-import { AddCommentsJsonDto } from './dtos';
+import { AddCommentsJsonDto, DeleteCommentsJsonDto } from './dtos';
 import { Prisma } from '@prisma/client';
 import { UserParamsDto } from './dtos/userparams.dto';
 
@@ -16,7 +16,6 @@ export class CommentsService {
             ...data,
             user_id: user.sub
         };
-        console.log('new data', newData);
         const response = await this.commentDBService.addComments(newData);
         return response;
     }
@@ -27,6 +26,21 @@ export class CommentsService {
         };
         const comment = await this.commentDBService.findUnique(filter);
 
+        return comment;
+    }
+
+    async myComments(user: UserParamsDto) {
+        const filter: Prisma.CommentsWhereInput = {
+            user_id: user.sub
+        };
+        const comment = await this.commentDBService.findMany(filter);
+        return comment;
+    }
+    async deleteComment(user: UserParamsDto, data: DeleteCommentsJsonDto) {
+        const where: Prisma.CommentsWhereUniqueInput = {
+            id: data.id
+        };
+        const comment = await this.commentDBService.delete(where);
         return comment;
     }
 }

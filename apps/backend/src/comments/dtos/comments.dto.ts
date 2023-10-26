@@ -22,3 +22,10 @@ export class AddCommentsJsonDto {
     @IsString()
     stars: number;
 }
+
+export class DeleteCommentsJsonDto {
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    id: string;
+}
