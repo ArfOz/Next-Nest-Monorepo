@@ -1,1 +1,1 @@
-export * from './Avg.calculator';
+export * from './decorators';

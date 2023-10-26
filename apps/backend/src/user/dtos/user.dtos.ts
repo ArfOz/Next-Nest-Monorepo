@@ -1,31 +1,36 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class AddCommentsJsonDto {
+export class UserSignInJson {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    restaurant_id: string;
+    username: string;
 
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    name: string;
-
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsString()
-    comment: string;
-
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsString()
-    stars: number;
+    password: string;
 }
 
-export class DeleteCommentsJsonDto {
+export class UserRegisterJson {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    id: string;
+    username: string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    password: string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    email: string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    created: Date;
 }

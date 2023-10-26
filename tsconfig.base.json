@@ -18,9 +18,11 @@
     "baseUrl": ".",
     "resolveJsonModule": true,
     "paths": {
+      "@auth": ["libs/auth/src/index.ts"],
       "@config/*": ["libs/config/*"],
       "@database": ["libs/database/src/index.ts"],
       "@exceptions": ["libs/exceptions/src/index.ts"],
+      "@frontendlibs": ["libs/frontendlibs/src/index.ts"],
       "@guard": ["libs/guard/src/index.ts"],
       "@utils": ["libs/utils/src/index.ts"]
     }

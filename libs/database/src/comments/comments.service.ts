@@ -12,13 +12,18 @@ export class CommentsDBService {
 
     async findMany(where: Prisma.CommentsWhereInput) {
         const data = await this.prisma.comments.findMany({
-            where,
+            where
         });
         return data;
     }
 
     async addComments(data: Prisma.CommentsCreateInput) {
         const response = await this.prisma.comments.create({ data });
+        return response;
+    }
+
+    async delete(where: Prisma.CommentsWhereUniqueInput) {
+        const response = await this.prisma.comments.delete({ where });
         return response;
     }
 }

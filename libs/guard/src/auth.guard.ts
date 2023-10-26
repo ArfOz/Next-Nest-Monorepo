@@ -1,9 +1,10 @@
+import { JwtService } from '@nestjs/jwt';
 import { Reflector } from '@nestjs/core';
 import {
     Injectable,
     CanActivate,
     ExecutionContext,
-    Inject,
+    Inject
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { IncomingHttpHeaders } from 'http';
@@ -11,16 +12,16 @@ import { UnauthorizedException, UnauthorizedExceptionType } from '@exceptions';
 import { isDefined } from 'class-validator';
 import { ConfigType } from '@nestjs/config';
 import generalConfig from '@config/src/general.config';
-
 @Injectable()
 export class AuthGuard implements CanActivate {
     constructor(
         @Inject(generalConfig.KEY)
         private generalCfg: ConfigType<typeof generalConfig>,
         private reflector: Reflector,
+        private jwtService: JwtService
     ) {}
     canActivate(
-        context: ExecutionContext,
+        context: ExecutionContext
     ): boolean | Promise<boolean> | Observable<boolean> {
         let ctx = null;
         let req = null;
@@ -42,12 +43,12 @@ export class AuthGuard implements CanActivate {
         }
         const staticTokenRequired = this.reflector.get<boolean>(
             'staticTokenRequired',
-            context.getHandler(),
+            context.getHandler()
         );
 
         const allowUnauthorizedRequest = this.reflector.get<boolean>(
             'allowUnauthorizedRequest',
-            context.getHandler(),
+            context.getHandler()
         );
 
         return (
@@ -58,10 +59,10 @@ export class AuthGuard implements CanActivate {
 
     private async validateRequest(
         req: any,
-        staticTokenRequired: boolean,
+        staticTokenRequired: boolean
     ): Promise<boolean> {
         const token = this.getBearerToken(
-            req.headers ?? req[Symbol('kHeaders')],
+            req.headers ?? req[Symbol('kHeaders')]
         );
 
         if (staticTokenRequired) {
@@ -69,7 +70,22 @@ export class AuthGuard implements CanActivate {
             return req.hasStaticToken;
         }
 
-        return false;
+        try {
+            const payload = await this.jwtService.verifyAsync(token, {
+                secret: this.generalCfg.jwt_secret_key
+            });
+            // 💡 We're assigning the payload to the request object here
+            // so that we can access it in our route handlers
+            req['user'] = payload;
+        } catch {
+            throw new UnauthorizedException(
+                UnauthorizedExceptionType.NO_AUTHORIZATION_TOKEN,
+                new Error('Token yok!'),
+                500
+            );
+        }
+
+        return true;
     }
 
     private getBearerToken(headers: IncomingHttpHeaders) {
@@ -77,7 +93,7 @@ export class AuthGuard implements CanActivate {
             throw new UnauthorizedException(
                 UnauthorizedExceptionType.NO_AUTHORIZATION_TOKEN,
                 new Error('Token yok!'),
-                500,
+                500
             );
         }
         const auth =

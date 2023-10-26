@@ -1,6 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
+//This database is MONGODB area
 generator client {
   provider = "prisma-client-js"
 }
@@ -24,4 +22,13 @@ model Comments {
   comment       String
   stars         Int
   date          DateTime @default(now())
+  user_id       String
+}
+
+model Users {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  username String
+  password String
+  email    String
+  created  DateTime @default(now())
 }

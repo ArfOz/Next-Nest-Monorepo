@@ -6,6 +6,7 @@ import { DatabaseModule } from '@database';
 import { AuthGuard } from '@guard';
 import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
+import { UserModule } from './user/user.module';
 import generalConfig from '@config/src/general.config';
 
 @Module({
@@ -14,13 +15,14 @@ import generalConfig from '@config/src/general.config';
         DatabaseModule,
         RestaurantModule,
         CommentsModule,
+        UserModule
     ],
     controllers: [],
     providers: [
         {
             provide: APP_GUARD,
-            useClass: AuthGuard,
-        },
-    ],
+            useClass: AuthGuard
+        }
+    ]
 })
 export class AppModule {}
