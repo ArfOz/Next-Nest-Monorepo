@@ -5,7 +5,7 @@ const defaultCity = {
     id: '64f8f470cfdc52d6f006d1e4',
     name: 'Mission Chinese Food',
     lat: '40.713829',
-    lon: '-73.989667',
+    lon: '-73.989667'
 };
 
 async function GetData() {
@@ -14,7 +14,7 @@ async function GetData() {
         data = // Change url for docker
             (
                 await fetch('http://localhost:3300/api/restaurant/getall', {
-                    cache: 'no-cache',
+                    cache: 'no-cache'
                 })
             ).json();
     } catch (error) {
