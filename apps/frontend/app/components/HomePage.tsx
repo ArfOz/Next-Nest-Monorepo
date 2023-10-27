@@ -45,53 +45,53 @@ const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
         setIsOpen(true);
     };
 
-    // const star = AvgCalculator();
-
     return (
-        <div className="App">
-            {!isLoaded ? (
-                <h1>Loading...</h1>
-            ) : (
-                <GoogleMap
-                    mapContainerClassName="map-container"
-                    onLoad={onMapLoad}
-                    onClick={() => setIsOpen(false)}
-                >
-                    {cities.map((city) => (
-                        <Marker
-                            key={city.id}
-                            position={{
-                                lat: parseFloat(city.lat),
-                                lng: parseFloat(city.lon)
-                            }}
-                            onClick={() => {
-                                handleMarkerClick(
-                                    city.id,
-                                    city.lat,
-                                    city.lon,
-                                    city.name
-                                );
-                            }}
-                        >
-                            {isOpen && infoWindowData?.Id === city.id && (
-                                <InfoWindow
-                                    onCloseClick={() => {
-                                        setIsOpen(false);
-                                    }}
-                                >
-                                    <>
-                                        <h3>{infoWindowData?.Name}</h3>
-                                        {/* {AvgCalculator()} */}
-                                        <Link href={`/${city.id}`}>
-                                            Click for more details
-                                        </Link>
-                                    </>
-                                </InfoWindow>
-                            )}
-                        </Marker>
-                    ))}
-                </GoogleMap>
-            )}
+        <div className="min-h-full">
+            <div className="h-screen">
+                {!isLoaded ? (
+                    <h1>Loading...</h1>
+                ) : (
+                    <GoogleMap
+                        mapContainerClassName="map-container"
+                        onLoad={onMapLoad}
+                        onClick={() => setIsOpen(false)}
+                    >
+                        {cities.map((city) => (
+                            <Marker
+                                key={city.id}
+                                position={{
+                                    lat: parseFloat(city.lat),
+                                    lng: parseFloat(city.lon)
+                                }}
+                                onClick={() => {
+                                    handleMarkerClick(
+                                        city.id,
+                                        city.lat,
+                                        city.lon,
+                                        city.name
+                                    );
+                                }}
+                            >
+                                {isOpen && infoWindowData?.Id === city.id && (
+                                    <InfoWindow
+                                        onCloseClick={() => {
+                                            setIsOpen(false);
+                                        }}
+                                    >
+                                        <>
+                                            <h3>{infoWindowData?.Name}</h3>
+                                            {/* {AvgCalculator()} */}
+                                            <Link href={`/${city.id}`}>
+                                                Click for more details
+                                            </Link>
+                                        </>
+                                    </InfoWindow>
+                                )}
+                            </Marker>
+                        ))}
+                    </GoogleMap>
+                )}
+            </div>
         </div>
     );
 };
