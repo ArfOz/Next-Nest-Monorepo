@@ -9,8 +9,8 @@ import { FaLinkedin, FaGithub, FaMedium, FaEye, FaHome } from 'react-icons/fa';
 import { Navigate } from './dtos/navigate.type';
 
 const navigation: Array<Navigate> = [
-    { name: 'HomePage', href: '/' },
-    { name: 'Login', href: '/Login' }
+    // { name: 'HomePage', href: '' },
+    { name: 'Login', href: 'login' }
     // { name: 'photos', href: '/photos' }
 ];
 
@@ -77,6 +77,7 @@ const Navbar = () => {
                                             : undefined
                                     }
                                 >
+                                    {item.name}
                                     {/* {dictionary.navbar[item.name]} */}
                                 </Disclosure.Button>
                             ))}
