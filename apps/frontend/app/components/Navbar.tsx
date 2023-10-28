@@ -3,15 +3,14 @@
 import React, { Fragment } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Disclosure, Menu, Transition } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { FaLinkedin, FaGithub, FaMedium, FaEye, FaHome } from 'react-icons/fa';
+import { Disclosure } from '@headlessui/react';
+import { FaHome } from 'react-icons/fa';
 import { Navigate } from './dtos/navigate.type';
 
 const navigation: Array<Navigate> = [
     // { name: 'HomePage', href: '' },
-    { name: 'Login', href: 'login' }
-    // { name: 'photos', href: '/photos' }
+    { name: 'Login', href: 'login' },
+    { name: 'Signup', href: 'signup' }
 ];
 
 function classNames(...classes: string[]) {
