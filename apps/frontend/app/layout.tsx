@@ -1,4 +1,5 @@
 // import 'tailwindcss/tailwind.css';
+import Navbar from './components/Navbar';
 import './tailwind.css';
 
 export const metadata = {
@@ -13,7 +14,10 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-            <body>{children}</body>
+            <body className="flex flex-grow flex-col h-screen">
+                <Navbar />
+                {children}
+            </body>
         </html>
     );
 }

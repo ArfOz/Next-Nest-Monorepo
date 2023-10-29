@@ -17,7 +17,7 @@ export class UserService {
 
         return await this.userDbService.Create(data);
     }
-    async Signin(username, password) {
-        return await this.authService.SignIn(username, password);
+    async Signin(email, password) {
+        return await this.authService.SignIn(email, password);
     }
 }

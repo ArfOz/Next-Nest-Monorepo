@@ -10,7 +10,6 @@ import { useState } from 'react';
 import '../App.css';
 import { CitiesJsonDto } from '../Dtos';
 import Link from 'next/link';
-import { AvgCalculator } from '@utils';
 
 const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
     const { isLoaded } = useLoadScript({
@@ -45,10 +44,8 @@ const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
         setIsOpen(true);
     };
 
-    // const star = AvgCalculator();
-
     return (
-        <div className="App">
+        <div className="grow">
             {!isLoaded ? (
                 <h1>Loading...</h1>
             ) : (

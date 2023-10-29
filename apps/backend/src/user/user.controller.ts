@@ -16,7 +16,7 @@ export class UserController {
     @AllowUnauthorizedRequest()
     @Post('login')
     async Signin(@Body() data: UserSignInJson) {
-        return await this.userService.Signin(data.username, data.password);
+        return await this.userService.Signin(data.email, data.password);
     }
 
     @Get('profile')
