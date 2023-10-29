@@ -7,5 +7,6 @@ export default registerAs('general', () => ({
     database_url: process.env['DATABASE_URL'],
     static_token: process.env['STATIC_TOKEN'],
     jwt_secret_key: process.env['JWT_SECRET_KEY'],
-    jwt_expired: process.env['JWT_EXPIRES_IN']
+    jwt_access_expired: process.env['JWT_ACCESS_EXPIRES_IN'],
+    jwt_refresh_expired: process.env['JWT_REFRESH_EXPIRES_IN']
 }));

@@ -30,10 +30,18 @@ export class AuthService {
             email: user.email
         };
 
-        return {
-            access_token: await this.jwtService.signAsync(payload, {
-                expiresIn: `${this.generalCfg.jwt_expired!}d`
+        const [accessToken, refreshToken] = await Promise.all([
+            this.jwtService.signAsync(payload, {
+                expiresIn: `${this.generalCfg.jwt_access_expired!}d`
+            }),
+            this.jwtService.signAsync(payload, {
+                expiresIn: `${this.generalCfg.jwt_refresh_expired!}d`
             })
+        ]);
+
+        return {
+            accessToken,
+            refreshToken
         };
     }
 }
