@@ -45,8 +45,6 @@ const Page = () => {
                     password: password
                 };
 
-                console.log('dataaaaaaaaaaaa', data);
-
                 const res = await fetch(
                     'http://localhost:3300/api/user/login',
                     {
@@ -76,7 +74,6 @@ const Page = () => {
                 // Reset form fields
                 setPassword('');
                 setEmail('');
-                console.log('arif', response);
             }
         } catch (error) {
             console.log(error);
