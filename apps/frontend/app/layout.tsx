@@ -1,6 +1,7 @@
 // import 'tailwindcss/tailwind.css';
 import Navbar from './components/Navbar';
 import './tailwind.css';
+import Provider from './Provider';
 
 export const metadata = {
     title: 'Welcome to frontend',
@@ -15,8 +16,10 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className="flex flex-grow flex-col h-screen">
-                <Navbar />
-                {children}
+                <Provider>
+                    <Navbar />
+                    {children}
+                </Provider>
             </body>
         </html>
     );
