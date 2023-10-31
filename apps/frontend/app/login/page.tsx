@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { LoginData } from './Dtos/Login.dto';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 const Page = () => {
     //   Form validation
@@ -40,23 +41,12 @@ const Page = () => {
             const isValidForm = handleValidation();
             if (isValidForm) {
                 setButtonText('Sending');
-                const data: LoginData = {
-                    email: email,
-                    password: password
-                };
 
-                const res = await fetch(
-                    'http://localhost:3300/api/user/login',
-                    {
-                        body: JSON.stringify(data),
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        method: 'POST'
-                    }
-                );
+                const res = await signIn('credentials', { email, password });
 
-                const response = await res.json();
+                console.log('selam', res);
+
+                // const response = await res.json();
                 // if (response.Data.Error) {
                 //     setShowSuccessMessage(false);
                 //     setShowFailureMessage(true);
