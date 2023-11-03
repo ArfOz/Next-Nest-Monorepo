@@ -1,7 +1,7 @@
 // import 'tailwindcss/tailwind.css';
+import { NextAuthProvider } from './Provider';
 import Navbar from './components/Navbar';
 import './tailwind.css';
-import Provider from './Provider';
 
 export const metadata = {
     title: 'Welcome to frontend',
@@ -16,10 +16,10 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className="flex flex-grow flex-col h-screen">
-                <Provider>
+                <NextAuthProvider>
                     <Navbar />
                     {children}
-                </Provider>
+                </NextAuthProvider>
             </body>
         </html>
     );
