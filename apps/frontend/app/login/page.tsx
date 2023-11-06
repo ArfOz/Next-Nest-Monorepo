@@ -2,7 +2,15 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { LoginData } from './Dtos/Login.dto';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+
+type Props = {
+    className?: string;
+    callbackUrl?: string;
+    error?: string;
+};
 
 const Page = () => {
     //   Form validation
@@ -11,10 +19,10 @@ const Page = () => {
     const [password, setPassword] = useState('');
     const [buttonText, setButtonText] = useState('Login');
 
-    const [errors, setErrors] = useState({
-        email: '',
-        password: ''
-    });
+    const searchParams = useSearchParams();
+    const router = useRouter();
+
+    const callbackUrl = searchParams.get('callbackUrl') || '/profile';
 
     const handleValidation = () => {
         const tempErrors: any = {};
@@ -30,45 +38,64 @@ const Page = () => {
             isValid = false;
         }
 
-        setErrors({ ...tempErrors });
-        console.log('errors', errors);
+        // setErrors({ ...tempErrors });
+        // console.log('errors', errors);
         return isValid;
     };
 
-    const handleSubmit = async (e: { preventDefault: () => void }) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
-        try {
-            const isValidForm = handleValidation();
-            if (isValidForm) {
-                setButtonText('Sending');
+        const res = await signIn('credentials', {
+            redirect: false,
+            email: email,
+            password: password
+        });
 
-                const res = await signIn('credentials', { email, password });
-
-                console.log('selam', res);
-
-                // const response = await res.json();
-                // if (response.Data.Error) {
-                //     setShowSuccessMessage(false);
-                //     setShowFailureMessage(true);
-                //     setButtonText('Send');
-                //     // Reset form fields
-                //     setFullname('');
-                //     setEmail('');
-                //     setMessage('');
-                //     setSubject('');
-                //     return;
-                // }
-                // setShowSuccessMessage(true);
-                // setShowFailureMessage(false);
-                setButtonText('Send');
-                // Reset form fields
-                setPassword('');
-                setEmail('');
-            }
-        } catch (error) {
-            console.log(error);
+        console.log('res geldi', res);
+        if (!res?.error) {
+            router.push('http://localhost:3000/profile');
         }
     };
+
+    // const handleSubmit = async (e: { preventDefault: () => void }) => {
+    //     e.preventDefault();
+    //     try {
+    //         const isValidForm = handleValidation();
+    //         if (isValidForm) {
+    //             setButtonText('Sending');
+
+    //             const res = await signIn('credentials', {
+    //                 email,
+    //                 password,
+    //                 redirect: false
+    //             });
+    //             // location.reload();
+
+    //             console.log('selam', res);
+
+    //             // const response = await res.json();
+    //             // if (response.Data.Error) {
+    //             //     setShowSuccessMessage(false);
+    //             //     setShowFailureMessage(true);
+    //             //     setButtonText('Send');
+    //             //     // Reset form fields
+    //             //     setFullname('');
+    //             //     setEmail('');
+    //             //     setMessage('');
+    //             //     setSubject('');
+    //             //     return;
+    //             // }
+    //             // setShowSuccessMessage(true);
+    //             // setShowFailureMessage(false);
+    //             setButtonText('Send');
+    //             // Reset form fields
+    //             setPassword('');
+    //             setEmail('');
+    //         }
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
 
     return (
         <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">

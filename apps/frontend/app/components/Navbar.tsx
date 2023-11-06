@@ -10,7 +10,8 @@ import { Navigate } from './dtos/navigate.type';
 const navigation: Array<Navigate> = [
     // { name: 'HomePage', href: '' },
     { name: 'Login', href: 'login' },
-    { name: 'Signup', href: 'signup' }
+    { name: 'Signup', href: 'signup' },
+    { name: 'Profile', href: 'profile' }
 ];
 
 function classNames(...classes: string[]) {

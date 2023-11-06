@@ -5,7 +5,7 @@ export default async function Profile() {
     const { data: session } = useSession();
 
     const user = session?.user;
-    console.log('user', user);
+    console.log('profile sessionssssssssssssssssssssssssssssssss', session);
 
     return (
         <>
