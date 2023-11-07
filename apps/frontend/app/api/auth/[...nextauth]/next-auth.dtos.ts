@@ -2,14 +2,12 @@ import NextAuth from 'next-auth';
 
 declare module 'next-auth' {
     interface Session {
-        user: {
-            email: string;
-            username: string;
-            backendTokens: {
-                accessToken: string;
-                refreshToken: string;
-                expiresIn?: number;
-            };
+        email: string;
+        username: string;
+        backendTokens: {
+            accessToken: string;
+            refreshToken: string;
+            expiresIn?: number;
         };
     }
     interface User {
@@ -25,14 +23,12 @@ declare module 'next-auth' {
 
 declare module 'next-auth/jwt' {
     interface JWT {
-        user: {
-            email: string;
-            username: string;
-            backendTokens: {
-                accessToken: string;
-                refreshToken: string;
-                expiresIn?: number;
-            };
+        email: string;
+        username: string;
+        backendTokens: {
+            accessToken: string;
+            refreshToken: string;
+            expiresIn?: number;
         };
     }
 }

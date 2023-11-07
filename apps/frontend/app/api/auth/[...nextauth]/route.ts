@@ -167,7 +167,10 @@ const handler = NextAuth({
                     console.log('responseeeeeeeeeeeeeeeeee', response);
                     return {
                         ...response.user,
-                        backendTokens: { accessToken: response.accessToken }
+                        backendTokens: {
+                            accessToken: response.accessToken,
+                            refreshToken: response.refreshToken
+                        }
                     };
                 } catch (e) {
                     console.error(e);
@@ -186,8 +189,10 @@ const handler = NextAuth({
             if (user) {
                 return {
                     ...token,
-                    accessToken: user.backendTokens.accessToken,
-                    refreshToken: user.backendTokens.refreshToken
+                    backendTokens: {
+                        accessToken: user.backendTokens.accessToken,
+                        refreshToken: user.backendTokens.refreshToken
+                    }
                 };
             }
 
@@ -196,14 +201,15 @@ const handler = NextAuth({
         },
 
         //  The session receives the token from JWT
-        session: async (data) => {
-            console.log('session giris', data);
-            // session.backendTokens.accessToken = token.backendTokens.accessToken;
-            // // session.backendTokens.refreshToken =
-            // // token.backendTokens.refreshToken;
+        session: async ({ session, token }) => {
+            console.log('session giris', session, 'token baslar', token);
+            session.backendTokens = {
+                accessToken: token.backendTokens.accessToken,
+                refreshToken: token.backendTokens.refreshToken
+            };
             // session.user = token.user;
-            // console.log('seesion cikis', session);
-            return data;
+            console.log('seesion cikis', session);
+            return session;
         }
     }
 });
