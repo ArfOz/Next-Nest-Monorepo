@@ -126,6 +126,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { ResponseJsonDto } from './response.dto';
 
 const handler = NextAuth({
+    session: { strategy: 'jwt' },
     providers: [
         CredentialsProvider({
             name: 'Credentials',
@@ -139,7 +140,7 @@ const handler = NextAuth({
                 password: { label: 'Password', type: 'password' }
             },
 
-            async authorize(credentials, req) {
+            async authorize(credentials): Promise<any> {
                 console.log('authoriye ici', credentials);
                 if (!credentials?.email || !credentials?.password) return null;
                 try {
@@ -207,6 +208,7 @@ const handler = NextAuth({
                 accessToken: token.backendTokens.accessToken,
                 refreshToken: token.backendTokens.refreshToken
             };
+            // session.expires =
             // session.user = token.user;
             console.log('seesion cikis', session);
             return session;
