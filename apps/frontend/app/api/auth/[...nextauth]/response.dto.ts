@@ -8,3 +8,14 @@ export class ResponseJsonDto {
     status: number;
     statusText: string;
 }
+
+export class JWTData {
+    user: {
+        username: string;
+        email: string;
+    };
+    token: {
+        accessToken: string;
+        refreshToken: string;
+    };
+}

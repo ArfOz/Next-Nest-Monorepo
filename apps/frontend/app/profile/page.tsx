@@ -1,11 +1,30 @@
 'use client';
 import { useSession } from 'next-auth/react';
 
-export default async function Profile() {
-    const { data: session } = useSession();
+export default function Profile() {
+    const { data: session, status, update } = useSession();
+
+    console.log('statussssssss', status, 'dataaaaaaaaa', session);
+
+    // const session = await getSession();
+
+    // useEffect(() => {
+    //     const visibilityHandler = () =>
+    //         document.visibilityState === 'visible' && update();
+    //     window.addEventListener('visibilitychange', visibilityHandler, false);
+    //     return () =>
+    //         window.removeEventListener(
+    //             'visibilitychange',
+    //             visibilityHandler,
+    //             false
+    //         );
+    // }, [update]);
 
     const user = session?.user;
-    console.log('profile sessionssssssssssssssssssssssssssssssss', session);
+    console.log(
+        'profile sessionssssssssssssssssssssssssssssssss',
+        session?.user
+    );
 
     return (
         <>
@@ -21,9 +40,9 @@ export default async function Profile() {
                             <div className="flex items-center gap-8">
                                 <div></div>
                                 <div className="mt-8">
-                                    <p className="mb-3">
+                                    {/* <p className="mb-3">
                                         Name: {user.username}
-                                    </p>
+                                    </p> */}
                                     <p className="mb-3">Email: {user.email}</p>
                                 </div>
                             </div>
