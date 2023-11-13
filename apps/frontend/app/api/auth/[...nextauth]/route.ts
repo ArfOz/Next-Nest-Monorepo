@@ -1,8 +1,8 @@
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { ResponseJsonDto, JWTData } from './response.dto';
+import { ResponseJsonDto } from './response.dto';
 import { JWT } from 'next-auth/jwt';
-import { Session, Data } from 'next-auth';
+import { Session, Data, User } from 'next-auth';
 
 const handler = NextAuth({
     session: { strategy: 'jwt' },
@@ -63,19 +63,19 @@ const handler = NextAuth({
         signIn: '/login'
     },
     callbacks: {
-        async jwt({ token, data }: { token: JWT; data?: Data }) {
+        async jwt({ token, user }: { token: JWT; user?: any }) {
             // user is only available the first time a user signs in authorized
-            console.log('jwt entry', token, 'userrrrrrrrrrrrrrrr', data);
+            console.log('jwt entry', token, 'userrrrrrrrrrrrrrrr', user);
             // if (account?.accessToken) {
             //     token.accessToken = account.backendTokens.accessToken;
             // }
 
             // token.accessToken=user.
-            if (data) {
-                token.accessToken = data.token.accessToken;
-                token.refreshToken = data.token.refreshToken;
-                token.name = data.user.username;
-                token.email = data.user.email;
+            if (user) {
+                token.accessToken = user.token.accessToken;
+                token.refreshToken = user.token.refreshToken;
+                token.name = user.user.username;
+                token.email = user.user.email;
                 return token;
             }
 
@@ -85,7 +85,7 @@ const handler = NextAuth({
 
         //  The session receives the token from JWT
         async session({ session, token }: { session: Session; token: JWT }) {
-            console.log('session', session, 'tokennnnnnnnnnnnnn', token);
+            console.log('session giris', session, 'tokennnnnnnnnnnnnn', token);
             if (token && session.user) {
                 // session.user.username = token.name;
                 // session.user.email = token.email;

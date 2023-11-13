@@ -4,7 +4,10 @@ import { useSession } from 'next-auth/react';
 export default function Profile() {
     const { data: session, status, update } = useSession();
 
-    console.log('statussssssss', status, 'dataaaaaaaaa', session);
+    console.log('profilepage', session);
+    // const { data: session, status, update } = useSession();
+
+    // console.log('statussssssss Profile', session);
 
     // const session = await getSession();
 
@@ -21,10 +24,10 @@ export default function Profile() {
     // }, [update]);
 
     const user = session?.user;
-    console.log(
-        'profile sessionssssssssssssssssssssssssssssssss',
-        session?.user
-    );
+    // console.log(
+    //     'profile sessionssssssssssssssssssssssssssssssss',
+    //     session?.user
+    // );
 
     return (
         <>
@@ -40,10 +43,10 @@ export default function Profile() {
                             <div className="flex items-center gap-8">
                                 <div></div>
                                 <div className="mt-8">
-                                    {/* <p className="mb-3">
-                                        Name: {user.username}
-                                    </p> */}
-                                    <p className="mb-3">Email: {user.email}</p>
+                                    <p className="mb-3">
+                                        Name: {user?.username}
+                                    </p>
+                                    <p className="mb-3">Email: {user?.email}</p>
                                 </div>
                             </div>
                         )}

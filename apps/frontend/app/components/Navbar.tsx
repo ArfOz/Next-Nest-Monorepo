@@ -7,6 +7,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { FaHome } from 'react-icons/fa';
 import { Navigate } from './dtos/navigate.type';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useSession } from 'next-auth/react';
 
 const navigation: Array<Navigate> = [
     // { name: 'HomePage', href: '' },
@@ -21,6 +22,9 @@ function classNames(...classes: string[]) {
 
 const Navbar = () => {
     const pathname = usePathname();
+    const { data: session, status, update } = useSession();
+    //
+    console.log('dataaaaaa navbar', session);
 
     return (
         <Disclosure as="nav" className="bg-slate-400 shadow-sm">
@@ -33,30 +37,47 @@ const Navbar = () => {
                                     <Link href={`/`}>
                                         <FaHome className="hover:text-gray-800 " />
                                     </Link>
+                                    {session?.user ? (
+                                        <>
+                                            <p className="text-white">
+                                                Signed in as:{' '}
+                                                {session?.user?.email}
+                                            </p>
+                                            <button className="text-white">
+                                                Sign Out
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <button className="text-white">
+                                            Sign In
+                                        </button>
+                                    )}
                                 </div>
                             </div>
-                            <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
-                                {navigation.map((item) => (
-                                    <a
-                                        key={item.name}
-                                        href={`/${item.href}`}
-                                        className={classNames(
-                                            pathname === item.href
-                                                ? 'border-slate-500 text-gray-900'
-                                                : 'border-transparent dark:text-gray-800 hover:text-gray-500 hover:border-gray-300',
-                                            'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
-                                        )}
-                                        aria-current={
-                                            pathname === item.href
-                                                ? 'page'
-                                                : undefined
-                                        }
-                                    >
-                                        {item.name}
-                                    </a>
-                                ))}
-                            </div>
+
                             <div className="flex">
+                                <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
+                                    {navigation.map((item) => (
+                                        <a
+                                            key={item.name}
+                                            href={`/${item.href}`}
+                                            className={classNames(
+                                                pathname === item.href
+                                                    ? 'border-slate-500 text-gray-900'
+                                                    : 'border-transparent dark:text-gray-800 hover:text-gray-500 hover:border-gray-300',
+                                                'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
+                                            )}
+                                            aria-current={
+                                                pathname === item.href
+                                                    ? 'page'
+                                                    : undefined
+                                            }
+                                        >
+                                            {item.name}
+                                        </a>
+                                    ))}
+                                </div>
+
                                 <div className="hidden sm:ml-6 sm:flex sm:items-center">
                                     <Menu as="div" className="relative ml-3">
                                         <Transition
