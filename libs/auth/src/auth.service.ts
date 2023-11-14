@@ -39,9 +39,28 @@ export class AuthService {
             })
         ]);
 
+        const expiresAccessToken = new Date(
+            Date.now() +
+                parseInt(this.generalCfg.jwt_access_expired, 10) * 60 * 1000
+        ).getTime();
+
+        const expiresRefreshToken = new Date(
+            Date.now() +
+                parseInt(this.generalCfg.jwt_refresh_expired, 10) *
+                    3600 *
+                    1000 *
+                    24
+        ).getTime();
+
         return {
             accessToken,
-            refreshToken
+            refreshToken,
+            expiresAccessToken,
+            expiresRefreshToken,
+            user: {
+                username: user.username,
+                email: user.email
+            }
         };
     }
 }

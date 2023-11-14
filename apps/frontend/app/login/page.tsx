@@ -2,6 +2,15 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { LoginData } from './Dtos/Login.dto';
+import { signIn } from 'next-auth/react';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+
+type Props = {
+    className?: string;
+    callbackUrl?: string;
+    error?: string;
+};
 
 const Page = () => {
     //   Form validation
@@ -10,10 +19,16 @@ const Page = () => {
     const [password, setPassword] = useState('');
     const [buttonText, setButtonText] = useState('Login');
 
+    const searchParams = useSearchParams();
+    const router = useRouter();
     const [errors, setErrors] = useState({
         email: '',
         password: ''
     });
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [showFailureMessage, setShowFailureMessage] = useState(false);
+
+    const callbackUrl = searchParams.get('callbackUrl') || '/profile';
 
     const handleValidation = () => {
         const tempErrors: any = {};
@@ -34,51 +49,84 @@ const Page = () => {
         return isValid;
     };
 
-    const handleSubmit = async (e: { preventDefault: () => void }) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
         try {
             const isValidForm = handleValidation();
+
             if (isValidForm) {
                 setButtonText('Sending');
-                const data: LoginData = {
+
+                const res = await signIn('credentials', {
+                    redirect: false,
                     email: email,
                     password: password
-                };
-
-                const res = await fetch(
-                    'http://localhost:3300/api/user/login',
-                    {
-                        body: JSON.stringify(data),
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        method: 'POST'
-                    }
-                );
-
-                const response = await res.json();
-                // if (response.Data.Error) {
-                //     setShowSuccessMessage(false);
-                //     setShowFailureMessage(true);
-                //     setButtonText('Send');
-                //     // Reset form fields
-                //     setFullname('');
-                //     setEmail('');
-                //     setMessage('');
-                //     setSubject('');
-                //     return;
-                // }
-                // setShowSuccessMessage(true);
-                // setShowFailureMessage(false);
+                });
+                console.log('res geldi login page', res);
+                if (!res?.error) {
+                    router.push('http://localhost:3000/profile');
+                }
+                if (res?.error) {
+                    console.log('burada', res.error);
+                    setShowSuccessMessage(false);
+                    setShowFailureMessage(true);
+                    setButtonText('Send');
+                    // Reset form fields
+                    setEmail('');
+                    setPassword('');
+                    return;
+                }
+                setShowSuccessMessage(true);
+                setShowFailureMessage(false);
                 setButtonText('Send');
                 // Reset form fields
-                setPassword('');
                 setEmail('');
+                setPassword('');
             }
         } catch (error) {
-            console.log(error);
+            console.log('login catch block', error);
         }
     };
+
+    // const handleSubmit = async (e: { preventDefault: () => void }) => {
+    //     e.preventDefault();
+    //     try {
+    //         const isValidForm = handleValidation();
+    //         if (isValidForm) {
+    //             setButtonText('Sending');
+
+    //             const res = await signIn('credentials', {
+    //                 email,
+    //                 password,
+    //                 redirect: false
+    //             });
+    //             // location.reload();
+
+    //             console.log('selam', res);
+
+    //             // const response = await res.json();
+    //             // if (response.Data.Error) {
+    //             //     setShowSuccessMessage(false);
+    //             //     setShowFailureMessage(true);
+    //             //     setButtonText('Send');
+    //             //     // Reset form fields
+    //             //     setFullname('');
+    //             //     setEmail('');
+    //             //     setMessage('');
+    //             //     setSubject('');
+    //             //     return;
+    //             // }
+    //             // setShowSuccessMessage(true);
+    //             // setShowFailureMessage(false);
+    //             setButtonText('Send');
+    //             // Reset form fields
+    //             setPassword('');
+    //             setEmail('');
+    //         }
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
 
     return (
         <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
