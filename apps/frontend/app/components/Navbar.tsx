@@ -8,13 +8,7 @@ import { FaHome } from 'react-icons/fa';
 import { Navigate } from './dtos/navigate.type';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useSession } from 'next-auth/react';
-
-const navigation: Array<Navigate> = [
-    // { name: 'HomePage', href: '' },
-    { name: 'Login', href: 'login' },
-    { name: 'Signup', href: 'signup' },
-    { name: 'Profile', href: 'profile' }
-];
+import SkeletonLoader from './Skeleton/SkeletonLoader';
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ');
@@ -24,7 +18,23 @@ const Navbar = () => {
     const pathname = usePathname();
     const { data: session, status, update } = useSession();
     //
-    console.log('dataaaaaa navbar', session);
+    console.log('dataaaaaa navbar', status);
+
+    const navigation: Array<Navigate> = [];
+    if (status == 'authenticated') {
+        navigation.push(
+            {
+                name: 'Profile',
+                href: 'profile'
+            },
+            {
+                name: 'Logout',
+                href: 'logout'
+            }
+        );
+    } else {
+        navigation.push({ name: 'Login', href: 'login' });
+    }
 
     return (
         <Disclosure as="nav" className="bg-slate-400 shadow-sm">
@@ -37,45 +47,36 @@ const Navbar = () => {
                                     <Link href={`/`}>
                                         <FaHome className="hover:text-gray-800 " />
                                     </Link>
-                                    {session?.user ? (
-                                        <>
-                                            <p className="text-white">
-                                                Signed in as:{' '}
-                                                {session?.user?.email}
-                                            </p>
-                                            <button className="text-white">
-                                                Sign Out
-                                            </button>
-                                        </>
-                                    ) : (
-                                        <button className="text-white">
-                                            Sign In
-                                        </button>
-                                    )}
                                 </div>
                             </div>
 
                             <div className="flex">
                                 <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
-                                    {navigation.map((item) => (
-                                        <a
-                                            key={item.name}
-                                            href={`/${item.href}`}
-                                            className={classNames(
-                                                pathname === item.href
-                                                    ? 'border-slate-500 text-gray-900'
-                                                    : 'border-transparent dark:text-gray-800 hover:text-gray-500 hover:border-gray-300',
-                                                'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
-                                            )}
-                                            aria-current={
-                                                pathname === item.href
-                                                    ? 'page'
-                                                    : undefined
-                                            }
-                                        >
-                                            {item.name}
-                                        </a>
-                                    ))}
+                                    {status === 'loading' ? (
+                                        <SkeletonLoader className="inline-flex flex-row-reverse items-center w-48 px-1 pt-1">
+                                            <div className=" bg-slate-600 items-center rounded-md h-6 w-9/12 px-1 pt-1"></div>
+                                        </SkeletonLoader>
+                                    ) : (
+                                        navigation.map((item) => (
+                                            <a
+                                                key={item.name}
+                                                href={`/${item.href}`}
+                                                className={classNames(
+                                                    pathname === item.href
+                                                        ? 'border-slate-500 text-gray-900'
+                                                        : 'border-transparent dark:text-gray-800 hover:text-gray-500 hover:border-gray-300',
+                                                    'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
+                                                )}
+                                                aria-current={
+                                                    pathname === item.href
+                                                        ? 'page'
+                                                        : undefined
+                                                }
+                                            >
+                                                {item.name}
+                                            </a>
+                                        ))
+                                    )}
                                 </div>
 
                                 <div className="hidden sm:ml-6 sm:flex sm:items-center">

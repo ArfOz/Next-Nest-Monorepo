@@ -1,12 +1,16 @@
 export class ResponseJsonDto {
-    accessToken: string;
-    refreshToken: string;
-    user: {
+    accessToken?: string;
+    refreshToken?: string;
+    user?: {
         username: string;
         email: string;
     };
-    status: number;
-    statusText: string;
+    status?: number;
+    statusText?: string;
+
+    Error?: string;
+    Details?: string;
+    Code?: number;
 }
 
 export class JWTData {

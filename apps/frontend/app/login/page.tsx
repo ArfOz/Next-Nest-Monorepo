@@ -21,6 +21,12 @@ const Page = () => {
 
     const searchParams = useSearchParams();
     const router = useRouter();
+    const [errors, setErrors] = useState({
+        email: '',
+        password: ''
+    });
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [showFailureMessage, setShowFailureMessage] = useState(false);
 
     const callbackUrl = searchParams.get('callbackUrl') || '/profile';
 
@@ -38,22 +44,47 @@ const Page = () => {
             isValid = false;
         }
 
-        // setErrors({ ...tempErrors });
-        // console.log('errors', errors);
+        setErrors({ ...tempErrors });
+        console.log('errors', errors);
         return isValid;
     };
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        const res = await signIn('credentials', {
-            redirect: false,
-            email: email,
-            password: password
-        });
+        try {
+            const isValidForm = handleValidation();
 
-        console.log('res geldi', res);
-        if (!res?.error) {
-            router.push('http://localhost:3000/profile');
+            if (isValidForm) {
+                setButtonText('Sending');
+
+                const res = await signIn('credentials', {
+                    redirect: false,
+                    email: email,
+                    password: password
+                });
+                console.log('res geldi login page', res);
+                if (!res?.error) {
+                    router.push('http://localhost:3000/profile');
+                }
+                if (res?.error) {
+                    console.log('burada', res.error);
+                    setShowSuccessMessage(false);
+                    setShowFailureMessage(true);
+                    setButtonText('Send');
+                    // Reset form fields
+                    setEmail('');
+                    setPassword('');
+                    return;
+                }
+                setShowSuccessMessage(true);
+                setShowFailureMessage(false);
+                setButtonText('Send');
+                // Reset form fields
+                setEmail('');
+                setPassword('');
+            }
+        } catch (error) {
+            console.log('login catch block', error);
         }
     };
 

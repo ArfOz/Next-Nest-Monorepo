@@ -1,3 +1,4 @@
+import { Stack } from '@mui/material';
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { ResponseJsonDto } from './response.dto';
@@ -5,6 +6,7 @@ import { JWT } from 'next-auth/jwt';
 import { Session, Data, User } from 'next-auth';
 
 const handler = NextAuth({
+    secret: 'LlKq6ZtYbr+hTC073mAmAh9/h2HwMfsFo4hrfCx5mLg=',
     session: { strategy: 'jwt' },
     providers: [
         CredentialsProvider({
@@ -37,24 +39,33 @@ const handler = NextAuth({
                             }
                         }
                     );
+                    const response: ResponseJsonDto = await res.json();
+                    console.log('responsefull', response);
 
                     if (res.status == 401) {
-                        console.log(res.statusText);
+                        console.log('res error', response.Details);
 
-                        throw false;
+                        throw new Error(JSON.stringify(response));
                     }
-                    const response: ResponseJsonDto = await res.json();
+
                     console.log('responseeeeeeeeeeeeeeeeee', response);
-                    return {
-                        user: response.user,
-                        token: {
-                            refreshToken: response.accessToken,
-                            accessToken: response.refreshToken
-                        }
-                    };
+                    if (res.status == 201) {
+                        return {
+                            user: response.user,
+                            token: {
+                                refreshToken: response.accessToken,
+                                accessToken: response.refreshToken
+                            }
+                        };
+                    }
                 } catch (e) {
-                    console.error(e);
-                    throw null;
+                    console.error('next auth credentials', e);
+                    throw new Error(
+                        JSON.stringify({
+                            errors: e,
+                            status: false
+                        })
+                    );
                 }
             }
         })
@@ -93,9 +104,10 @@ const handler = NextAuth({
                 session.accessToken = token.accessToken;
                 session.refreshToken = token.refreshToken;
                 session.user.name = token.name;
+                session.expires = '1701234660';
             }
 
-            console.log('sessin cikis', session, Math.floor(Date.now() / 1000));
+            console.log('sessin cikis', session);
 
             return session;
         }

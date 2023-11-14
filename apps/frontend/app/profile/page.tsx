@@ -43,10 +43,7 @@ export default function Profile() {
                             <div className="flex items-center gap-8">
                                 <div></div>
                                 <div className="mt-8">
-                                    <p className="mb-3">
-                                        Name: {user?.username}
-                                    </p>
-                                    <p className="mb-3">Email: {user?.email}</p>
+                                    {JSON.stringify(session.user)}
                                 </div>
                             </div>
                         )}
