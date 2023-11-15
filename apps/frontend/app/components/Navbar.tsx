@@ -62,7 +62,11 @@ const Navbar = () => {
                                                 key={item.name}
                                                 onClick={
                                                     item.name == 'Logout'
-                                                        ? () => signOut()
+                                                        ? () =>
+                                                              signOut({
+                                                                  callbackUrl:
+                                                                      'http://localhost:3000/'
+                                                              })
                                                         : undefined
                                                 }
                                                 href={`/${item.href}`}
