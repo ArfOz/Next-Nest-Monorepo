@@ -50,13 +50,7 @@ const handler = NextAuth({
 
                     console.log('responseeeeeeeeeeeeeeeeee', response);
                     if (res.status == 201) {
-                        return {
-                            user: response.user,
-                            token: {
-                                refreshToken: response.accessToken,
-                                accessToken: response.refreshToken
-                            }
-                        };
+                        return response;
                     }
                 } catch (e) {
                     console.error('next auth credentials', e);
@@ -83,10 +77,13 @@ const handler = NextAuth({
 
             // token.accessToken=user.
             if (user) {
-                token.accessToken = user.token.accessToken;
-                token.refreshToken = user.token.refreshToken;
+                token.accessToken = user.accessToken;
+                token.refreshToken = user.refreshToken;
                 token.name = user.user.username;
                 token.email = user.user.email;
+                token.accessTokenExpires = user.expiresAccessToken;
+                token.refreshTokenExpires = user.expiresRefreshToken;
+
                 return token;
             }
 
@@ -100,11 +97,11 @@ const handler = NextAuth({
             if (token && session.user) {
                 // session.user.username = token.name;
                 // session.user.email = token.email;
-                session.accessTokenExpires = 1701234660;
+                session.accessTokenExpires = token.accessTokenExpires;
                 session.accessToken = token.accessToken;
                 session.refreshToken = token.refreshToken;
                 session.user.name = token.name;
-                session.expires = '1701234660';
+                session.refreshTokenExpires = token.refreshTokenExpires;
             }
 
             console.log('sessin cikis', session);

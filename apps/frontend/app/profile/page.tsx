@@ -1,10 +1,16 @@
 'use client';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export default function Profile() {
     const { data: session, status, update } = useSession();
+    const router = useRouter();
 
-    console.log('profilepage', session);
+    console.log('profilepage', session, status);
+    // if (!session?.user) {
+    //     return router.push('/login');
+    // }
+
     // const { data: session, status, update } = useSession();
 
     // console.log('statussssssss Profile', session);
