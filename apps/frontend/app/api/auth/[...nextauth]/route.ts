@@ -106,7 +106,7 @@ const handler = NextAuth({
 
             console.log('sessin cikis', session);
 
-            return session;
+            return { ...session };
         }
     }
 });
