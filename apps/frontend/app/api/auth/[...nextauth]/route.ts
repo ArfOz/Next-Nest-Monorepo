@@ -88,7 +88,7 @@ const handler = NextAuth({
             }
 
             console.log('jwt cikis', token);
-            return token;
+            return { ...token };
         },
 
         //  The session receives the token from JWT
@@ -97,7 +97,7 @@ const handler = NextAuth({
             if (token && session.user) {
                 // session.user.username = token.name;
                 // session.user.email = token.email;
-                session.accessTokenExpires = token.accessTokenExpires;
+                session.accessTokenExpires = token?.accessTokenExpires;
                 session.accessToken = token.accessToken;
                 session.refreshToken = token.refreshToken;
                 session.user.name = token.name;
