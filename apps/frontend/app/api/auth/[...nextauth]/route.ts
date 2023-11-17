@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { ResponseJsonDto } from './response.dto';
@@ -71,11 +70,6 @@ const handler = NextAuth({
         async jwt({ token, user }: { token: JWT; user?: any }) {
             // user is only available the first time a user signs in authorized
             console.log('jwt entry', token, 'userrrrrrrrrrrrrrrr', user);
-            // if (account?.accessToken) {
-            //     token.accessToken = account.backendTokens.accessToken;
-            // }
-
-            // token.accessToken=user.
             if (user) {
                 token.accessToken = user.accessToken;
                 token.refreshToken = user.refreshToken;

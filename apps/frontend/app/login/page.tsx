@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { LoginData } from './Dtos/Login.dto';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 
@@ -15,12 +15,18 @@ type Props = {
 const Page = () => {
     //   Form validation
 
+    const { data: session, status, update } = useSession();
+
+    const router = useRouter();
+    if (session) {
+        router.push('/profile');
+    }
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [buttonText, setButtonText] = useState('Login');
 
     const searchParams = useSearchParams();
-    const router = useRouter();
     const [errors, setErrors] = useState({
         email: '',
         password: ''
