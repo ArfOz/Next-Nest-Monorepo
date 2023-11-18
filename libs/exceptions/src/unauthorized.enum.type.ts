@@ -9,3 +9,7 @@ export enum ForbiddenExceptionType {
     FORBIDDEN = 'FORBIDDEN',
     EMAIL_NOT_VERIFIED = 'EMAIL_NOT_VERIFIED'
 }
+
+export enum UserExceptionType {
+    USER_ALREADY_EXIST = 'USER_ALREADY_EXIST'
+}
