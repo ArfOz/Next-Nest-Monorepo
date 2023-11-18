@@ -36,29 +36,5 @@ export default function Profile() {
         );
     }
 
-    // const { data: session, status, update } = useSession();
-
-    // console.log('statussssssss Profile', session);
-
-    // const session = await getSession();
-
-    // useEffect(() => {
-    //     const visibilityHandler = () =>
-    //         document.visibilityState === 'visible' && update();
-    //     window.addEventListener('visibilitychange', visibilityHandler, false);
-    //     return () =>
-    //         window.removeEventListener(
-    //             'visibilitychange',
-    //             visibilityHandler,
-    //             false
-    //         );
-    // }, [update]);
-
-    // const user = session?.user;
-    // console.log(
-    //     'profile sessionssssssssssssssssssssssssssssssss',
-    //     session?.user
-    // );
-
     return router.push('/login');
 }

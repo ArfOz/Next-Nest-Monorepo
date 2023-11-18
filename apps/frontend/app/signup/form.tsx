@@ -5,37 +5,93 @@ import { ChangeEvent, useState } from 'react';
 
 export const RegisterForm = () => {
     const [loading, setLoading] = useState(false);
+    const [buttonText, setButtonText] = useState('Register');
+
     const [formValues, setFormValues] = useState({
         username: '',
-        email: '',
-        password: ''
+        password: '',
+        email: ''
     });
-    const [error, setError] = useState('');
+    const [errors, setErrors] = useState({
+        email: '',
+        password: '',
+        username: ''
+    });
+
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [showFailureMessage, setShowFailureMessage] = useState(false);
+
+    const handleValidation = () => {
+        const tempErrors: any = {};
+        let isValid = true;
+
+        if (formValues.email.length <= 0) {
+            tempErrors['email'] = true;
+            isValid = false;
+        }
+
+        if (formValues.password.length <= 0) {
+            tempErrors['password'] = true;
+            isValid = false;
+        }
+        if (formValues.username.length <= 10) {
+            tempErrors['username'] = true;
+            isValid = false;
+        }
+
+        setErrors({ ...tempErrors });
+        console.log('errors', errors);
+        return isValid;
+    };
 
     const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setLoading(true);
-        setFormValues({ username: '', email: '', password: '' });
+        // setLoading(true);
+
+        const isValidForm = handleValidation();
+        console.log('formValues', formValues, 'isvaliddd', isValidForm);
 
         try {
-            const res = await fetch('http://localhost:3300/api/user/register', {
-                method: 'POST',
-                body: JSON.stringify(formValues),
-                headers: {
-                    'Content-Type': 'application/json'
+            if (isValidForm) {
+                setButtonText('Sending');
+
+                const res = await fetch(
+                    'http://localhost:3300/api/user/register',
+                    {
+                        method: 'POST',
+                        body: JSON.stringify(formValues),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
+                const response = await res.json();
+
+                console.log('response signin page', response);
+
+                setLoading(false);
+                if (response?.error) {
+                    console.log('burada', response.error);
+                    setShowSuccessMessage(false);
+                    setShowFailureMessage(true);
+                    // Reset form fields
+                    setFormValues({ username: '', email: '', password: '' });
+
+                    return;
                 }
-            });
 
-            setLoading(false);
-            if (!res.ok) {
-                setError((await res.json()).message);
-                return;
+                setShowSuccessMessage(true);
+                setShowFailureMessage(false);
+                setButtonText('Send');
+                // Reset form fields
+                setFormValues({
+                    email: '',
+                    password: '',
+                    username: ''
+                });
             }
-
-            signIn(undefined, { callbackUrl: '/' });
-        } catch (error: any) {
-            setLoading(false);
-            setError(error);
+        } catch (error) {
+            console.log('login catch block', error);
         }
     };
 
@@ -49,11 +105,6 @@ export const RegisterForm = () => {
 
     return (
         <form onSubmit={onSubmit}>
-            {error && (
-                <p className="text-center bg-red-300 py-4 mb-6 rounded">
-                    {error}
-                </p>
-            )}
             <div className="mb-6">
                 <input
                     required
@@ -64,6 +115,11 @@ export const RegisterForm = () => {
                     placeholder="Username"
                     className={`${input_style}`}
                 />
+                {errors?.username && (
+                    <p className="text-red-500">
+                        Username have to be at last 10 chars.
+                    </p>
+                )}
             </div>
             <div className="mb-6">
                 <input
@@ -75,6 +131,9 @@ export const RegisterForm = () => {
                     placeholder="Email address"
                     className={`${input_style}`}
                 />
+                {/* {errors.email && (
+                    <p className="text-red-500">Email cannot be empty.</p>
+                )} */}
             </div>
             <div className="mb-6">
                 <input
