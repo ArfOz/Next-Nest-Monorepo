@@ -11,5 +11,6 @@ export enum ForbiddenExceptionType {
 }
 
 export enum UserExceptionType {
-    USER_ALREADY_EXIST = 'USER_ALREADY_EXIST'
+    USER_ALREADY_EXIST = 'USER_ALREADY_EXIST',
+    PASSWORD_TOO_SHORT = 'PASSWORD_TOO_SHORT'
 }

@@ -26,11 +26,6 @@ export class UserRegisterJson {
 
     @ApiProperty()
     @IsNotEmpty()
-    @IsString()
+    @IsEmail()
     email: string;
-
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsString()
-    created: Date;
 }

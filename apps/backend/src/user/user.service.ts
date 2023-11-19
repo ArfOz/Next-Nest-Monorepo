@@ -18,8 +18,13 @@ export class UserService {
     ) {}
 
     async Register(data: UserRegisterJson): Promise<ResponseController> {
-        const hashPass = await bcrypt.hash(data.password, 10);
-        data = { ...data, password: hashPass };
+        if (data.password.length < 8) {
+            throw new UnauthorizedException(
+                UserExceptionType.PASSWORD_TOO_SHORT,
+                new Error('PASSWORD_TOO_SHORT'),
+                404
+            );
+        }
 
         const user = await this.userDbService.findOne({ email: data.email });
 
@@ -30,6 +35,9 @@ export class UserService {
                 404
             );
         }
+
+        const hashPass = await bcrypt.hash(data.password, 10);
+        data = { ...data, password: hashPass };
 
         const response = await this.userDbService.Create(data);
 
