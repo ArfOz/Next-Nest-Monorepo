@@ -49,7 +49,7 @@ const handler = NextAuth({
 
                     console.log('responseeeeeeeeeeeeeeeeee', response);
                     if (res.status == 201) {
-                        return response;
+                        return response.Data;
                     }
                 } catch (e) {
                     console.error('next auth credentials', e);
