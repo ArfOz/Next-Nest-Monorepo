@@ -1,159 +1,140 @@
 'use client';
-
-import { signIn } from 'next-auth/react';
-import { ChangeEvent, useState } from 'react';
+import React from 'react';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 export const RegisterForm = () => {
-    const [loading, setLoading] = useState(false);
-    const [buttonText, setButtonText] = useState('Register');
-
-    const [formValues, setFormValues] = useState({
+    const initialValues = {
         username: '',
-        password: '',
-        email: ''
-    });
-    const [errors, setErrors] = useState({
         email: '',
         password: '',
-        username: ''
+        confirmPassword: ''
+    };
+
+    const validationSchema = Yup.object({
+        username: Yup.string().required('Required'),
+        email: Yup.string().email('Invalid email address').required('Required'),
+        password: Yup.string()
+            .min(8, 'Password must be at least 8 characters')
+            .required('Required'),
+        confirmPassword: Yup.string()
+            .oneOf([Yup.ref('password')], 'Passwords must match')
+            .required('Required')
     });
 
-    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-    const [showFailureMessage, setShowFailureMessage] = useState(false);
-
-    const handleValidation = () => {
-        const tempErrors: any = {};
-        let isValid = true;
-
-        if (formValues.email.length <= 0) {
-            tempErrors['email'] = true;
-            isValid = false;
-        }
-
-        if (formValues.password.length <= 0) {
-            tempErrors['password'] = true;
-            isValid = false;
-        }
-        if (formValues.username.length <= 10) {
-            tempErrors['username'] = true;
-            isValid = false;
-        }
-
-        setErrors({ ...tempErrors });
-        console.log('errors', errors);
-        return isValid;
+    const onSubmit = (values: typeof initialValues) => {
+        // Handle form submission
+        console.log(values);
     };
 
-    const onSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        // setLoading(true);
-
-        const isValidForm = handleValidation();
-        console.log('formValues', formValues, 'isvaliddd', isValidForm);
-
-        try {
-            if (isValidForm) {
-                setButtonText('Sending');
-
-                const res = await fetch(
-                    'http://localhost:3300/api/user/register',
-                    {
-                        method: 'POST',
-                        body: JSON.stringify(formValues),
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }
-                );
-                const response = await res.json();
-
-                console.log('response signin page', response);
-
-                setLoading(false);
-                if (response?.error) {
-                    console.log('burada', response.error);
-                    setShowSuccessMessage(false);
-                    setShowFailureMessage(true);
-                    // Reset form fields
-                    setFormValues({ username: '', email: '', password: '' });
-
-                    return;
-                }
-
-                setShowSuccessMessage(true);
-                setShowFailureMessage(false);
-                setButtonText('Send');
-                // Reset form fields
-                setFormValues({
-                    email: '',
-                    password: '',
-                    username: ''
-                });
-            }
-        } catch (error) {
-            console.log('login catch block', error);
-        }
+    const onReset = (values, { resetForm }) => {
+        // Handle reset button click
+        resetForm();
     };
-
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.target;
-        setFormValues({ ...formValues, [name]: value });
-    };
-
-    const input_style =
-        'form-control block w-full px-4 py-5 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none';
 
     return (
-        <form onSubmit={onSubmit}>
-            <div className="mb-6">
-                <input
-                    required
-                    type="username"
-                    name="username"
-                    value={formValues.username}
-                    onChange={handleChange}
-                    placeholder="Username"
-                    className={`${input_style}`}
-                />
-                {errors?.username && (
-                    <p className="text-red-500">
-                        Username have to be at last 10 chars.
-                    </p>
-                )}
-            </div>
-            <div className="mb-6">
-                <input
-                    required
-                    type="email"
-                    name="email"
-                    value={formValues.email}
-                    onChange={handleChange}
-                    placeholder="Email address"
-                    className={`${input_style}`}
-                />
-                {/* {errors.email && (
-                    <p className="text-red-500">Email cannot be empty.</p>
-                )} */}
-            </div>
-            <div className="mb-6">
-                <input
-                    required
-                    type="password"
-                    name="password"
-                    value={formValues.password}
-                    onChange={handleChange}
-                    placeholder="Password"
-                    className={`${input_style}`}
-                />
-            </div>
-            <button
-                type="submit"
-                style={{ backgroundColor: `${loading ? '#ccc' : '#3446eb'}` }}
-                className="inline-block px-7 py-4 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
-                disabled={loading}
-            >
-                {loading ? 'loading...' : 'Sign Up'}
-            </button>
-        </form>
+        <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={onSubmit}
+        >
+            {(formik) => (
+                <Form className="max-w-md mx-auto mt-8 p-8 bg-white shadow-md rounded">
+                    <h1 className="mb-8 text-3xl text-center">Sign Up</h1>
+                    <div className="mb-4">
+                        <label
+                            htmlFor="username"
+                            className="block text-gray-700 text-sm font-bold mb-2"
+                        >
+                            Username
+                        </label>
+                        <Field
+                            type="text"
+                            id="username"
+                            name="username"
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        />
+                        <ErrorMessage
+                            name="username"
+                            component="div"
+                            className="text-red-500 text-xs"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label
+                            htmlFor="email"
+                            className="block text-gray-700 text-sm font-bold mb-2"
+                        >
+                            Email
+                        </label>
+                        <Field
+                            type="email"
+                            id="email"
+                            name="email"
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        />
+                        <ErrorMessage
+                            name="email"
+                            component="div"
+                            className="text-red-500 text-xs"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label
+                            htmlFor="password"
+                            className="block text-gray-700 text-sm font-bold mb-2"
+                        >
+                            Password
+                        </label>
+                        <Field
+                            type="password"
+                            id="password"
+                            name="password"
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        />
+                        <ErrorMessage
+                            name="password"
+                            component="div"
+                            className="text-red-500 text-xs"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label
+                            htmlFor="confirmPassword"
+                            className="block text-gray-700 text-sm font-bold mb-2"
+                        >
+                            Confirm Password
+                        </label>
+                        <Field
+                            type="password"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        />
+                        <ErrorMessage
+                            name="confirmPassword"
+                            component="div"
+                            className="text-red-500 text-xs"
+                        />
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <button
+                            type="submit"
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        >
+                            Register
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => onReset(formik.values, formik)}
+                            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        >
+                            Reset
+                        </button>
+                        ;
+                    </div>
+                </Form>
+            )}
+        </Formik>
     );
 };
