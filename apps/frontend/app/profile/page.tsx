@@ -1,13 +1,31 @@
 'use client';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function Profile() {
     const { data: session, status, update } = useSession();
+    const [userData, setUserData] = useState({
+        email: '',
+        username: ''
+    });
 
     const router = useRouter();
+    useEffect(() => {
+        const data = async () => {
+            const res = await fetch('http://localhost:3300/api/user/profile', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session?.accessToken}`
+                }
+            });
+            const response = await res.json();
+            setUserData(response);
+        };
+        data();
+    }, []);
 
-    console.log('profilepage', session);
     if (session) {
         // return 'Loading or not authenticated...';
 
@@ -19,16 +37,20 @@ export default function Profile() {
                             <p className="mb-3 text-5xl text-center font-semibold">
                                 Profile Page
                             </p>
-                            {/* {!user ? (
-                            <p>Loading...</p>
-                        ) : (
-                            <div className="flex items-center gap-8">
-                                <div></div>
-                                <div className="mt-8">
-                                    {JSON.stringify(session.user)}
+                            {!session.user ? (
+                                <p>Loading...</p>
+                            ) : (
+                                <div className="flex items-center gap-8">
+                                    <div></div>
+                                    <div className="mt-8">
+                                        {userData?.email}
+                                    </div>
+                                    <div className="mt-8">
+                                        {userData?.username}
+                                    </div>
+                                    ;
                                 </div>
-                            </div>
-                        )} */}
+                            )}
                         </div>
                     </div>
                 </section>
