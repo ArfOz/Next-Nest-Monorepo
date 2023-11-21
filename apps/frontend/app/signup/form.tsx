@@ -1,9 +1,15 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { signIn } from 'next-auth/react';
 
 export const RegisterForm = () => {
+    const [buttonText, setButtonText] = useState('Register');
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [showFailureMessage, setShowFailureMessage] = useState(false);
+    const [error, setError] = useState('');
+
     const initialValues = {
         username: '',
         email: '',
@@ -12,7 +18,9 @@ export const RegisterForm = () => {
     };
 
     const validationSchema = Yup.object({
-        username: Yup.string().required('Required'),
+        username: Yup.string()
+            .min(5, 'Username must be at least 5 chars')
+            .required('Required'),
         email: Yup.string().email('Invalid email address').required('Required'),
         password: Yup.string()
             .min(8, 'Password must be at least 8 characters')
@@ -22,12 +30,68 @@ export const RegisterForm = () => {
             .required('Required')
     });
 
-    const onSubmit = (values: typeof initialValues) => {
+    const onSubmit = async (
+        values: typeof initialValues,
+        { resetForm }: { resetForm: any }
+    ) => {
         // Handle form submission
         console.log(values);
+
+        const sendata = {
+            email: values.email,
+            username: values.username,
+            password: values.password
+        };
+
+        try {
+            setButtonText('Sending');
+            const res = await fetch('http://localhost:3300/api/user/register', {
+                method: 'POST',
+                body: JSON.stringify(sendata),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const response = await res.json();
+
+            console.log('response signin page', response);
+
+            if (response?.Error) {
+                console.log('burada', response.Details);
+                setShowSuccessMessage(false);
+                setShowFailureMessage(true);
+                setError(response.Details);
+                setButtonText('Register');
+
+                // Reset form fields
+                resetForm();
+
+                return;
+            }
+            if (response?.Success) {
+                console.log('response.', response);
+                setError('');
+                setShowSuccessMessage(true);
+                setShowFailureMessage(false);
+                setButtonText('Register');
+
+                // Reset form fields
+                resetForm();
+                return;
+            }
+            setButtonText('Thanks');
+
+            // signIn(undefined, { callbackUrl: '/' });
+        } catch (error: any) {
+            setError(error);
+        }
     };
 
-    const onReset = (values, { resetForm }) => {
+    const onReset = (
+        values: typeof initialValues,
+        { resetForm }: { resetForm: any }
+    ) => {
         // Handle reset button click
         resetForm();
     };
@@ -122,7 +186,7 @@ export const RegisterForm = () => {
                             type="submit"
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         >
-                            Register
+                            {buttonText}
                         </button>
                         <button
                             type="button"
@@ -131,7 +195,12 @@ export const RegisterForm = () => {
                         >
                             Reset
                         </button>
-                        ;
+                    </div>
+                    <div className="text-red-500 text-xs">
+                        {showFailureMessage && error}
+                    </div>
+                    <div className="text-green-600 text-lg">
+                        {showSuccessMessage && 'User Saved Successfully'}
                     </div>
                 </Form>
             )}
