@@ -14,3 +14,8 @@ export enum UserExceptionType {
     USER_ALREADY_EXIST = 'USER_ALREADY_EXIST',
     PASSWORD_TOO_SHORT = 'PASSWORD_TOO_SHORT'
 }
+export enum BadRequestExceptionType {
+    BAD_REQUEST = 'BAD_REQUEST',
+    MISSING_FILE_TYPE = 'MISSING_FILE_TYPE',
+    MISSING_FILE = 'MISSING_FILE'
+}

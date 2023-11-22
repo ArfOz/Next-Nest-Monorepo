@@ -2,7 +2,7 @@ import { HttpStatus } from '@nestjs/common';
 import {
     UnauthorizedExceptionType,
     UserExceptionType
-} from './unauthorized.enum.type';
+} from './exception.enum.type';
 import { GeneralException } from './general.exception';
 
 export class UnauthorizedException extends GeneralException {

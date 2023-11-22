@@ -48,7 +48,6 @@ export default function Profile() {
                                     <div className="mt-8">
                                         {userData?.username}
                                     </div>
-                                    ;
                                 </div>
                             )}
                         </div>
