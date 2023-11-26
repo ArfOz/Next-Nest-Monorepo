@@ -4,6 +4,7 @@ import { AddCommentsJsonDto, DeleteCommentsJsonDto } from './dtos';
 import { Prisma } from '@prisma/client';
 import { UserParamsDto } from './dtos/userparams.dto';
 import { BadRequestException, BadRequestExceptionType } from '@exceptions';
+import { ResponseController } from '@dtos';
 
 @Injectable()
 export class CommentsService {
@@ -12,7 +13,10 @@ export class CommentsService {
         private readonly restaurantDBService: RestaurantDBService
     ) {}
 
-    async addComments(user: UserParamsDto, data: AddCommentsJsonDto) {
+    async addComments(
+        user: UserParamsDto,
+        data: AddCommentsJsonDto
+    ): Promise<ResponseController> {
         const newData: Prisma.CommentsCreateInput = {
             ...data,
             user_id: user.sub
@@ -44,7 +48,10 @@ export class CommentsService {
             );
         }
         const response = await this.commentDBService.addComments(newData);
-        return response;
+        return {
+            Success: true,
+            Data: response
+        };
     }
 
     async getComment(commentId: string) {

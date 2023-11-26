@@ -25,6 +25,10 @@ const AddComment = (props: Props) => {
         comment: ''
     });
 
+    // setTimeout(function () {
+    //     window.location.reload();
+    // }, 5000);
+
     const handleValidation = () => {
         const tempErrors: any = {};
         let isValid = true;
@@ -95,6 +99,15 @@ const AddComment = (props: Props) => {
                 }
 
                 if (response?.Success) {
+                    console.log('response.', response);
+                    setError('');
+                    setShowSuccessMessage(true);
+                    setShowFailureMessage(false);
+                    setButtonText('Sent');
+
+                    // setTimeout(function () {
+                    //     window.location.reload();
+                    // }, 15000);
                 }
 
                 console.log('resssssss', response);
@@ -106,7 +119,7 @@ const AddComment = (props: Props) => {
                 // setTitle('');
                 // setStarValue(0);
                 // setSubject('');
-                window.location.reload();
+                // window.location.reload();
             }
         } catch (error) {
             console.log(error);
@@ -172,6 +185,11 @@ const AddComment = (props: Props) => {
                                     <p className="text-red-500">
                                         Comment cannot be less than 20
                                         characaters.
+                                    </p>
+                                )}
+                                {showSuccessMessage && (
+                                    <p className="text-red-500">
+                                        Comment added Successfully
                                     </p>
                                 )}
                             </div>
