@@ -105,9 +105,9 @@ const AddComment = (props: Props) => {
                     setShowFailureMessage(false);
                     setButtonText('Sent');
 
-                    // setTimeout(function () {
-                    //     window.location.reload();
-                    // }, 15000);
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 5000);
                 }
 
                 console.log('resssssss', response);

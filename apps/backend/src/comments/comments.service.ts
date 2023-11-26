@@ -54,27 +54,39 @@ export class CommentsService {
         };
     }
 
-    async getComment(commentId: string) {
+    async getComment(commentId: string): Promise<ResponseController> {
         const filter: Prisma.CommentsWhereUniqueInput = {
             id: commentId
         };
         const comment = await this.commentDBService.findUnique(filter);
 
-        return comment;
+        return {
+            Success: true,
+            Data: comment
+        };
     }
 
-    async myComments(user: UserParamsDto) {
+    async myComments(user: UserParamsDto): Promise<ResponseController> {
         const filter: Prisma.CommentsWhereInput = {
             user_id: user.sub
         };
         const comment = await this.commentDBService.findMany(filter);
-        return comment;
+        return {
+            Success: true,
+            Data: comment
+        };
     }
-    async deleteComment(user: UserParamsDto, data: DeleteCommentsJsonDto) {
+    async deleteComment(
+        user: UserParamsDto,
+        data: DeleteCommentsJsonDto
+    ): Promise<ResponseController> {
         const where: Prisma.CommentsWhereUniqueInput = {
             id: data.id
         };
         const comment = await this.commentDBService.delete(where);
-        return comment;
+        return {
+            Success: true,
+            Data: comment
+        };
     }
 }
