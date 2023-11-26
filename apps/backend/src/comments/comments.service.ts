@@ -36,7 +36,7 @@ export class CommentsService {
             );
         }
 
-        if (data.stars <= 5 && data.stars >= 0) {
+        if (data.stars < 0 && data.stars > 5) {
             throw new BadRequestException(
                 BadRequestExceptionType.BAD_REQUEST,
                 new Error('Star Value Must be between 0-5'),
