@@ -7,6 +7,7 @@ export class CommentDetails {
     'comment': string;
     'stars': number;
     'date': string;
+    'user_id': string;
 }
 
 export class CityDetailsJsonDto {

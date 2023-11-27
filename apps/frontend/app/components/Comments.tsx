@@ -82,8 +82,8 @@ export const Comments = ({ Comment }: { Comment: CommentDetails }) => {
                                     <p className="font-semibold text-gray-900">
                                         <a href="#">
                                             <span className="absolute inset-0"></span>
-                                            Author name
-                                            {/* {Comment.} */}
+                                            {/* Author name */}
+                                            {Comment.user_id}
                                         </a>
                                     </p>
                                     <p className="text-gray-600">
