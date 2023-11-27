@@ -107,7 +107,7 @@ const AddComment = (props: Props) => {
 
                     setTimeout(function () {
                         window.location.reload();
-                    }, 5000);
+                    }, 2000);
                 }
 
                 console.log('resssssss', response);
