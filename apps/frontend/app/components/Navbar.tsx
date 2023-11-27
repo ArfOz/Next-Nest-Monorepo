@@ -7,7 +7,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { FaHome } from 'react-icons/fa';
 import { Navigate } from './dtos/navigate.type';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import SkeletonLoader from './Skeleton/SkeletonLoader';
 
 function classNames(...classes: string[]) {
@@ -29,7 +29,7 @@ const Navbar = () => {
             },
             {
                 name: 'Logout',
-                href: 'logout'
+                href: ''
             }
         );
     } else {
@@ -60,6 +60,15 @@ const Navbar = () => {
                                         navigation.map((item) => (
                                             <a
                                                 key={item.name}
+                                                onClick={
+                                                    item.name == 'Logout'
+                                                        ? () =>
+                                                              signOut({
+                                                                  callbackUrl:
+                                                                      'http://localhost:3000/'
+                                                              })
+                                                        : undefined
+                                                }
                                                 href={`/${item.href}`}
                                                 className={classNames(
                                                     pathname === item.href

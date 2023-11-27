@@ -6,11 +6,17 @@ import {
     CommentsDBService,
     DatabaseModule,
     RestaurantDBService,
+    UsersDBService
 } from '@database';
 
 @Module({
     imports: [DatabaseModule],
     controllers: [RestaurantController],
-    providers: [RestaurantService, CommentsDBService, RestaurantDBService],
+    providers: [
+        RestaurantService,
+        CommentsDBService,
+        RestaurantDBService,
+        UsersDBService
+    ]
 })
 export class RestaurantModule {}

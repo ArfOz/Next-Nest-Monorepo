@@ -1,55 +1,61 @@
 'use client';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function Profile() {
     const { data: session, status, update } = useSession();
+    const [userData, setUserData] = useState({
+        email: '',
+        username: ''
+    });
 
-    console.log('profilepage', session);
-    // const { data: session, status, update } = useSession();
+    const router = useRouter();
+    useEffect(() => {
+        const data = async () => {
+            const res = await fetch('http://localhost:3300/api/user/profile', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session?.accessToken}`
+                }
+            });
+            const response = await res.json();
+            setUserData(response);
+        };
+        data();
+    }, []);
 
-    // console.log('statussssssss Profile', session);
+    if (session) {
+        // return 'Loading or not authenticated...';
 
-    // const session = await getSession();
-
-    // useEffect(() => {
-    //     const visibilityHandler = () =>
-    //         document.visibilityState === 'visible' && update();
-    //     window.addEventListener('visibilitychange', visibilityHandler, false);
-    //     return () =>
-    //         window.removeEventListener(
-    //             'visibilitychange',
-    //             visibilityHandler,
-    //             false
-    //         );
-    // }, [update]);
-
-    const user = session?.user;
-    // console.log(
-    //     'profile sessionssssssssssssssssssssssssssssssss',
-    //     session?.user
-    // );
-
-    return (
-        <>
-            <section className="bg-ct-blue-600  min-h-screen pt-20">
-                <div className="max-w-4xl mx-auto bg-ct-dark-100 rounded-md h-[20rem] flex justify-center items-center">
-                    <div>
-                        <p className="mb-3 text-5xl text-center font-semibold">
-                            Profile Page
-                        </p>
-                        {!user ? (
-                            <p>Loading...</p>
-                        ) : (
-                            <div className="flex items-center gap-8">
-                                <div></div>
-                                <div className="mt-8">
-                                    {JSON.stringify(session.user)}
+        return (
+            <>
+                <section className="bg-ct-blue-600  min-h-screen pt-20">
+                    <div className="max-w-4xl mx-auto bg-ct-dark-100 rounded-md h-[20rem] flex justify-center items-center">
+                        <div>
+                            <p className="mb-3 text-5xl text-center font-semibold">
+                                Profile Page
+                            </p>
+                            {!session.user ? (
+                                <p>Loading...</p>
+                            ) : (
+                                <div className="flex items-center gap-8">
+                                    <div></div>
+                                    <div className="mt-8">
+                                        {userData?.email}
+                                    </div>
+                                    <div className="mt-8">
+                                        {userData?.username}
+                                    </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
-                </div>
-            </section>
-        </>
-    );
+                </section>
+            </>
+        );
+    }
+
+    return router.push('/login');
 }

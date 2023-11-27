@@ -4,6 +4,7 @@ import { CommentsService } from './comments.service';
 import { AllowUnauthorizedRequest } from '@exceptions';
 import { UserParamsDto } from './dtos/userparams.dto';
 import { UserParam } from '@utils';
+import { ResponseController } from '@dtos';
 
 @Controller('comments')
 export class CommentsController {
@@ -13,18 +14,23 @@ export class CommentsController {
     addComments(
         @UserParam() user: UserParamsDto,
         @Body() input: AddCommentsJsonDto
-    ) {
+    ): Promise<ResponseController> {
         return this.commentsService.addComments(user, input);
     }
 
     @AllowUnauthorizedRequest()
     @Get('getcomment/:id')
-    getComments(@UserParam() user: UserParamsDto, @Param('id') id: string) {
+    getComments(
+        @UserParam() user: UserParamsDto,
+        @Param('id') id: string
+    ): Promise<ResponseController> {
         return this.commentsService.getComment(id);
     }
 
     @Get('mycomments')
-    async myComments(@UserParam() user: UserParamsDto) {
+    async myComments(
+        @UserParam() user: UserParamsDto
+    ): Promise<ResponseController> {
         return await this.commentsService.myComments(user);
     }
 
@@ -32,7 +38,7 @@ export class CommentsController {
     async deleteComment(
         @UserParam() user: UserParamsDto,
         @Body() input: DeleteCommentsJsonDto
-    ) {
+    ): Promise<ResponseController> {
         return await this.commentsService.deleteComment(user, input);
     }
 }

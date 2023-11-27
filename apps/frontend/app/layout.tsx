@@ -35,12 +35,12 @@ export default async function RootLayout({
 
     return (
         <html lang="en">
-            <body className="flex flex-grow flex-col h-screen">
-                <NextAuthProvider session={session}>
+            <NextAuthProvider session={session}>
+                <body className="flex flex-grow flex-col h-screen">
                     <Navbar />
                     {children}
-                </NextAuthProvider>
-            </body>
+                </body>
+            </NextAuthProvider>
         </html>
     );
 }
