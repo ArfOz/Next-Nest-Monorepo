@@ -35,7 +35,6 @@ export const RegisterForm = () => {
         { resetForm }: { resetForm: any }
     ) => {
         // Handle form submission
-        console.log(values);
 
         const sendata = {
             email: values.email,
@@ -55,10 +54,7 @@ export const RegisterForm = () => {
 
             const response = await res.json();
 
-            console.log('response signin page', response);
-
             if (response?.Error) {
-                console.log('burada', response.Details);
                 setShowSuccessMessage(false);
                 setShowFailureMessage(true);
                 setError(response.Details);
@@ -70,7 +66,6 @@ export const RegisterForm = () => {
                 return;
             }
             if (response?.Success) {
-                console.log('response.', response);
                 setError('');
                 setShowSuccessMessage(true);
                 setShowFailureMessage(false);

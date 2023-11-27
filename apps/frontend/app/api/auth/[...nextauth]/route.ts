@@ -21,7 +21,6 @@ const handler = NextAuth({
             },
 
             async authorize(credentials): Promise<any> {
-                console.log('authoriye ici', credentials);
                 if (!credentials?.email || !credentials?.password) throw null;
                 try {
                     const { email, password } = credentials;
@@ -39,15 +38,11 @@ const handler = NextAuth({
                         }
                     );
                     const response: ResponseJsonDto = await res.json();
-                    console.log('responsefull', response);
 
                     if (res.status == 401) {
-                        console.log('res error', response.Details);
-
                         throw new Error(JSON.stringify(response));
                     }
 
-                    console.log('responseeeeeeeeeeeeeeeeee', response);
                     if (res.status == 201) {
                         return response.Data;
                     }
@@ -69,7 +64,6 @@ const handler = NextAuth({
     callbacks: {
         async jwt({ token, user }: { token: JWT; user?: any }) {
             // user is only available the first time a user signs in authorized
-            console.log('jwt entry', token, 'userrrrrrrrrrrrrrrr', user);
             if (user) {
                 token.accessToken = user.accessToken;
                 token.refreshToken = user.refreshToken;
@@ -81,13 +75,11 @@ const handler = NextAuth({
                 return token;
             }
 
-            console.log('jwt cikis', token);
             return { ...token };
         },
 
         //  The session receives the token from JWT
         async session({ session, token }: { session: Session; token: JWT }) {
-            console.log('session giris', session, 'tokennnnnnnnnnnnnn', token);
             if (token && session.user) {
                 // session.user.username = token.name;
                 // session.user.email = token.email;
@@ -97,8 +89,6 @@ const handler = NextAuth({
                 session.user.name = token.name;
                 session.refreshTokenExpires = token.refreshTokenExpires;
             }
-
-            console.log('sessin cikis', session);
 
             return { ...session };
         }

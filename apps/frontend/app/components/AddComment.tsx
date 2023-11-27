@@ -34,7 +34,6 @@ const AddComment = (props: Props) => {
         let isValid = true;
 
         if (title.length < 5) {
-            console.log('title', title, title.length);
             tempErrors['title'] = true;
             isValid = false;
         }
@@ -42,14 +41,6 @@ const AddComment = (props: Props) => {
             tempErrors['comment'] = true;
             isValid = false;
         }
-        // if (subject.length <= 0) {
-        //     tempErrors['subject'] = true;
-        //     isValid = false;
-        // }
-        // if (message.length <= 0) {
-        //     tempErrors['message'] = true;
-        //     isValid = false;
-        // }
 
         setErrors({ ...tempErrors });
         // console.log('errors', errors);
@@ -59,8 +50,8 @@ const AddComment = (props: Props) => {
     const handleSubmit = async (e: { preventDefault: () => void }) => {
         e.preventDefault();
         try {
-            // const isValidForm = handleValidation();
-            const isValidForm = true;
+            const isValidForm = handleValidation();
+            // const isValidForm = true;
 
             if (isValidForm) {
                 setButtonText('Sending');
@@ -84,7 +75,6 @@ const AddComment = (props: Props) => {
                 );
                 const response = await res.json();
 
-                console.log('response', response);
                 if (response?.Error) {
                     setShowSuccessMessage(false);
                     setShowFailureMessage(true);
@@ -99,7 +89,6 @@ const AddComment = (props: Props) => {
                 }
 
                 if (response?.Success) {
-                    console.log('response.', response);
                     setError('');
                     setShowSuccessMessage(true);
                     setShowFailureMessage(false);
@@ -110,7 +99,6 @@ const AddComment = (props: Props) => {
                     }, 2000);
                 }
 
-                console.log('resssssss', response);
                 // setShowSuccessMessage(true);
                 // setShowFailureMessage(false);
                 // setButtonText('Send');

@@ -51,7 +51,6 @@ const Page = () => {
         }
 
         setErrors({ ...tempErrors });
-        console.log('errors', errors);
         return isValid;
     };
 
@@ -68,12 +67,10 @@ const Page = () => {
                     email: email,
                     password: password
                 });
-                console.log('res geldi login page', res);
                 if (!res?.error) {
                     router.push('http://localhost:3000/profile');
                 }
                 if (res?.error) {
-                    console.log('burada', res.error);
                     setShowSuccessMessage(false);
                     setShowFailureMessage(true);
                     setButtonText('Send');
