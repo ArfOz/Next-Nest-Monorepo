@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/mongo/client';
+import { PrismaServiceMongoDB } from '../prisma';
 
 // This should be a real class/interface representing a user entity
 export type User = any;
 
 @Injectable()
 export class UsersDBService {
-    constructor(private prisma: PrismaService) {}
+    constructor(private prisma: PrismaServiceMongoDB) {}
 
     async Create(data: Prisma.UsersCreateInput) {
         const user = await this.prisma.users.create({

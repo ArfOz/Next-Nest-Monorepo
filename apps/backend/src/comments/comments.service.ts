@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CommentsDBService, RestaurantDBService } from '@database';
 import { AddCommentsJsonDto, DeleteCommentsJsonDto } from './dtos';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/mongo/client';
 import { UserParamsDto } from './dtos/userparams.dto';
 import { BadRequestException, BadRequestExceptionType } from '@exceptions';
 import { ResponseController } from '@dtos';

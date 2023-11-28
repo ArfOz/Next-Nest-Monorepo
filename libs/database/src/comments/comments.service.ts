@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma';
-import { Prisma } from '@prisma/client';
+import { PrismaServiceMongoDB } from '../prisma/index';
+import { Prisma } from '@prisma/mongo/client';
 
 @Injectable()
 export class CommentsDBService {
-    constructor(private prisma: PrismaService) {}
+    constructor(private prisma: PrismaServiceMongoDB) {}
     async findUnique(where: Prisma.CommentsWhereUniqueInput) {
         const data = await this.prisma.comments.findUnique({ where });
         return data;

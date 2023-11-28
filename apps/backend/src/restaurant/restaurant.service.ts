@@ -4,7 +4,7 @@ import {
     UsersDBService
 } from '@database';
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/mongo/client';
 import { AddRestaurantJsonDto } from './dtos';
 
 @Injectable()
