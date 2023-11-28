@@ -29,24 +29,24 @@ export class RestaurantService {
         return response;
     }
 
-    async getRestaurant(restaurantId: string) {
-        const restaurant = await this.restaurantDBService.findUnique({
-            id: restaurantId
-        });
+    // async getRestaurant(restaurantId: string) {
+    //     const restaurant = await this.restaurantDBService.findUnique({
+    //         id: restaurantId
+    //     });
 
-        const where: Prisma.CommentsWhereInput = {
-            restaurant_id: restaurantId
-        };
-        const comments = await this.commentDBService.findMany(where);
+    //     const where: Prisma.CommentsWhereInput = {
+    //         restaurant_id: restaurantId
+    //     };
+    //     const comments = await this.commentDBService.findMany(where);
 
-        //For this type of data SQL type database better...
-        for (let i = 0; i < comments.length; i++) {
-            const user = await this.userDbService.findOne({
-                id: comments[i].user_id
-            });
+    //     //For this type of data SQL type database better...
+    //     for (let i = 0; i < comments.length; i++) {
+    //         const user = await this.userDbService.findOne({
+    //             id: comments[i].user_id
+    //         });
 
-            comments[i].user_id = user.username;
-        }
-        return { restaurant, comments };
-    }
+    //         comments[i].user_id = user.username;
+    //     }
+    //     return { restaurant, comments };
+    // }
 }

@@ -9,14 +9,20 @@ datasource db {
 }
 
 model User {
-    pk          Int      @id @default(autoincrement())
-    id          String   @unique @default(uuid()) @db.Uuid
-    email       String   @unique
-    phoneNumber String?  @unique @map("phone_number")
-    password    String?
-    createdAt   DateTime @default(now()) @map("created_at")
-    updatedAt   DateTime @updatedAt @map("update_at")
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    email     String   @unique
+    username  String
+    posts     Post[]
+    password  String
+}
 
-    @@unique([pk, id])
-    @@map("users")
+model Post {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    published Boolean  @default(false)
+    title     String   @db.VarChar(255)
+    author    User?    @relation(fields: [authorId], references: [id])
+    authorId  Int?
 }
