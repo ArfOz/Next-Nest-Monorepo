@@ -26,15 +26,15 @@ export class UserService {
             );
         }
 
-        // const user = await this.userDbService.findOne({ email: data.email });
+        const user = await this.userDbService.findOne({ email: data.email });
 
-        // if (user) {
-        //     throw new UnauthorizedException(
-        //         UserExceptionType.USER_ALREADY_EXIST,
-        //         new Error('USER_ALREADY_EXIST'),
-        //         404
-        //     );
-        // }
+        if (user) {
+            throw new UnauthorizedException(
+                UserExceptionType.USER_ALREADY_EXIST,
+                new Error('USER_ALREADY_EXIST'),
+                404
+            );
+        }
 
         const hashPass = await bcrypt.hash(data.password, 10);
         data = { ...data, password: hashPass };
