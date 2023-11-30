@@ -1,30 +1,30 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaServiceMongoDB } from '../prisma/index';
-import { Prisma } from '@prisma/mongo/client';
+import { PrismaServicePGDB } from '../prisma/index';
+import { Prisma } from '@prisma/postgres/client';
 
 @Injectable()
 export class CommentsDBService {
-    constructor(private prisma: PrismaServiceMongoDB) {}
-    async findUnique(where: Prisma.CommentsWhereUniqueInput) {
-        const data = await this.prisma.comments.findUnique({ where });
+    constructor(private prisma: PrismaServicePGDB) {}
+    async findUnique(where: Prisma.CommentWhereUniqueInput) {
+        const data = await this.prisma.comment.findUnique({ where });
         return data;
     }
 
-    async findMany(where: Prisma.CommentsWhereInput) {
-        const data = await this.prisma.comments.findMany({
+    async findMany(where: Prisma.CommentWhereInput) {
+        const data = await this.prisma.comment.findMany({
             where
         });
 
         return data;
     }
 
-    async addComments(data: Prisma.CommentsCreateInput) {
-        const response = await this.prisma.comments.create({ data });
+    async addComments(data: Prisma.CommentCreateInput) {
+        const response = await this.prisma.comment.create({ data });
         return response;
     }
 
-    async delete(where: Prisma.CommentsWhereUniqueInput) {
-        const response = await this.prisma.comments.delete({ where });
+    async delete(where: Prisma.CommentWhereUniqueInput) {
+        const response = await this.prisma.comment.delete({ where });
         return response;
     }
 }

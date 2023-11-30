@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { CommentsDBService } from './comments.service';
-import { PrismaServiceMongoDB } from '../prisma';
+import { PrismaServicePGDB } from '../prisma';
 
 @Module({
-    providers: [CommentsDBService, PrismaServiceMongoDB]
+    providers: [CommentsDBService, PrismaServicePGDB]
 })
 export class CommentsModule {}

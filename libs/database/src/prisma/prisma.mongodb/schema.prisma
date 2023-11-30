@@ -16,16 +16,6 @@ model Restaurants {
   lon  String?
 }
 
-model Comments {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  restaurant_id String
-  name          String
-  comment       String
-  stars         Int
-  date          DateTime @default(now())
-  user_id       String
-}
-
 model Users {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
   username String
@@ -33,3 +23,13 @@ model Users {
   email    String
   created  DateTime @default(now())
 }
+
+// model Comments {
+//   id            String   @id @default(auto()) @map("_id") @db.ObjectId
+//   restaurant_id String
+//   name          String
+//   comment       String
+//   stars         Int
+//   date          DateTime @default(now())
+//   user_id       String
+// }
