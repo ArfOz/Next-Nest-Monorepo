@@ -10,19 +10,22 @@ datasource db {
 }
 
 model Restaurants {
-  id   String  @id @default(auto()) @map("_id") @db.ObjectId
-  name String
-  lat  String?
-  lon  String?
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  lat      String?
+  lon      String?
+  comments Int?
+  stars    Int?
 }
 
-model Users {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  username String
-  password String
-  email    String
-  created  DateTime @default(now())
-}
+//Comment user have to be releated
+// model Users {
+//   id       String   @id @default(auto()) @map("_id") @db.ObjectId
+//   username String
+//   password String
+//   email    String
+//   created  DateTime @default(now())
+// }
 
 // model Comments {
 //   id            String   @id @default(auto()) @map("_id") @db.ObjectId

@@ -12,7 +12,19 @@ export class CommentsDBService {
 
     async findMany(where: Prisma.CommentWhereInput) {
         const data = await this.prisma.comment.findMany({
-            where
+            where,
+            select: {
+                comment: true,
+                star: true,
+                id: true,
+                title: true,
+                updatedAt: true,
+                user: {
+                    select: {
+                        username: true
+                    }
+                }
+            }
         });
 
         return data;

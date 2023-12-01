@@ -40,6 +40,8 @@ export class RestaurantService {
         };
         const comments = await this.commentDBService.findMany(where);
 
+        console.log('restaaaaa', restaurant, 'comments', comments);
+
         return { restaurant, comments };
     }
 }

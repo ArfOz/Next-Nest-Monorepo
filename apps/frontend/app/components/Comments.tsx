@@ -5,7 +5,8 @@ import { Stack } from '@mui/material';
 import Rating from '@mui/material/Rating';
 import { CiFaceSmile, CiFaceMeh, CiFaceFrown } from 'react-icons/ci';
 
-export const Comments = ({ Comment }: { Comment: CommentDetails }) => {
+export const Comments = ({ comments }: { comments: CommentDetails }) => {
+    console.log('commentssss', comments);
     return (
         <div>
             <div className="bg-white shadow-2xl w-96">
@@ -24,7 +25,7 @@ export const Comments = ({ Comment }: { Comment: CommentDetails }) => {
                                     // dateTime="2023-03-16"
                                     className="text-gray-500"
                                 >
-                                    {new Date(Date.parse(Comment.date))
+                                    {new Date(Date.parse(comments.updatedAt))
                                         .toDateString()
                                         .toString()}
                                 </div>
@@ -32,7 +33,7 @@ export const Comments = ({ Comment }: { Comment: CommentDetails }) => {
                                 <Stack spacing={1}>
                                     <Rating
                                         name="read-only"
-                                        value={Comment.stars}
+                                        value={comments.star}
                                         precision={0.1}
                                         readOnly
                                     />
@@ -46,23 +47,23 @@ export const Comments = ({ Comment }: { Comment: CommentDetails }) => {
                                 >
                                     <a href="#">
                                         <span className="absolute inset-0"></span>
-                                        {Comment.name}
+                                        {comments.title}
                                     </a>
                                 </h3>
                                 <p
                                     className="mt-5 line-clamp-3 text-sm  
                                               leading-6 text-gray-600"
                                 >
-                                    {Comment.comment}
+                                    {comments.comment}
                                 </p>
                             </div>
                             <div
                                 className="relative mt-8 flex  
                                             items-center gap-x-4"
                             >
-                                {Comment.stars > 4 ? (
+                                {comments.star > 4 ? (
                                     <CiFaceSmile />
-                                ) : Comment.stars > 2 ? (
+                                ) : comments.star > 2 ? (
                                     <CiFaceMeh />
                                 ) : (
                                     <CiFaceFrown />
@@ -72,7 +73,7 @@ export const Comments = ({ Comment }: { Comment: CommentDetails }) => {
                                         <a href="#">
                                             <span className="absolute inset-0"></span>
                                             {/* Author name */}
-                                            {Comment.user_id}
+                                            {comments.user.username}
                                         </a>
                                     </p>
                                     <p className="text-gray-600">

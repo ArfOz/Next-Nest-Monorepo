@@ -21,4 +21,14 @@ export class RestaurantDBService {
         const response = await this.prisma.restaurants.create({ data });
         return response;
     }
+
+    async update({
+        where,
+        data
+    }: {
+        where: Prisma.RestaurantsWhereUniqueInput;
+        data: Prisma.RestaurantsUpdateInput;
+    }) {
+        const response = await this.prisma.restaurants.update({ where, data });
+    }
 }

@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CommentsDBService, RestaurantDBService } from '@database';
 import { AddCommentsJsonDto, DeleteCommentsJsonDto } from './dtos';
-import { Prisma } from '@prisma/postgres/client';
+import { Prisma as PrismaPostgres } from '@prisma/postgres/client';
+import { Prisma as PrismaMongoDb } from '@prisma/mongo/client';
 import { UserParamsDto } from './dtos/userparams.dto';
 import { BadRequestException, BadRequestExceptionType } from '@exceptions';
 import { ResponseController } from '@dtos';
@@ -17,12 +18,16 @@ export class CommentsService {
         user: UserParamsDto,
         data: AddCommentsJsonDto
     ): Promise<ResponseController> {
-        const newData: Prisma.CommentCreateInput = {
+        const newData: PrismaPostgres.CommentCreateInput = {
             comment: data.comment,
             restaurantId: data.restaurantId,
             star: data.star,
             title: data.title,
-            userId: user.sub
+            user: {
+                connect: {
+                    id: user.sub
+                }
+            }
         };
 
         if (data.comment.length < 20) {
@@ -51,6 +56,17 @@ export class CommentsService {
             );
         }
         const response = await this.commentDBService.addComments(newData);
+        const updateData: PrismaMongoDb.RestaurantsUpdateArgs = {
+            where: { id: data.restaurantId },
+            data: {
+                stars: { increment: data.star },
+                comments: { increment: 1 }
+            }
+        };
+
+        const restaurantUpdate = await this.restaurantDBService.update(
+            updateData
+        );
         return {
             Success: true,
             Data: response
@@ -58,7 +74,7 @@ export class CommentsService {
     }
 
     async getComment(commentId: string): Promise<ResponseController> {
-        const filter: Prisma.CommentWhereUniqueInput = {
+        const filter: PrismaPostgres.CommentWhereUniqueInput = {
             id: commentId
         };
         const comment = await this.commentDBService.findUnique(filter);
@@ -70,7 +86,7 @@ export class CommentsService {
     }
 
     async myComments(user: UserParamsDto): Promise<ResponseController> {
-        const filter: Prisma.CommentWhereInput = {
+        const filter: PrismaPostgres.CommentWhereInput = {
             userId: user.sub
         };
         const comment = await this.commentDBService.findMany(filter);
@@ -83,7 +99,7 @@ export class CommentsService {
         user: UserParamsDto,
         data: DeleteCommentsJsonDto
     ): Promise<ResponseController> {
-        const where: Prisma.CommentWhereUniqueInput = {
+        const where: PrismaPostgres.CommentWhereUniqueInput = {
             id: data.id
         };
         const comment = await this.commentDBService.delete(where);
