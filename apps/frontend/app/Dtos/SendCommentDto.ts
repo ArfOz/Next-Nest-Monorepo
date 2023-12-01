@@ -1,6 +1,6 @@
 export class SendCommentDto {
-    restaurant_id: string;
-    name: string;
+    restaurantId: string;
+    title: string;
     comment: string;
-    stars: number;
+    star: number;
 }
