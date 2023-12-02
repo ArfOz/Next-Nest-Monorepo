@@ -55,18 +55,29 @@ export class CommentsService {
                 404
             );
         }
+
+        const restaurantData = await this.restaurantDBService.findUnique({
+            id: data.restaurantId
+        });
+
+        console.log('restaurantData', restaurantData);
+
         const response = await this.commentDBService.addComments(newData);
         const updateData: PrismaMongoDb.RestaurantsUpdateArgs = {
             where: { id: data.restaurantId },
             data: {
-                stars: { increment: data.star },
-                comments: { increment: 1 }
+                stars: restaurantData.stars
+                    ? { increment: data.star }
+                    : data.star,
+                comments: restaurantData.comments ? { increment: 1 } : 1
             }
         };
 
         const restaurantUpdate = await this.restaurantDBService.update(
             updateData
         );
+
+        console.log('updateeeeeeee', restaurantUpdate);
         return {
             Success: true,
             Data: response

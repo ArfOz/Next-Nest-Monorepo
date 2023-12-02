@@ -30,5 +30,6 @@ export class RestaurantDBService {
         data: Prisma.RestaurantsUpdateInput;
     }) {
         const response = await this.prisma.restaurants.update({ where, data });
+        return response;
     }
 }

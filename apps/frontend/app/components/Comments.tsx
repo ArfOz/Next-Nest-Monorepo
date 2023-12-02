@@ -6,7 +6,7 @@ import Rating from '@mui/material/Rating';
 import { CiFaceSmile, CiFaceMeh, CiFaceFrown } from 'react-icons/ci';
 
 export const Comments = ({ comments }: { comments: CommentDetails }) => {
-    console.log('commentssss', comments);
+    // console.log('commentssss', comments);
     return (
         <div>
             <div className="bg-white shadow-2xl w-96">
