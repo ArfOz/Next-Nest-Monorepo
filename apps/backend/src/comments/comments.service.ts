@@ -60,8 +60,6 @@ export class CommentsService {
             id: data.restaurantId
         });
 
-        console.log('restaurantData', restaurantData);
-
         const response = await this.commentDBService.addComments(newData);
         const updateData: PrismaMongoDb.RestaurantsUpdateArgs = {
             where: { id: data.restaurantId },
@@ -73,11 +71,8 @@ export class CommentsService {
             }
         };
 
-        const restaurantUpdate = await this.restaurantDBService.update(
-            updateData
-        );
+        await this.restaurantDBService.update(updateData);
 
-        console.log('updateeeeeeee', restaurantUpdate);
         return {
             Success: true,
             Data: response

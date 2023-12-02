@@ -74,7 +74,6 @@ const AddComment = (props: Props) => {
                     }
                 );
                 const response = await res.json();
-                console.log('responsessssss', response);
 
                 if (response?.error) {
                     setShowSuccessMessage(false);
