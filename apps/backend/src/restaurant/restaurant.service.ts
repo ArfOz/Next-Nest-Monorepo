@@ -31,14 +31,16 @@ export class RestaurantService {
     }
 
     async getRestaurant(restaurantId: string) {
-        const restaurant = await this.restaurantDBService.findUnique({
-            id: restaurantId
-        });
-
         const where: PrismaPostgresql.CommentWhereInput = {
             restaurantId: restaurantId
         };
-        const comments = await this.commentDBService.findMany(where);
+
+        const [restaurant, comments] = await Promise.all([
+            this.restaurantDBService.findUnique({
+                id: restaurantId
+            }),
+            this.commentDBService.findMany(where)
+        ]);
 
         return { restaurant, comments };
     }
