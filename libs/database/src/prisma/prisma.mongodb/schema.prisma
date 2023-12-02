@@ -14,8 +14,8 @@ model Restaurants {
   name     String
   lat      String?
   lon      String?
-  comments Int?
-  stars    Int?
+  comments Int?    @default(0)
+  stars    Int?    @default(0)
 }
 
 //Comment user have to be releated
