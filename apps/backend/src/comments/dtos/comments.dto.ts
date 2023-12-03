@@ -5,12 +5,12 @@ export class AddCommentsJsonDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    restaurant_id: string;
+    restaurantId: string;
 
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    name: string;
+    title: string;
 
     @ApiProperty()
     @IsNotEmpty()
@@ -20,7 +20,7 @@ export class AddCommentsJsonDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsNumber()
-    stars: number;
+    star: number;
 }
 
 export class DeleteCommentsJsonDto {

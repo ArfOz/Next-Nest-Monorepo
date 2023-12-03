@@ -3,11 +3,11 @@ import { CitiesJsonDto } from './Cities.dto';
 export class CommentDetails {
     'id': string;
     'restaurant_id': string;
-    'name': string;
+    'title': string;
     'comment': string;
-    'stars': number;
-    'date': string;
-    'user_id': string;
+    'star': number;
+    'updatedAt': string;
+    user: { username: string };
 }
 
 export class CityDetailsJsonDto {

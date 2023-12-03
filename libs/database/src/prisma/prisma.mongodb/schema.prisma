@@ -1,0 +1,38 @@
+//This database is MONGODB area
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../../../../node_modules/@prisma/mongo/client"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGODB_DATABASE_URL")
+}
+
+model Restaurants {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  lat      String?
+  lon      String?
+  comments Int?    @default(0)
+  stars    Int?    @default(0)
+}
+
+//Comment user have to be releated
+// model Users {
+//   id       String   @id @default(auto()) @map("_id") @db.ObjectId
+//   username String
+//   password String
+//   email    String
+//   created  DateTime @default(now())
+// }
+
+// model Comments {
+//   id            String   @id @default(auto()) @map("_id") @db.ObjectId
+//   restaurant_id String
+//   name          String
+//   comment       String
+//   stars         Int
+//   date          DateTime @default(now())
+//   user_id       String
+// }

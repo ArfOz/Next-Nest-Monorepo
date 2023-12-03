@@ -56,10 +56,10 @@ const AddComment = (props: Props) => {
             if (isValidForm) {
                 setButtonText('Sending');
                 const data: SendCommentDto = {
-                    restaurant_id: props.restaurant_id,
-                    name: title,
+                    restaurantId: props.restaurant_id,
+                    title,
                     comment,
-                    stars: starValue
+                    star: starValue
                 };
                 const res = await fetch(
                     'http://localhost:3300/api/comments/addcomments',
@@ -74,6 +74,19 @@ const AddComment = (props: Props) => {
                     }
                 );
                 const response = await res.json();
+
+                if (response?.error) {
+                    setShowSuccessMessage(false);
+                    setShowFailureMessage(true);
+                    setButtonText('Send');
+                    // Reset form fields
+                    setTitle('');
+                    setComment('');
+                    setStarValue(3);
+                    setError(response.message);
+
+                    return;
+                }
 
                 if (response?.Error) {
                     setShowSuccessMessage(false);

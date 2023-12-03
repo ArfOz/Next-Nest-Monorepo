@@ -17,7 +17,6 @@ function classNames(...classes: string[]) {
 const Navbar = () => {
     const pathname = usePathname();
     const { data: session, status, update } = useSession();
-    //
 
     const navigation: Array<Navigate> = [];
     if (status == 'authenticated') {

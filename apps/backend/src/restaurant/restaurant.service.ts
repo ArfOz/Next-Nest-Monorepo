@@ -4,7 +4,8 @@ import {
     UsersDBService
 } from '@database';
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma as PrismaMongoDb } from '@prisma/mongo/client';
+import { Prisma as PrismaPostgresql } from '@prisma/postgres/client';
 import { AddRestaurantJsonDto } from './dtos';
 
 @Injectable()
@@ -30,23 +31,17 @@ export class RestaurantService {
     }
 
     async getRestaurant(restaurantId: string) {
-        const restaurant = await this.restaurantDBService.findUnique({
-            id: restaurantId
-        });
-
-        const where: Prisma.CommentsWhereInput = {
-            restaurant_id: restaurantId
+        const where: PrismaPostgresql.CommentWhereInput = {
+            restaurantId: restaurantId
         };
-        const comments = await this.commentDBService.findMany(where);
 
-        //For this type of data SQL type database better...
-        for (let i = 0; i < comments.length; i++) {
-            const user = await this.userDbService.findOne({
-                id: comments[i].user_id
-            });
+        const [restaurant, comments] = await Promise.all([
+            this.restaurantDBService.findUnique({
+                id: restaurantId
+            }),
+            this.commentDBService.findMany(where)
+        ]);
 
-            comments[i].user_id = user.username;
-        }
         return { restaurant, comments };
     }
 }

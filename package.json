@@ -13,8 +13,12 @@
     "frontend:build:development": "nx run frontend:build:development",
     "frontend:serve:production": "nx run frontend:serve:production",
     "start:all": "nx run-many --target=serve --all",
-    "database:generate": "npx prisma generate --schema=./libs/database/src/prisma/schema.prisma",
-    "migrate:database": "npx prisma db push --schema=./libs/database/src/prisma/schema.prisma"
+    "database:generate:mongodb": "npx prisma generate --schema=./libs/database/src/prisma/prisma.mongodb/schema.prisma",
+    "migrate:database:mongodb": "npx prisma db push --schema=./libs/database/src/prisma/prisma.mongodb/schema.prisma",
+    "database:generate:postgres": "npx prisma db push --schema=./libs/database/src/prisma/prisma.postgresql/schema.prisma",
+    "migrate:database:postgres": "npx prisma generate --schema=./libs/database/src/prisma/prisma.postgresql/schema.prisma",
+    "migrate:all": "npx prisma generate --schema=./libs/database/src/prisma/prisma.mongodb/schema.prisma & npx prisma generate --schema=./libs/database/src/prisma/prisma.postgresql/schema.prisma",
+    "generate:all": "npx prisma generate --schema=./libs/database/src/prisma/prisma.mongodb/schema.prisma & npx prisma generate --schema=./libs/database/src/prisma/prisma.postgresql/schema.prisma"
   },
   "private": true,
   "devDependencies": {
