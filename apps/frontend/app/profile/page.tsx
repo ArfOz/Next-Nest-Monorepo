@@ -48,7 +48,7 @@ export default function Profile() {
                                         {userData?.username}
                                     </div>
                                     <div className="mt-8">
-                                        <Link href={`/mycomments`}>
+                                        <Link href={`/profile/mycomments`}>
                                             My Comments
                                         </Link>
                                     </div>
