@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/mongo/client';
+import { PrismaServiceMongoDB } from '../prisma';
 
 @Injectable()
 export class RestaurantDBService {
-    constructor(private prisma: PrismaService) {}
+    constructor(private prisma: PrismaServiceMongoDB) {}
     async findUnique(where: Prisma.RestaurantsWhereUniqueInput) {
         const data = await this.prisma.restaurants.findUnique({
-            where,
+            where
         });
         return data;
     }
@@ -19,6 +19,17 @@ export class RestaurantDBService {
 
     async addRestaurant(data: Prisma.RestaurantsCreateInput) {
         const response = await this.prisma.restaurants.create({ data });
+        return response;
+    }
+
+    async update({
+        where,
+        data
+    }: {
+        where: Prisma.RestaurantsWhereUniqueInput;
+        data: Prisma.RestaurantsUpdateInput;
+    }) {
+        const response = await this.prisma.restaurants.update({ where, data });
         return response;
     }
 }

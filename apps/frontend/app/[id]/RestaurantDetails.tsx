@@ -11,7 +11,7 @@ const RestaurantDetails = ({ data }: { data: CityDetailsJsonDto }) => {
             <Stack spacing={1}>
                 <Rating
                     name="read-only"
-                    value={AvgCalculator(data.comments)}
+                    value={AvgCalculator(data.restaurant)}
                     precision={0.1}
                     readOnly
                 />

@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { RestaurantDBService } from './restaurant.service';
-import { PrismaService } from '../prisma';
+import { PrismaServiceMongoDB } from '../prisma';
 
 @Module({
-  imports: [],
-  exports: [RestaurantDBService],
-  providers: [RestaurantDBService, PrismaService],
+    imports: [],
+    exports: [RestaurantDBService],
+    providers: [RestaurantDBService, PrismaServiceMongoDB]
 })
 export class RestaurantDBModule {}
