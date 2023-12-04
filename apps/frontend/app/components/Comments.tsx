@@ -21,14 +21,13 @@ export const Comments = ({ comments }: { comments: CommentDetails }) => {
                                             items-start justify-between"
                         >
                             <div className="flex items-center gap-x-4 text-xs">
-                                <div
-                                    // dateTime="2023-03-16"
-                                    className="text-gray-500"
-                                >
-                                    {new Date(Date.parse(comments.updatedAt))
-                                        .toDateString()
-                                        .toString()}
-                                </div>
+                                <p className="font-semibold text-gray-900">
+                                    <a href="#">
+                                        <span className="absolute inset-0"></span>
+                                        {/* Author name */}
+                                        {comments.user.username}
+                                    </a>
+                                </p>
 
                                 <Stack spacing={1}>
                                     <Rating
@@ -61,21 +60,23 @@ export const Comments = ({ comments }: { comments: CommentDetails }) => {
                                 className="relative mt-8 flex  
                                             items-center gap-x-4"
                             >
-                                {comments.star > 4 ? (
+                                {/* {comments.star > 4 ? (
                                     <CiFaceSmile />
                                 ) : comments.star > 2 ? (
                                     <CiFaceMeh />
                                 ) : (
                                     <CiFaceFrown />
-                                )}
+                                )} */}
+                                <div
+                                    // dateTime="2023-03-16"
+                                    className="text-gray-500 text-xs"
+                                >
+                                    {new Date(Date.parse(comments.updatedAt))
+                                        .toDateString()
+                                        .toString()}
+                                </div>
+
                                 <div className="text-sm leading-6">
-                                    <p className="font-semibold text-gray-900">
-                                        <a href="#">
-                                            <span className="absolute inset-0"></span>
-                                            {/* Author name */}
-                                            {comments.user.username}
-                                        </a>
-                                    </p>
                                     <p className="text-gray-600">
                                         {/* {props.content.designation} */}
                                     </p>
