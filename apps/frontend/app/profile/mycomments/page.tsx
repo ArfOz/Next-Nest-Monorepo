@@ -27,10 +27,19 @@ const MyComments = () => {
         data();
     }, []);
 
+    const onDelete = (id: string) => {
+        console.log('delete active');
+        return null;
+    };
+
     const CommentsMapper = (
         <div className="flex flex-row flex-wrap gap-4 p-8 content-start">
             {comments.map((commentData: CommentDetails) => (
-                <Comments key={commentData.id} comments={commentData} />
+                <Comments
+                    key={commentData.id}
+                    comments={commentData}
+                    ondelete={() => onDelete(commentData.id)}
+                />
             ))}
         </div>
     );

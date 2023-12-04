@@ -4,8 +4,15 @@ import { CommentDetails } from '../Dtos/CityDetails.dto';
 import { Stack } from '@mui/material';
 import Rating from '@mui/material/Rating';
 import { CiFaceSmile, CiFaceMeh, CiFaceFrown } from 'react-icons/ci';
+import { FaRegTrashCan } from 'react-icons/fa6';
 
-export const Comments = ({ comments }: { comments: CommentDetails }) => {
+export const Comments = ({
+    comments,
+    ondelete
+}: {
+    comments: CommentDetails;
+    ondelete?: any;
+}) => {
     // console.log('commentssss', comments);
     return (
         <div>
@@ -20,7 +27,7 @@ export const Comments = ({ comments }: { comments: CommentDetails }) => {
                             className="flex max-w-xl flex-col  
                                             items-start justify-between"
                         >
-                            <div className="flex items-center gap-x-4 text-xs">
+                            <div className="flex items-center gap-x-4 text-sm w-full justify-between">
                                 <p className="font-semibold text-gray-900">
                                     <a href="#">
                                         <span className="absolute inset-0"></span>
@@ -28,15 +35,22 @@ export const Comments = ({ comments }: { comments: CommentDetails }) => {
                                         {comments.user.username}
                                     </a>
                                 </p>
+                                <div>
+                                    <Stack spacing={1}>
+                                        <Rating
+                                            name="read-only"
+                                            value={comments.star}
+                                            precision={0.1}
+                                            readOnly
+                                        />
+                                    </Stack>
+                                </div>
 
-                                <Stack spacing={1}>
-                                    <Rating
-                                        name="read-only"
-                                        value={comments.star}
-                                        precision={0.1}
-                                        readOnly
-                                    />
-                                </Stack>
+                                <div>
+                                    <button onClick={() => ondelete()}>
+                                        <FaRegTrashCan />
+                                    </button>
+                                </div>
                             </div>
                             <div className="group relative">
                                 <h3
