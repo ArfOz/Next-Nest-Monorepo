@@ -5,6 +5,7 @@ import { Stack } from '@mui/material';
 import Rating from '@mui/material/Rating';
 import { CiFaceSmile, CiFaceMeh, CiFaceFrown } from 'react-icons/ci';
 import { FaRegTrashCan } from 'react-icons/fa6';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 
 export const Comments = ({
     comments,
@@ -48,7 +49,7 @@ export const Comments = ({
 
                                 <div>
                                     <button onClick={() => ondelete()}>
-                                        <FaRegTrashCan />
+                                        <BsThreeDotsVertical />
                                     </button>
                                 </div>
                             </div>
