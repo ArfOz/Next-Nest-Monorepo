@@ -6,6 +6,7 @@ import Rating from '@mui/material/Rating';
 import { CiFaceSmile, CiFaceMeh, CiFaceFrown } from 'react-icons/ci';
 import { FaRegTrashCan } from 'react-icons/fa6';
 import { BsThreeDotsVertical } from 'react-icons/bs';
+import DropdownThreedots from './Dropdown/Dropdown';
 
 export const Comments = ({
     comments,
@@ -48,9 +49,7 @@ export const Comments = ({
                                 </div>
 
                                 <div>
-                                    <button onClick={() => ondelete()}>
-                                        <BsThreeDotsVertical />
-                                    </button>
+                                    <DropdownThreedots />
                                 </div>
                             </div>
                             <div className="group relative">
