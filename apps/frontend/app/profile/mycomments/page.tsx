@@ -32,23 +32,26 @@ const MyComments = () => {
         return null;
     };
 
-    const CommentsMapper = (
-        <div className="flex flex-row flex-wrap gap-4 p-8 content-start">
-            {comments.map((commentData: CommentDetails) => (
-                <Comments
-                    key={commentData.id}
-                    comments={commentData}
-                    ondelete={() => onDelete(commentData.id)}
-                />
-            ))}
-        </div>
-    );
+    const CommentsMapper =
+        // <div className="flex flex-row flex-wrap gap-4 p-8 content-start">
+        comments.map((commentData: CommentDetails) => (
+            <Comments
+                key={commentData.id}
+                comments={commentData}
+                ondelete={() => onDelete(commentData.id)}
+            />
+        ));
+    // </div>
 
     const NoComment = (
         <div className="text-center">Herhangi bir yorum bulunmamaktadır</div>
     );
 
-    return <>{comments.length > 0 ? CommentsMapper : NoComment}</>;
+    return (
+        <div className="flex flex-col items-center">
+            {comments.length > 0 ? CommentsMapper : NoComment}
+        </div>
+    );
 };
 
 export default MyComments;
