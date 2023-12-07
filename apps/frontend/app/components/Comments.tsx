@@ -28,11 +28,7 @@ export const Comments = ({
                     >
                         <div className="flex items-center gap-x-4 text-sm w-full justify-between">
                             <p className="font-semibold text-gray-900">
-                                <a>
-                                    <span className="absolute inset-0"></span>
-                                    {/* Author name */}
-                                    {comments.user.username}
-                                </a>
+                                {comments.user.username}
                             </p>
                             <div>
                                 <Stack spacing={1}>
