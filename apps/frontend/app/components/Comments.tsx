@@ -14,6 +14,10 @@ export const Comments = ({
     ondelete?: any;
 }) => {
     // console.log('commentssss', comments);
+    const DeletePost = () => {
+        console.log('arif');
+    };
+
     return (
         <div className="bg-white shadow-2xl w-96">
             <div className="mx-auto max-w-7xl ">
@@ -41,7 +45,9 @@ export const Comments = ({
                                 </Stack>
                             </div>
 
-                            <DropdownThreedots />
+                            <DropdownThreedots
+                                DeletePost={() => DeletePost()}
+                            />
                         </div>
                         <div className="group relative">
                             <h3

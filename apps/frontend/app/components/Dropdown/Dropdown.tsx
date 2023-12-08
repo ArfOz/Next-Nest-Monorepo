@@ -6,7 +6,7 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
 }
 
-export default function DropdownThreedots() {
+export default function DropdownThreedots({ DeletePost }: { DeletePost: any }) {
     return (
         <Menu as="div" className="relative inline-block text-left">
             <div>
@@ -32,8 +32,7 @@ export default function DropdownThreedots() {
                     <div className="py-1">
                         <Menu.Item>
                             {({ active }) => (
-                                <a
-                                    href="#"
+                                <button
                                     className={classNames(
                                         active
                                             ? 'bg-gray-100 text-gray-900'
@@ -42,103 +41,22 @@ export default function DropdownThreedots() {
                                     )}
                                 >
                                     Edit
-                                </a>
+                                </button>
                             )}
                         </Menu.Item>
                         <Menu.Item>
                             {({ active }) => (
-                                <a
-                                    href="#"
+                                <button
                                     className={classNames(
                                         active
                                             ? 'bg-gray-100 text-gray-900'
                                             : 'text-gray-700',
                                         'block px-4 py-2 text-sm'
                                     )}
-                                >
-                                    Duplicate
-                                </a>
-                            )}
-                        </Menu.Item>
-                    </div>
-                    <div className="py-1">
-                        <Menu.Item>
-                            {({ active }) => (
-                                <a
-                                    href="#"
-                                    className={classNames(
-                                        active
-                                            ? 'bg-gray-100 text-gray-900'
-                                            : 'text-gray-700',
-                                        'block px-4 py-2 text-sm'
-                                    )}
-                                >
-                                    Archive
-                                </a>
-                            )}
-                        </Menu.Item>
-                        <Menu.Item>
-                            {({ active }) => (
-                                <a
-                                    href="#"
-                                    className={classNames(
-                                        active
-                                            ? 'bg-gray-100 text-gray-900'
-                                            : 'text-gray-700',
-                                        'block px-4 py-2 text-sm'
-                                    )}
-                                >
-                                    Move
-                                </a>
-                            )}
-                        </Menu.Item>
-                    </div>
-                    <div className="py-1">
-                        <Menu.Item>
-                            {({ active }) => (
-                                <a
-                                    href="#"
-                                    className={classNames(
-                                        active
-                                            ? 'bg-gray-100 text-gray-900'
-                                            : 'text-gray-700',
-                                        'block px-4 py-2 text-sm'
-                                    )}
-                                >
-                                    Share
-                                </a>
-                            )}
-                        </Menu.Item>
-                        <Menu.Item>
-                            {({ active }) => (
-                                <a
-                                    href="#"
-                                    className={classNames(
-                                        active
-                                            ? 'bg-gray-100 text-gray-900'
-                                            : 'text-gray-700',
-                                        'block px-4 py-2 text-sm'
-                                    )}
-                                >
-                                    Add to favorites
-                                </a>
-                            )}
-                        </Menu.Item>
-                    </div>
-                    <div className="py-1">
-                        <Menu.Item>
-                            {({ active }) => (
-                                <a
-                                    href="#"
-                                    className={classNames(
-                                        active
-                                            ? 'bg-gray-100 text-gray-900'
-                                            : 'text-gray-700',
-                                        'block px-4 py-2 text-sm'
-                                    )}
+                                    onClick={() => DeletePost()}
                                 >
                                     Delete
-                                </a>
+                                </button>
                             )}
                         </Menu.Item>
                     </div>
