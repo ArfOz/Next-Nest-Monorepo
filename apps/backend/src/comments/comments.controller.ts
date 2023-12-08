@@ -34,7 +34,7 @@ export class CommentsController {
         return await this.commentsService.myComments(user);
     }
 
-    @Get('deletecomment')
+    @Post('deletecomment')
     async deleteComment(
         @UserParam() user: UserParamsDto,
         @Body() input: DeleteCommentsJsonDto
