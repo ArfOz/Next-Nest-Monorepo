@@ -6,7 +6,13 @@ function classNames(...classes: any) {
     return classes.filter(Boolean).join(' ');
 }
 
-export default function DropdownThreedots({ DeletePost }: { DeletePost: any }) {
+export default function DropdownThreedots({
+    DeletePost,
+    UpdatePost
+}: {
+    DeletePost: any;
+    UpdatePost: any;
+}) {
     return (
         <Menu as="div" className="relative inline-block text-left">
             <div>
@@ -39,6 +45,7 @@ export default function DropdownThreedots({ DeletePost }: { DeletePost: any }) {
                                             : 'text-gray-700',
                                         'block px-4 py-2 text-sm'
                                     )}
+                                    onClick={() => UpdatePost()}
                                 >
                                     Edit
                                 </button>

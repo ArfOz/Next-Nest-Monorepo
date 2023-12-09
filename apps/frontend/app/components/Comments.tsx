@@ -6,31 +6,6 @@ import Rating from '@mui/material/Rating';
 
 import DropdownThreedots from './Dropdown/Dropdown';
 
-//                         <div
-//                             className="relative mt-8 flex
-//                                             items-center gap-x-4"
-//                         >
-//                             <div
-//                                 // dateTime="2023-03-16"
-//                                 className="text-gray-500 text-xs"
-//                             >
-//                                 {new Date(Date.parse(comments.updatedAt))
-//                                     .toDateString()
-//                                     .toString()}
-//                             </div>
-//                             <div className="text-sm leading-6">
-//                                 <p className="text-gray-600">
-//                                     {/* {props.content.designation} */}
-//                                 </p>
-//                             </div>
-//                         </div>
-//                     </article>
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// };
-
 export const Comments = ({
     comments,
     ondelete
@@ -39,11 +14,10 @@ export const Comments = ({
     ondelete?: any;
 }) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [postText, setPostText] = useState(
-        'LinkedIn gönderi metni buraya gelecek. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-    );
+    const [postText, setPostText] = useState('');
 
-    const handleEditClick = () => {
+    const UpdatePost = () => {
+        console.log('update');
         setIsEditing(true);
     };
 
@@ -76,13 +50,16 @@ export const Comments = ({
                     />
                 </Stack>
 
-                <DropdownThreedots DeletePost={() => DeletePost()} />
+                <DropdownThreedots
+                    DeletePost={() => DeletePost()}
+                    UpdatePost={() => UpdatePost()}
+                />
             </div>
 
             {isEditing ? (
                 <textarea
                     value={comments.comment}
-                    onChange={(e) => setPostText(e.target.value)}
+                    onChange={(e) => setPostText(e?.target?.value)}
                     className="mt-4 p-2 border border-gray-300 rounded-md w-full"
                 />
             ) : (
