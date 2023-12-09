@@ -5,14 +5,17 @@ import { Stack } from '@mui/material';
 import Rating from '@mui/material/Rating';
 
 import DropdownThreedots from './Dropdown/Dropdown';
+import { useSession } from 'next-auth/react';
 
 export const Comments = ({
-    comments,
+    comments: comment,
     ondelete
 }: {
     comments: CommentDetails;
     ondelete?: any;
 }) => {
+    const { data: session, status, update } = useSession();
+
     const [isEditing, setIsEditing] = useState(false);
     const [postText, setPostText] = useState('');
 
@@ -21,8 +24,20 @@ export const Comments = ({
         setIsEditing(true);
     };
 
-    const DeletePost = () => {
+    const DeletePost = async () => {
         console.log('delete');
+        const res = await fetch(
+            'http://localhost:3300/api/comments/deletecomment',
+            {
+                body: JSON.stringify({ id: comment.id }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session?.accessToken}`
+                },
+                method: 'POST',
+                cache: 'no-cache'
+            }
+        );
     };
 
     const handleSaveClick = () => {
@@ -34,9 +49,9 @@ export const Comments = ({
         <div className="bg-white p-4 shadow-md rounded-md max-w-md mx-auto mt-8">
             <div className="flex items-center gap-x-4 text-sm w-full justify-between">
                 <div>
-                    <p className="font-semibold">{comments.user.username}</p>
+                    <p className="font-semibold">{comment.user.username}</p>
                     <p className="text-gray-500 text-sm">
-                        {new Date(Date.parse(comments.updatedAt))
+                        {new Date(Date.parse(comment.updatedAt))
                             .toDateString()
                             .toString()}
                     </p>
@@ -44,7 +59,7 @@ export const Comments = ({
                 <Stack spacing={1}>
                     <Rating
                         name="read-only"
-                        value={comments.star}
+                        value={comment.star}
                         precision={0.1}
                         readOnly
                     />
@@ -58,12 +73,12 @@ export const Comments = ({
 
             {isEditing ? (
                 <textarea
-                    value={comments.comment}
+                    value={comment.comment}
                     onChange={(e) => setPostText(e?.target?.value)}
                     className="mt-4 p-2 border border-gray-300 rounded-md w-full"
                 />
             ) : (
-                <p className="mt-4 text-gray-800">{comments.comment}</p>
+                <p className="mt-4 text-gray-800">{comment.comment}</p>
             )}
 
             <div className="flex items-center mt-4">
