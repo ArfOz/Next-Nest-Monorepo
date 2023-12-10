@@ -18,6 +18,9 @@ export const Comments = ({
 
     const [isEditing, setIsEditing] = useState(false);
     const [postText, setPostText] = useState('');
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [showFailureMessage, setShowFailureMessage] = useState(false);
+    const [error, setError] = useState('');
 
     const UpdatePost = () => {
         console.log('update');
@@ -38,6 +41,36 @@ export const Comments = ({
                 cache: 'no-cache'
             }
         );
+        const response = await res.json();
+
+        if (response?.error) {
+            setShowSuccessMessage(false);
+            setShowFailureMessage(true);
+            // Reset form fields
+            setError(response.message);
+
+            return;
+        }
+
+        if (response?.Error) {
+            setShowSuccessMessage(false);
+            setShowFailureMessage(true);
+            // Reset form fields
+
+            setError(response.Details);
+
+            return;
+        }
+
+        if (response?.Success) {
+            setError('');
+            setShowSuccessMessage(true);
+            setShowFailureMessage(false);
+
+            setTimeout(function () {
+                window.location.reload();
+            }, 2000);
+        }
     };
 
     const handleSaveClick = () => {
