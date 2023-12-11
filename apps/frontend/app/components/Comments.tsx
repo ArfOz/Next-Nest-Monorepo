@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { CommentDetails } from '../Dtos/CityDetails.dto';
 import { Stack } from '@mui/material';
 import Rating from '@mui/material/Rating';
+import Modal from './Modal/Modal';
 
 import DropdownThreedots from './Dropdown/Dropdown';
 import { useSession } from 'next-auth/react';
@@ -15,6 +16,7 @@ export const Comments = ({
     ondelete?: any;
 }) => {
     const { data: session, status, update } = useSession();
+    const [showModal, setShowModal] = useState(false);
 
     const [isEditing, setIsEditing] = useState(false);
     const [postText, setPostText] = useState('');
@@ -25,6 +27,7 @@ export const Comments = ({
     const UpdatePost = () => {
         console.log('update');
         setIsEditing(true);
+        setShowModal(true);
     };
 
     const DeletePost = async () => {
@@ -43,20 +46,11 @@ export const Comments = ({
         );
         const response = await res.json();
 
-        if (response?.error) {
-            setShowSuccessMessage(false);
-            setShowFailureMessage(true);
-            // Reset form fields
-            setError(response.message);
-
-            return;
-        }
-
         if (response?.Error) {
             setShowSuccessMessage(false);
             setShowFailureMessage(true);
+            setShowModal(true);
             // Reset form fields
-
             setError(response.Details);
 
             return;
@@ -66,11 +60,17 @@ export const Comments = ({
             setError('');
             setShowSuccessMessage(true);
             setShowFailureMessage(false);
+            setShowModal(true);
 
             setTimeout(function () {
                 window.location.reload();
             }, 2000);
         }
+    };
+
+    const closeModal = () => {
+        // Close the modal
+        setShowModal(false);
     };
 
     const handleSaveClick = () => {
@@ -103,7 +103,6 @@ export const Comments = ({
                     UpdatePost={() => UpdatePost()}
                 />
             </div>
-
             {isEditing ? (
                 <textarea
                     value={comment.comment}
@@ -113,7 +112,6 @@ export const Comments = ({
             ) : (
                 <p className="mt-4 text-gray-800">{comment.comment}</p>
             )}
-
             <div className="flex items-center mt-4">
                 {isEditing && (
                     <button
@@ -150,6 +148,7 @@ export const Comments = ({
                 {/* <span>Yorum Yap</span> */}
                 {/* </button> */}
             </div>
+            <Modal showModal={showModal} closeModal={closeModal} />
         </div>
     );
 };
