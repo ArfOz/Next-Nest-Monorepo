@@ -4,7 +4,12 @@ import { AddCommentsJsonDto, DeleteCommentsJsonDto } from './dtos';
 import { Prisma as PrismaPostgres } from '@prisma/postgres/client';
 import { Prisma as PrismaMongoDb } from '@prisma/mongo/client';
 import { UserParamsDto } from './dtos/userparams.dto';
-import { BadRequestException, BadRequestExceptionType } from '@exceptions';
+import {
+    BadRequestException,
+    BadRequestExceptionType,
+    UnauthorizedException,
+    UnauthorizedExceptionType
+} from '@exceptions';
 import { ResponseController } from '@dtos';
 
 @Injectable()
@@ -106,12 +111,37 @@ export class CommentsService {
         data: DeleteCommentsJsonDto
     ): Promise<ResponseController> {
         const where: PrismaPostgres.CommentWhereUniqueInput = {
-            id: data.id
+            id: data.id,
+            user: { id: user.sub }
         };
+
+        const permission = await this.commentDBService.findUnique(where);
+
+        if (!permission) {
+            throw new UnauthorizedException(
+                UnauthorizedExceptionType.UNAUTHORIZED_ACCESS,
+                new Error('No permission to delete this comment'),
+                404
+            );
+        }
+
         const comment = await this.commentDBService.delete(where);
         return {
             Success: true,
             Data: comment
         };
+    }
+
+    async updateComment(
+        user: UserParamsDto,
+        data: DeleteCommentsJsonDto
+    ): Promise<ResponseController> {
+        const where: PrismaPostgres.CommentWhereUniqueInput = {
+            id: data.id,
+            user: {
+                id: user.sub
+            }
+        };
+        return null;
     }
 }
