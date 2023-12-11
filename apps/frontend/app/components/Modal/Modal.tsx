@@ -1,9 +1,11 @@
 const Modal = ({
     showModal,
-    closeModal
+    closeModal,
+    data
 }: {
     showModal: boolean;
     closeModal: any;
+    data: string;
 }) => {
     return (
         <div
@@ -12,7 +14,7 @@ const Modal = ({
         >
             <div className="bg-white p-8 rounded shadow-md">
                 {/* Your modal content goes here */}
-                <p>Modal Content</p>
+                <p>{data}</p>
                 <button
                     onClick={closeModal}
                     className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"

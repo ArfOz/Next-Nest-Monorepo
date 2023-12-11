@@ -23,6 +23,7 @@ export const Comments = ({
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [showFailureMessage, setShowFailureMessage] = useState(false);
     const [error, setError] = useState('');
+    const [modalMessage, setModalMessage] = useState('');
 
     const UpdatePost = () => {
         console.log('update');
@@ -148,7 +149,11 @@ export const Comments = ({
                 {/* <span>Yorum Yap</span> */}
                 {/* </button> */}
             </div>
-            <Modal showModal={showModal} closeModal={closeModal} />
+            <Modal
+                showModal={showModal}
+                closeModal={closeModal}
+                data={modalMessage}
+            />
         </div>
     );
 };
