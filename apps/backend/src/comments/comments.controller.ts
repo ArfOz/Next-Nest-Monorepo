@@ -1,5 +1,9 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { AddCommentsJsonDto, DeleteCommentsJsonDto } from './dtos';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+    AddCommentsJsonDto,
+    DeleteCommentsJsonDto,
+    UpdateCommentsJsonDto
+} from './dtos';
 import { CommentsService } from './comments.service';
 import { AllowUnauthorizedRequest } from '@exceptions';
 import { UserParamsDto } from './dtos/userparams.dto';
@@ -21,7 +25,7 @@ export class CommentsController {
     @AllowUnauthorizedRequest()
     @Get('getcomment/:id')
     getComments(
-        @UserParam() user: UserParamsDto,
+        // @UserParam() user: UserParamsDto,
         @Param('id') id: string
     ): Promise<ResponseController> {
         return this.commentsService.getComment(id);
@@ -40,5 +44,13 @@ export class CommentsController {
         @Body() input: DeleteCommentsJsonDto
     ): Promise<ResponseController> {
         return await this.commentsService.deleteComment(user, input);
+    }
+
+    @Put('updatecomment')
+    async updateComment(
+        @UserParam() user: UserParamsDto,
+        @Body() input: UpdateCommentsJsonDto
+    ): Promise<ResponseController> {
+        return await this.commentsService.updateComment(user, input);
     }
 }
