@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class AddCommentsJsonDto {
     @ApiProperty()
@@ -28,4 +28,26 @@ export class DeleteCommentsJsonDto {
     @IsNotEmpty()
     @IsString()
     id: string;
+}
+
+export class UpdateCommentsJsonDto {
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    id: string;
+
+    @ApiProperty()
+    @IsOptional()
+    @IsString()
+    title?: string;
+
+    @ApiProperty()
+    @IsOptional()
+    @IsString()
+    comment?: string;
+
+    @ApiProperty()
+    @IsOptional()
+    @IsNumber()
+    star?: number;
 }
