@@ -39,4 +39,15 @@ export class CommentsDBService {
         const response = await this.prisma.comment.delete({ where });
         return response;
     }
+    async update({
+        where,
+        data
+    }: {
+        where: Prisma.CommentWhereUniqueInput;
+        data: Prisma.CommentUpdateInput;
+    }) {
+        const response = await this.prisma.comment.update({ where, data });
+
+        return response;
+    }
 }

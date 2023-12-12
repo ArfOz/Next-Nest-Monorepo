@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CommentsDBService, RestaurantDBService } from '@database';
-import { AddCommentsJsonDto, DeleteCommentsJsonDto } from './dtos';
+import {
+    AddCommentsJsonDto,
+    DeleteCommentsJsonDto,
+    UpdateCommentsJsonDto
+} from './dtos';
 import { Prisma as PrismaPostgres } from '@prisma/postgres/client';
 import { Prisma as PrismaMongoDb } from '@prisma/mongo/client';
 import { UserParamsDto } from './dtos/userparams.dto';
@@ -134,14 +138,38 @@ export class CommentsService {
 
     async updateComment(
         user: UserParamsDto,
-        data: DeleteCommentsJsonDto
+        updateData: UpdateCommentsJsonDto
     ): Promise<ResponseController> {
         const where: PrismaPostgres.CommentWhereUniqueInput = {
-            id: data.id,
+            id: updateData.id,
             user: {
                 id: user.sub
             }
         };
-        return null;
+
+        const permission = await this.commentDBService.findUnique(where);
+
+        if (!permission) {
+            throw new UnauthorizedException(
+                UnauthorizedExceptionType.UNAUTHORIZED_ACCESS,
+                new Error('No permission to delete this comment'),
+                404
+            );
+        }
+
+        const data: PrismaPostgres.CommentUpdateInput = {
+            ...updateData,
+            updatedAt: new Date()
+        };
+
+        const comment = await this.commentDBService.update({
+            where,
+            data
+        });
+
+        return {
+            Success: true,
+            Data: comment
+        };
     }
 }
