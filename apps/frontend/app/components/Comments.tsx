@@ -7,6 +7,7 @@ import Modal from './Modal/Modal';
 
 import DropdownThreedots from './Dropdown/Dropdown';
 import { useSession } from 'next-auth/react';
+import { UpdateCommentDataDto } from './dtos/navigate.type';
 
 export const Comments = ({
     comments: comment,
@@ -17,9 +18,12 @@ export const Comments = ({
 }) => {
     const { data: session, status, update } = useSession();
     const [showModal, setShowModal] = useState(false);
+    const [starValue, setStarValue] = useState(comment.star);
 
     const [isEditing, setIsEditing] = useState(false);
-    const [postText, setPostText] = useState('');
+    const [commentText, setCommentText] = useState('');
+    const [commentTitle, setCommentTitle] = useState('');
+
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [showFailureMessage, setShowFailureMessage] = useState(false);
     const [error, setError] = useState('');
@@ -28,7 +32,7 @@ export const Comments = ({
     const UpdatePost = () => {
         console.log('update');
         setIsEditing(true);
-        setShowModal(true);
+        // setShowModal(true);
     };
 
     const DeletePost = async () => {
@@ -74,9 +78,34 @@ export const Comments = ({
         setShowModal(false);
     };
 
-    const handleSaveClick = () => {
+    const handleCancelClick = () => {
+        // Close the modal
         setIsEditing(false);
-        // Burada postText'i kaydetme veya başka bir işlem yapma işlemleri gerçekleştirilebilir.
+    };
+
+    const handleSaveClick = async () => {
+        setIsEditing(false);
+
+        const updatedData: UpdateCommentDataDto = {
+            id: comment.id,
+            comment: commentText,
+            star: starValue
+            // title:
+        };
+
+        const res = await fetch(
+            'http://localhost:3300/api/comments/updatecomment',
+            {
+                body: JSON.stringify({ id: comment.id }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session?.accessToken}`
+                },
+                method: 'POST',
+                cache: 'no-cache'
+            }
+        );
+        const response = await res.json();
     };
 
     return (
@@ -92,10 +121,12 @@ export const Comments = ({
                 </div>
                 <Stack spacing={1}>
                     <Rating
-                        name="read-only"
-                        value={comment.star}
+                        value={starValue}
                         precision={0.1}
-                        readOnly
+                        readOnly={!isEditing}
+                        onChange={(event, newValue) => {
+                            setStarValue(newValue!);
+                        }}
                     />
                 </Stack>
 
@@ -105,22 +136,55 @@ export const Comments = ({
                 />
             </div>
             {isEditing ? (
-                <textarea
-                    value={comment.comment}
-                    onChange={(e) => setPostText(e?.target?.value)}
-                    className="mt-4 p-2 border border-gray-300 rounded-md w-full"
-                />
+                <>
+                    <textarea
+                        value={comment.title}
+                        onChange={(e) => setCommentTitle(e?.target?.value)}
+                        className="mt-4 p-2 border border-gray-300 rounded-md w-full"
+                    />
+
+                    <textarea
+                        value={comment.comment}
+                        onChange={(e) => setCommentText(e?.target?.value)}
+                        className="p-2 border border-gray-300 rounded-md w-full"
+                    />
+                </>
             ) : (
-                <p className="mt-4 text-gray-800">{comment.comment}</p>
+                <div className="group relative">
+                    <h3
+                        className="mt-3 text-lg font-semibold  
+                                               leading-6 text-gray-900  
+                                               group-hover:text-gray-600"
+                    >
+                        <a href="#">
+                            <span className="absolute inset-0"></span>
+                            {comment.title}
+                        </a>
+                    </h3>
+                    <p
+                        className="mt-5 line-clamp-3 text-sm  
+                                              leading-6 text-gray-600"
+                    >
+                        {comment.comment}
+                    </p>
+                </div>
             )}
             <div className="flex items-center mt-4">
                 {isEditing && (
-                    <button
-                        onClick={handleSaveClick}
-                        className="bg-blue-500 text-white px-4 py-2 rounded-md mr-4"
-                    >
-                        Kaydet
-                    </button>
+                    <>
+                        <button
+                            onClick={handleSaveClick}
+                            className="bg-blue-500 text-white px-4 py-2 rounded-md mr-4"
+                        >
+                            Kaydet
+                        </button>
+                        <button
+                            onClick={handleCancelClick}
+                            className="bg-blue-500 text-white px-4 py-2 rounded-md mr-4"
+                        >
+                            Iptal
+                        </button>
+                    </>
                 )}
 
                 {/* <button className="flex items-center space-x-2 text-gray-500 hover:text-blue-500"> */}
