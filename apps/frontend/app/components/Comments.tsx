@@ -89,23 +89,45 @@ export const Comments = ({
         const updatedData: UpdateCommentDataDto = {
             id: comment.id,
             comment: commentText,
-            star: starValue
-            // title:
+            star: starValue,
+            title: commentTitle
         };
+
+        console.log('updateddata', updatedData);
 
         const res = await fetch(
             'http://localhost:3300/api/comments/updatecomment',
             {
-                body: JSON.stringify({ id: comment.id }),
+                body: JSON.stringify(updatedData),
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${session?.accessToken}`
                 },
-                method: 'POST',
+                method: 'PUT',
                 cache: 'no-cache'
             }
         );
         const response = await res.json();
+        if (response?.Error) {
+            setShowSuccessMessage(false);
+            setShowFailureMessage(true);
+            setShowModal(true);
+            // Reset form fields
+            setError(response.Details);
+
+            return;
+        }
+
+        if (response?.Success) {
+            setError('');
+            setShowSuccessMessage(true);
+            setShowFailureMessage(false);
+            setShowModal(true);
+
+            setTimeout(function () {
+                window.location.reload();
+            }, 2000);
+        }
     };
 
     return (
@@ -138,13 +160,15 @@ export const Comments = ({
             {isEditing ? (
                 <>
                     <textarea
-                        value={comment.title}
+                        defaultValue={comment.title}
+                        // value={commentTitle}
                         onChange={(e) => setCommentTitle(e?.target?.value)}
-                        className="mt-4 p-2 border border-gray-300 rounded-md w-full"
+                        className=" p-2 border border-gray-300 rounded-md w-full"
                     />
 
                     <textarea
-                        value={comment.comment}
+                        defaultValue={comment.comment}
+                        // value={commentText}
                         onChange={(e) => setCommentText(e?.target?.value)}
                         className="p-2 border border-gray-300 rounded-md w-full"
                     />
