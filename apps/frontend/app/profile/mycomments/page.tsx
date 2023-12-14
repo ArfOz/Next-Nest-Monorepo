@@ -34,13 +34,17 @@ const MyComments = () => {
 
     const CommentsMapper =
         // <div className="flex flex-row flex-wrap gap-4 p-8 content-start">
-        comments.map((commentData: CommentDetails) => (
-            <Comments
-                key={commentData.id}
-                comments={commentData}
-                ondelete={() => onDelete(commentData.id)}
-            />
-        ));
+        comments
+            .sort((a: CommentDetails, b: CommentDetails) =>
+                a.id > b.id ? 1 : -1
+            )
+            .map((commentData: CommentDetails) => (
+                <Comments
+                    key={commentData.id}
+                    comments={commentData}
+                    ondelete={() => onDelete(commentData.id)}
+                />
+            ));
     // </div>
 
     const NoComment = (
