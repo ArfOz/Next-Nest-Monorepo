@@ -21,8 +21,8 @@ export const Comments = ({
     const [starValue, setStarValue] = useState(comment.star);
 
     const [isEditing, setIsEditing] = useState(false);
-    const [commentText, setCommentText] = useState('');
-    const [commentTitle, setCommentTitle] = useState('');
+    const [commentText, setCommentText] = useState(comment.comment);
+    const [commentTitle, setCommentTitle] = useState(comment.title);
 
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [showFailureMessage, setShowFailureMessage] = useState(false);
@@ -109,8 +109,9 @@ export const Comments = ({
         );
         const response = await res.json();
         if (response?.Error) {
-            setShowSuccessMessage(false);
-            setShowFailureMessage(true);
+            // setShowSuccessMessage(false);
+            // setShowFailureMessage(true);
+            setModalMessage(response.Error);
             setShowModal(true);
             // Reset form fields
             setError(response.Details);
@@ -120,8 +121,9 @@ export const Comments = ({
 
         if (response?.Success) {
             setError('');
-            setShowSuccessMessage(true);
-            setShowFailureMessage(false);
+            setModalMessage('Successfully updated');
+            // setShowSuccessMessage(true);
+            // setShowFailureMessage(false);
             setShowModal(true);
 
             setTimeout(function () {

@@ -13,7 +13,7 @@ import Link from 'next/link';
 
 const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
     const { isLoaded } = useLoadScript({
-        googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY || ''
+        googleMapsApiKey: process.env.NX_REACT_APP_GOOGLE_API_KEY as string
     });
     const [mapRef, setMapRef] = useState({
         panTo: { lat: 0, lng: 0 }

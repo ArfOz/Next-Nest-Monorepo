@@ -7,16 +7,20 @@ const { composePlugins, withNx } = require('@nx/next');
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
  **/
 const nextConfig = {
-  nx: {
-    // Set this to true if you would like to use SVGR
-    // See: https://github.com/gregberge/svgr
-    svgr: false,
-  },
+    nx: {
+        // Set this to true if you would like to use SVGR
+        // See: https://github.com/gregberge/svgr
+        svgr: false
+    },
+    env: {
+        NX_REACT_APP_GOOGLE_API_KEY:
+            process.env.NX_REACT_APP_GOOGLE_API_KEY || ''
+    }
 };
 
 const plugins = [
-  // Add more Next.js plugins to this list if needed.
-  withNx,
+    // Add more Next.js plugins to this list if needed.
+    withNx
 ];
 
 module.exports = composePlugins(...plugins)(nextConfig);
