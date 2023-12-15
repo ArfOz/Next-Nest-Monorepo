@@ -63,7 +63,6 @@ const handler = NextAuth({
     },
     callbacks: {
         async jwt({ token, user }: { token: JWT; user?: any }) {
-            console.log('jwt ici user', user, token);
             // user is only available the first time a user signs in authorized
             if (user) {
                 token.accessToken = user.accessToken;
