@@ -16,6 +16,7 @@ export const Comments = ({
     comments: CommentDetails;
     ondelete?: any;
 }) => {
+    console.log('comment', comment);
     const { data: session, status, update } = useSession();
     const [showModal, setShowModal] = useState(false);
     const [starValue, setStarValue] = useState(comment.star);
@@ -132,6 +133,16 @@ export const Comments = ({
         }
     };
 
+    const isEditDeleteAble = () => {
+        console.log(session);
+
+        if (session?.user?.id === comment.user.id) {
+            return true;
+        }
+
+        return false;
+    };
+
     return (
         <div className="bg-white p-4 shadow-md rounded-md max-w-md mx-auto mt-8">
             <div className="flex items-center gap-x-4 text-sm w-full justify-between">
@@ -154,10 +165,12 @@ export const Comments = ({
                     />
                 </Stack>
 
-                <DropdownThreedots
-                    DeletePost={() => DeletePost()}
-                    UpdatePost={() => UpdatePost()}
-                />
+                {isEditDeleteAble() && (
+                    <DropdownThreedots
+                        DeletePost={() => DeletePost()}
+                        UpdatePost={() => UpdatePost()}
+                    />
+                )}
             </div>
             {isEditing ? (
                 <>

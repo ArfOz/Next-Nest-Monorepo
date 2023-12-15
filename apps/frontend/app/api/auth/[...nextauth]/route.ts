@@ -63,11 +63,13 @@ const handler = NextAuth({
     },
     callbacks: {
         async jwt({ token, user }: { token: JWT; user?: any }) {
+            console.log('jwt ici user', user, token);
             // user is only available the first time a user signs in authorized
             if (user) {
                 token.accessToken = user.accessToken;
                 token.refreshToken = user.refreshToken;
                 token.name = user.user.username;
+                token.user_id = user.user.id;
                 token.email = user.user.email;
                 token.accessTokenExpires = user.expiresAccessToken;
                 token.refreshTokenExpires = user.expiresRefreshToken;
@@ -80,7 +82,7 @@ const handler = NextAuth({
 
         //  The session receives the token from JWT
         async session({ session, token }: { session: Session; token: JWT }) {
-            if (token && session.user) {
+            if (token && session?.user) {
                 // session.user.username = token.name;
                 // session.user.email = token.email;
                 session.accessTokenExpires = token?.accessTokenExpires;
@@ -88,6 +90,7 @@ const handler = NextAuth({
                 session.refreshToken = token.refreshToken;
                 session.user.name = token.name;
                 session.refreshTokenExpires = token.refreshTokenExpires;
+                session.user.id = token.user_id;
             }
 
             return { ...session };

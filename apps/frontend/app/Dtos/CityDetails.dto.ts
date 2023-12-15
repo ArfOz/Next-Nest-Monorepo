@@ -7,7 +7,10 @@ export class CommentDetails {
     'comment': string;
     'star': number;
     'updatedAt': string;
-    user: { username: string };
+    user: {
+        username: string;
+        id: string;
+    };
 }
 
 export class CityDetailsJsonDto {
