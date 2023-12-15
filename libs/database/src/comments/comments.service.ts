@@ -21,7 +21,8 @@ export class CommentsDBService {
                 updatedAt: true,
                 user: {
                     select: {
-                        username: true
+                        username: true,
+                        id: true
                     }
                 }
             }

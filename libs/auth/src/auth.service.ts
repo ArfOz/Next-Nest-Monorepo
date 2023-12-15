@@ -59,7 +59,8 @@ export class AuthService {
             expiresRefreshToken,
             user: {
                 username: user.username,
-                email: user.email
+                email: user.email,
+                id: user.id
             }
         };
     }
