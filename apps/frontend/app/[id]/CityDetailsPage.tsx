@@ -6,7 +6,6 @@ import RestaurantDetails from './RestaurantDetails';
 import AddComment from '../components/AddComment';
 
 export const CityDetailsPage = ({ data }: { data: CityDetailsJsonDto }) => {
-    // console.log('data details', data);
     const CommentsMapper = (
         <div className="flex flex-col items-center">
             {data.comments.map((commentData) => (

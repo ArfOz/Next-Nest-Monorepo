@@ -16,7 +16,6 @@ export const Comments = ({
     comments: CommentDetails;
     ondelete?: any;
 }) => {
-    console.log('comment', comment);
     const { data: session, status, update } = useSession();
     const [showModal, setShowModal] = useState(false);
     const [starValue, setStarValue] = useState(comment.star);
@@ -94,8 +93,6 @@ export const Comments = ({
             title: commentTitle
         };
 
-        console.log('updateddata', updatedData);
-
         const res = await fetch(
             'http://localhost:3300/api/comments/updatecomment',
             {
@@ -134,8 +131,6 @@ export const Comments = ({
     };
 
     const isEditDeleteAble = () => {
-        console.log(session);
-
         if (session?.user?.id === comment.user.id) {
             return true;
         }
