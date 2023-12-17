@@ -5,10 +5,10 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { FaHome } from 'react-icons/fa';
-import { Navigate } from './dtos/navigate.type';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { signOut, useSession } from 'next-auth/react';
-import SkeletonLoader from './Skeleton/SkeletonLoader';
+import { Navigate } from '../dtos/navigate.type';
+import SkeletonLoader from '../Skeleton/SkeletonLoader';
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ');

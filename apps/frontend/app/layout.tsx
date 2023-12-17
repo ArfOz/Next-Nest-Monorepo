@@ -2,10 +2,10 @@
 // import { getServerSession } from 'next-auth';
 import { Session } from 'next-auth';
 import { NextAuthProvider } from './Provider';
-import Navbar from './components/Navbar';
 import { headers } from 'next/headers';
 
 import './tailwind.css';
+import Navbar from './components/Navbar/Navbar';
 
 export const metadata = {
     title: 'Welcome to frontend',
@@ -34,13 +34,13 @@ export default async function RootLayout({
     // const session = await getServerSession();
 
     return (
-        <html lang="en">
-            <NextAuthProvider session={session}>
+        <NextAuthProvider session={session}>
+            <html lang="en">
                 <body className="flex flex-grow flex-col h-screen">
                     <Navbar />
                     {children}
                 </body>
-            </NextAuthProvider>
-        </html>
+            </html>
+        </NextAuthProvider>
     );
 }

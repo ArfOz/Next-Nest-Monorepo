@@ -1,4 +1,4 @@
-// 'use client';
+'use client';
 import React, { useState } from 'react';
 import { CommentDetails } from '../Dtos/CityDetails.dto';
 import { Stack } from '@mui/material';
@@ -10,11 +10,9 @@ import { useSession } from 'next-auth/react';
 import { UpdateCommentDataDto } from './dtos/navigate.type';
 
 export const Comments = ({
-    comments: comment,
-    ondelete
+    comments: comment
 }: {
     comments: CommentDetails;
-    ondelete?: any;
 }) => {
     const { data: session, status, update } = useSession();
     const [showModal, setShowModal] = useState(false);

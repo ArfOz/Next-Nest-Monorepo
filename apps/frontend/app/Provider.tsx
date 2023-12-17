@@ -2,7 +2,6 @@
 
 import { SessionProvider } from 'next-auth/react';
 import { Session } from 'next-auth';
-import { session } from 'passport';
 
 type Props = {
     children?: React.ReactNode;
