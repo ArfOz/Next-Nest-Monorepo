@@ -1,5 +1,6 @@
 'use client';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -27,8 +28,6 @@ export default function Profile() {
     }, []);
 
     if (session) {
-        // return 'Loading or not authenticated...';
-
         return (
             <>
                 <section className="bg-ct-blue-600  min-h-screen pt-20">
@@ -47,6 +46,11 @@ export default function Profile() {
                                     </div>
                                     <div className="mt-8">
                                         {userData?.username}
+                                    </div>
+                                    <div className="mt-8">
+                                        <Link href={`/profile/mycomments`}>
+                                            My Comments
+                                        </Link>
                                     </div>
                                 </div>
                             )}

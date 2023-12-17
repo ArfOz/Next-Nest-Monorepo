@@ -11,14 +11,12 @@ declare module 'next-auth' {
     }
 
     interface User {
+        id: string;
         email: string;
         username: string;
     }
     interface Data {
-        user: {
-            username: string;
-            email: string;
-        };
+        user: User;
         token: {
             refreshToken?: string;
             accessToken: string;
@@ -35,14 +33,12 @@ declare module 'next-auth/jwt' {
         exp?: number;
         iat?: number;
         jti?: string;
+        user_id: string;
     }
 }
 
 export interface ResponseType {
     accessToken: string;
     refreshToken: string;
-    user: {
-        username: string;
-        email: string;
-    };
+    user: User;
 }

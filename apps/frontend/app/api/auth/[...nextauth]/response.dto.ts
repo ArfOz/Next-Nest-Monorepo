@@ -2,9 +2,10 @@ export class ResponseJsonDto {
     Data: {
         accessToken?: string;
         refreshToken?: string;
-        user?: {
+        user: {
             username: string;
             email: string;
+            id: string;
         };
     };
 
@@ -20,6 +21,7 @@ export class JWTData {
     user: {
         username: string;
         email: string;
+        id: string;
     };
     token: {
         accessToken: string;
