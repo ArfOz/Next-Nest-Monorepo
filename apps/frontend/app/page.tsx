@@ -9,18 +9,21 @@ const defaultCity = {
 };
 
 async function GetData() {
-    let data;
     try {
-        data = // Change url for docker
-            (
-                await fetch('http://localhost:3300/api/restaurant/getall', {
-                    cache: 'no-cache'
-                })
-            ).json();
+        const data = await fetch(
+            'http://localhost:3300/api/restaurant/getall',
+            {
+                cache: 'no-cache'
+            }
+        );
+        const response = await data.json();
+        if (response?.Success) {
+            return response.Data;
+        }
+        return [defaultCity];
     } catch (error) {
         console.log(error);
     }
-    return data || [defaultCity];
 }
 
 const Page = async () => {
