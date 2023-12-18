@@ -1,3 +1,4 @@
+import { RequestNextNest } from '@frontendlibs';
 import { CitiesJsonDto } from './Dtos';
 import SimpleMap from './components/HomePage';
 
@@ -10,12 +11,8 @@ const defaultCity = {
 
 async function GetData() {
     try {
-        const data = await fetch(
-            'http://localhost:3300/api/restaurant/getall',
-            {
-                cache: 'no-cache'
-            }
-        );
+        const data = await RequestNextNest('restaurant/getall');
+
         const response = await data.json();
         if (response?.Success) {
             return response.Data;
