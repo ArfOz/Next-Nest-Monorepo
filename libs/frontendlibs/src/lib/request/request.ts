@@ -12,6 +12,9 @@ export async function RequestNextNest(
         if (response?.Success) {
             return response.Data;
         }
+        if (response?.Error) {
+            return response.Data;
+        }
     } catch (error) {
         console.log(error);
     }
