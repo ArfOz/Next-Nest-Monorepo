@@ -1,20 +1,21 @@
 export async function RequestNextNest(
-    url: string,
+    address: string,
     method = 'GET',
-    session?: string
+    token?: string
 ) {
     try {
-        const data = await fetch(`${process.env['BACKEND_URL']}/${url}`, {
-            cache: 'no-cache',
-            method
-        });
+        const myHeaders = new Headers();
+        myHeaders.append('Authorization', `Bearer ${token}`);
+
+        const requestOptions = {
+            method,
+            headers: myHeaders
+        };
+        const url = `${process.env['NX_BACKEND_URL']}/${address}`;
+        const data = await fetch(url, requestOptions);
         const response = await data.json();
-        if (response?.Success) {
-            return response.Data;
-        }
-        if (response?.Error) {
-            return response.Data;
-        }
+        // console.log('response', response);
+        return response;
     } catch (error) {
         console.log(error);
     }

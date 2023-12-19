@@ -13,9 +13,9 @@ async function GetData() {
     try {
         const data = await RequestNextNest('restaurant/getall');
 
-        const response = await data.json();
-        if (response?.Success) {
-            return response.Data;
+        
+        if (data?.Success) {
+            return data.Data;
         }
         return [defaultCity];
     } catch (error) {

@@ -14,7 +14,8 @@ const nextConfig = {
     },
     env: {
         NX_REACT_APP_GOOGLE_API_KEY:
-            process.env.NX_REACT_APP_GOOGLE_API_KEY || ''
+            process.env.NX_REACT_APP_GOOGLE_API_KEY || '',
+        NX_BACKEND_URL: process.env.BACKEND_URL || ''
     }
 };
 
