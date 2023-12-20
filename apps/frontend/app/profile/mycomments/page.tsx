@@ -4,22 +4,20 @@ import { useSession } from 'next-auth/react';
 import { Comments } from '../../components/Comments';
 import { CommentDetails } from '../../Dtos';
 import { Suspense } from 'react';
+import { RequestNextNest } from '@frontendlibs';
 
 const CommentsMapper = async () => {
     const { data: session, status, update } = useSession();
 
-    const res = await fetch('http://localhost:3300/api/comments/mycomments', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${session?.accessToken}`
-        }
-    });
-    const response = await res.json();
+    const res = await RequestNextNest(
+        'comments/mycomments',
+        'GET',
+        session?.accessToken
+    );
 
-    const comments = response.Data;
+    const comments = res.Data;
 
-    if (response.Data) {
+    if (res.Success) {
         return comments
             .sort((a: CommentDetails, b: CommentDetails) =>
                 a.id > b.id ? 1 : -1

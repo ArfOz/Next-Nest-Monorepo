@@ -13,7 +13,6 @@ async function GetData() {
     try {
         const data = await RequestNextNest('restaurant/getall');
 
-        
         if (data?.Success) {
             return data.Data;
         }
