@@ -21,6 +21,9 @@ export class UserController {
 
     @Get('profile')
     async GetProfile(@Request() req) {
-        return req.user;
+        return {
+            Success: true,
+            Data: req.user
+        };
     }
 }
