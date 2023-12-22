@@ -21,7 +21,7 @@ export default function Profile() {
                 session?.accessToken
             );
 
-            setUserData(data);
+            setUserData(data.Data);
         };
         data();
     }, []);

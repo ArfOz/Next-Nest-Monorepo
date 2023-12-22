@@ -9,7 +9,7 @@ type Props = {
     restaurant_id: string;
 };
 
-const AddComment = (props: Props) => {
+export default function AddComment(props: Props) {
     const [title, setTitle] = useState('');
     const [comment, setComment] = useState('');
     const [starValue, setStarValue] = useState(3);
@@ -68,7 +68,7 @@ const AddComment = (props: Props) => {
                     'comments/addcomments',
                     'POST',
                     session?.accessToken,
-                    JSON.stringify(data)
+                    data
                 );
 
                 if (res?.error) {
@@ -233,6 +233,4 @@ const AddComment = (props: Props) => {
             </div>
         </div>
     );
-};
-
-export default AddComment;
+}
