@@ -5,7 +5,6 @@ import { CityDetailsPage } from './CityDetailsPage';
 async function GetData(id: string) {
     const data = await RequestNextNest(`restaurant/getrestaurant/${id}`, 'GET');
 
-    console.log('dataaaaaaaaaaa', data);
     return data.Data;
 }
 
