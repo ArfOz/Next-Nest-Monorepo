@@ -3,6 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { ResponseJsonDto } from './response.dto';
 import { JWT } from 'next-auth/jwt';
 import { Session, Data, User } from 'next-auth';
+import { RequestNextNest } from '@frontendlibs';
 
 const handler = NextAuth({
     secret: process.env.NEXT_AUTH_SECRET,
@@ -24,27 +25,20 @@ const handler = NextAuth({
                 if (!credentials?.email || !credentials?.password) throw null;
                 try {
                     const { email, password } = credentials;
-                    const res = await fetch(
-                        'http://localhost:3300/api/user/login',
-                        {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                email,
-                                password
-                            }),
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        }
-                    );
-                    const response: ResponseJsonDto = await res.json();
 
-                    if (res.status == 401) {
-                        throw new Error(JSON.stringify(response));
+                    const res = await RequestNextNest(
+                        'user/login',
+                        'POST',
+                        undefined,
+                        { email, password }
+                    );
+
+                    if (res.Error) {
+                        throw new Error(JSON.stringify(res));
                     }
 
-                    if (res.status == 201) {
-                        return response.Data;
+                    if (res.Success) {
+                        return res.Data;
                     }
                 } catch (e) {
                     console.error('next auth credentials', e);

@@ -21,8 +21,6 @@ export default function MyComments() {
                 session?.accessToken
             );
 
-            console.log('comments1', res.Data);
-
             setComments(res.Data);
         };
         takeComments();

@@ -62,7 +62,6 @@ export default function AddComment(props: Props) {
                     comment,
                     star: starValue
                 };
-                console.log('dataaaaaa', data);
 
                 const res = await RequestNextNest(
                     'comments/addcomments',
