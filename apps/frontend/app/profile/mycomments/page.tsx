@@ -1,4 +1,3 @@
-'use client';
 import React from 'react';
 import { useSession } from 'next-auth/react';
 import { Comments } from '../../components/Comments';
@@ -14,6 +13,8 @@ const CommentsMapper = async () => {
         'GET',
         session?.accessToken
     );
+
+    console.log('comments', res.Data);
 
     const comments = res.Data;
 
