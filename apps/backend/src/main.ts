@@ -20,9 +20,9 @@ async function bootstrap() {
                     new Error(
                         errors
                             .map((error) => {
-                                let detay = '';
-                                return (detay =
-                                    detay +
+                                let detail = '';
+                                return (detail =
+                                    detail +
                                     error.constraints[
                                         Object.keys(error.constraints)[0]
                                     ]);
