@@ -8,6 +8,7 @@ import Modal from './Modal/Modal';
 import DropdownThreedots from './Dropdown/Dropdown';
 import { useSession } from 'next-auth/react';
 import { UpdateCommentDataDto } from './dtos/navigate.type';
+import { RequestNextNest } from '@frontendlibs';
 
 export const Comments = ({
     comments: comment
@@ -34,20 +35,14 @@ export const Comments = ({
     };
 
     const DeletePost = async () => {
-        console.log('delete');
-        const res = await fetch(
-            'http://localhost:3300/api/comments/deletecomment',
+        const response = await RequestNextNest(
+            'comments/deletecomment',
+            'POST',
+            session?.accessToken,
             {
-                body: JSON.stringify({ id: comment.id }),
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${session?.accessToken}`
-                },
-                method: 'POST',
-                cache: 'no-cache'
+                id: comment.id
             }
         );
-        const response = await res.json();
 
         if (response?.Error) {
             setShowSuccessMessage(false);
@@ -91,19 +86,13 @@ export const Comments = ({
             title: commentTitle
         };
 
-        const res = await fetch(
-            'http://localhost:3300/api/comments/updatecomment',
-            {
-                body: JSON.stringify(updatedData),
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${session?.accessToken}`
-                },
-                method: 'PUT',
-                cache: 'no-cache'
-            }
+        const response = await RequestNextNest(
+            'comments/updatecomment',
+            'PUT',
+            session?.accessToken,
+            updatedData
         );
-        const response = await res.json();
+
         if (response?.Error) {
             // setShowSuccessMessage(false);
             // setShowFailureMessage(true);

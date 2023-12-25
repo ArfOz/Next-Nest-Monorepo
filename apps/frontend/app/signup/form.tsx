@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { signIn } from 'next-auth/react';
+import { RequestNextNest } from '@frontendlibs';
 
 export const RegisterForm = () => {
     const [buttonText, setButtonText] = useState('Register');
@@ -36,7 +37,7 @@ export const RegisterForm = () => {
     ) => {
         // Handle form submission
 
-        const sendata = {
+        const sendData = {
             email: values.email,
             username: values.username,
             password: values.password
@@ -44,15 +45,13 @@ export const RegisterForm = () => {
 
         try {
             setButtonText('Sending');
-            const res = await fetch('http://localhost:3300/api/user/register', {
-                method: 'POST',
-                body: JSON.stringify(sendata),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
 
-            const response = await res.json();
+            const response = await RequestNextNest(
+                'user/register',
+                'POST',
+                undefined,
+                sendData
+            );
 
             if (response?.Error) {
                 setShowSuccessMessage(false);
