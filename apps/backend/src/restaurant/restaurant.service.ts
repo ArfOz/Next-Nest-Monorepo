@@ -22,12 +22,18 @@ export class RestaurantService {
 
     async getAll() {
         const data = await this.restaurantDBService.getAll();
-        return data;
+        return {
+            Success: true,
+            Data: data
+        };
     }
 
     async addRestaurant(data: AddRestaurantJsonDto) {
         const response = await this.restaurantDBService.addRestaurant(data);
-        return response;
+        return {
+            Success: true,
+            Data: response
+        };
     }
 
     async getRestaurant(restaurantId: string) {
@@ -42,6 +48,9 @@ export class RestaurantService {
             this.commentDBService.findMany(where)
         ]);
 
-        return { restaurant, comments };
+        return {
+            Success: true,
+            Data: { restaurant, comments }
+        };
     }
 }

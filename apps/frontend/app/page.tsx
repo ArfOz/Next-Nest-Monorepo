@@ -1,3 +1,4 @@
+import { RequestNextNest } from '@frontendlibs';
 import { CitiesJsonDto } from './Dtos';
 import SimpleMap from './components/HomePage';
 
@@ -9,18 +10,16 @@ const defaultCity = {
 };
 
 async function GetData() {
-    let data;
     try {
-        data = // Change url for docker
-            (
-                await fetch('http://localhost:3300/api/restaurant/getall', {
-                    cache: 'no-cache'
-                })
-            ).json();
+        const data = await RequestNextNest('restaurant/getall');
+
+        if (data?.Success) {
+            return data.Data;
+        }
+        return [defaultCity];
     } catch (error) {
         console.log(error);
     }
-    return data || [defaultCity];
 }
 
 const Page = async () => {

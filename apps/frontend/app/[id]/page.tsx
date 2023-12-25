@@ -1,22 +1,11 @@
+import { RequestNextNest } from '@frontendlibs';
 import { CityDetailsJsonDto } from '../Dtos/CityDetails.dto';
 import { CityDetailsPage } from './CityDetailsPage';
 
 async function GetData(id: string) {
-    let data;
-    try {
-        data = // Change url for docker
-            (
-                await fetch(
-                    `http://localhost:3300/api/restaurant/getrestaurant/${id}`,
-                    {
-                        cache: 'no-cache'
-                    }
-                )
-            ).json();
-    } catch (error) {
-        console.log(error);
-    }
-    return data;
+    const data = await RequestNextNest(`restaurant/getrestaurant/${id}`, 'GET');
+
+    return data.Data;
 }
 
 export default async function Page({ params }: { params: { id: string } }) {

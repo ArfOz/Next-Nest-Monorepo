@@ -8,6 +8,7 @@ import Modal from './Modal/Modal';
 import DropdownThreedots from './Dropdown/Dropdown';
 import { useSession } from 'next-auth/react';
 import { UpdateCommentDataDto } from './dtos/navigate.type';
+import { RequestNextNest } from '@frontendlibs';
 
 export const Comments = ({
     comments: comment
@@ -28,30 +29,23 @@ export const Comments = ({
     const [modalMessage, setModalMessage] = useState('');
 
     const UpdatePost = () => {
-        console.log('update');
         setIsEditing(true);
-        // setShowModal(true);
     };
 
     const DeletePost = async () => {
-        console.log('delete');
-        const res = await fetch(
-            'http://localhost:3300/api/comments/deletecomment',
+        const response = await RequestNextNest(
+            'comments/deletecomment',
+            'POST',
+            session?.accessToken,
             {
-                body: JSON.stringify({ id: comment.id }),
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${session?.accessToken}`
-                },
-                method: 'POST',
-                cache: 'no-cache'
+                id: comment.id
             }
         );
-        const response = await res.json();
 
         if (response?.Error) {
             setShowSuccessMessage(false);
             setShowFailureMessage(true);
+            setModalMessage(response.Error);
             setShowModal(true);
             // Reset form fields
             setError(response.Details);
@@ -62,6 +56,7 @@ export const Comments = ({
         if (response?.Success) {
             setError('');
             setShowSuccessMessage(true);
+            setModalMessage('Successfully deleted');
             setShowFailureMessage(false);
             setShowModal(true);
 
@@ -91,19 +86,13 @@ export const Comments = ({
             title: commentTitle
         };
 
-        const res = await fetch(
-            'http://localhost:3300/api/comments/updatecomment',
-            {
-                body: JSON.stringify(updatedData),
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${session?.accessToken}`
-                },
-                method: 'PUT',
-                cache: 'no-cache'
-            }
+        const response = await RequestNextNest(
+            'comments/updatecomment',
+            'PUT',
+            session?.accessToken,
+            updatedData
         );
-        const response = await res.json();
+
         if (response?.Error) {
             // setShowSuccessMessage(false);
             // setShowFailureMessage(true);
@@ -183,20 +172,10 @@ export const Comments = ({
                 </>
             ) : (
                 <div className="group relative">
-                    <h3
-                        className="mt-3 text-lg font-semibold  
-                                               leading-6 text-gray-900  
-                                               group-hover:text-gray-600"
-                    >
-                        <a href="#">
-                            <span className="absolute inset-0"></span>
-                            {comment.title}
-                        </a>
-                    </h3>
-                    <p
-                        className="mt-5 line-clamp-3 text-sm  
-                                              leading-6 text-gray-600"
-                    >
+                    <h4 className="mt-3 text-lg font-bold leading-6 text-gray-900">
+                        {comment.title}
+                    </h4>
+                    <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
                         {comment.comment}
                     </p>
                 </div>

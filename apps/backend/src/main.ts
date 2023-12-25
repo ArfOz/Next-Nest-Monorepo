@@ -7,11 +7,34 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app.module';
+import { BadRequestException, BadRequestExceptionType } from '@exceptions';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     app.enableCors();
-    app.useGlobalPipes(new ValidationPipe());
+    app.useGlobalPipes(
+        new ValidationPipe({
+            exceptionFactory: (errors) => {
+                return new BadRequestException(
+                    BadRequestExceptionType.BAD_REQUEST,
+                    new Error(
+                        errors
+                            .map((error) => {
+                                let detail = '';
+                                return (detail =
+                                    detail +
+                                    error.constraints[
+                                        Object.keys(error.constraints)[0]
+                                    ]);
+                            })
+                            .toString()
+                    ),
+                    404
+                );
+            },
+            stopAtFirstError: true
+        })
+    );
     const globalPrefix = 'api';
     app.setGlobalPrefix(globalPrefix);
     const port = process.env.PORT || 3300;

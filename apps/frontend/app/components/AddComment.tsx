@@ -3,12 +3,13 @@ import React, { useState } from 'react';
 import { Rating, Stack } from '@mui/material';
 import { SendCommentDto } from '../Dtos';
 import { useSession } from 'next-auth/react';
+import { RequestNextNest } from '@frontendlibs';
 
 type Props = {
     restaurant_id: string;
 };
 
-const AddComment = (props: Props) => {
+export default function AddComment(props: Props) {
     const [title, setTitle] = useState('');
     const [comment, setComment] = useState('');
     const [starValue, setStarValue] = useState(3);
@@ -61,21 +62,15 @@ const AddComment = (props: Props) => {
                     comment,
                     star: starValue
                 };
-                const res = await fetch(
-                    'http://localhost:3300/api/comments/addcomments',
-                    {
-                        body: JSON.stringify(data),
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: `Bearer ${session?.accessToken}`
-                        },
-                        method: 'POST',
-                        cache: 'no-cache'
-                    }
+
+                const res = await RequestNextNest(
+                    'comments/addcomments',
+                    'POST',
+                    session?.accessToken,
+                    data
                 );
-                const response = await res.json();
 
-                if (response?.error) {
+                if (res?.error) {
                     setShowSuccessMessage(false);
                     setShowFailureMessage(true);
                     setButtonText('Send');
@@ -83,12 +78,12 @@ const AddComment = (props: Props) => {
                     setTitle('');
                     setComment('');
                     setStarValue(3);
-                    setError(response.message);
+                    setError(res.message);
 
                     return;
                 }
 
-                if (response?.Error) {
+                if (res?.Error) {
                     setShowSuccessMessage(false);
                     setShowFailureMessage(true);
                     setButtonText('Send');
@@ -96,12 +91,12 @@ const AddComment = (props: Props) => {
                     setTitle('');
                     setComment('');
                     setStarValue(3);
-                    setError(response.Details);
+                    setError(res.Details);
 
                     return;
                 }
 
-                if (response?.Success) {
+                if (res?.Success) {
                     setError('');
                     setShowSuccessMessage(true);
                     setShowFailureMessage(false);
@@ -237,6 +232,4 @@ const AddComment = (props: Props) => {
             </div>
         </div>
     );
-};
-
-export default AddComment;
+}

@@ -1,4 +1,5 @@
 'use client';
+import { RequestNextNest } from '@frontendlibs';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -14,15 +15,13 @@ export default function Profile() {
     const router = useRouter();
     useEffect(() => {
         const data = async () => {
-            const res = await fetch('http://localhost:3300/api/user/profile', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${session?.accessToken}`
-                }
-            });
-            const response = await res.json();
-            setUserData(response);
+            const data = await RequestNextNest(
+                'user/profile',
+                'GET',
+                session?.accessToken
+            );
+
+            setUserData(data.Data);
         };
         data();
     }, []);
