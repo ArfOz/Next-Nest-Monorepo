@@ -29,9 +29,7 @@ export const Comments = ({
     const [modalMessage, setModalMessage] = useState('');
 
     const UpdatePost = () => {
-        console.log('update');
         setIsEditing(true);
-        // setShowModal(true);
     };
 
     const DeletePost = async () => {
@@ -47,6 +45,7 @@ export const Comments = ({
         if (response?.Error) {
             setShowSuccessMessage(false);
             setShowFailureMessage(true);
+            setModalMessage(response.Error);
             setShowModal(true);
             // Reset form fields
             setError(response.Details);
@@ -57,6 +56,7 @@ export const Comments = ({
         if (response?.Success) {
             setError('');
             setShowSuccessMessage(true);
+            setModalMessage('Successfully deleted');
             setShowFailureMessage(false);
             setShowModal(true);
 
@@ -172,20 +172,10 @@ export const Comments = ({
                 </>
             ) : (
                 <div className="group relative">
-                    <h3
-                        className="mt-3 text-lg font-semibold  
-                                               leading-6 text-gray-900  
-                                               group-hover:text-gray-600"
-                    >
-                        <a href="#">
-                            <span className="absolute inset-0"></span>
-                            {comment.title}
-                        </a>
-                    </h3>
-                    <p
-                        className="mt-5 line-clamp-3 text-sm  
-                                              leading-6 text-gray-600"
-                    >
+                    <h4 className="mt-3 text-lg font-bold leading-6 text-gray-900">
+                        {comment.title}
+                    </h4>
+                    <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
                         {comment.comment}
                     </p>
                 </div>

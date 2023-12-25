@@ -28,13 +28,18 @@ export default function MyComments() {
 
     return (
         <Suspense fallback={<p>Loading feed...</p>}>
-            {comments
-                ?.sort((a: CommentDetails, b: CommentDetails) =>
-                    a.id > b.id ? 1 : -1
-                )
-                .map((commentData: CommentDetails) => (
-                    <Comments key={commentData.id} comments={commentData} />
-                )) || NoComment}
+            {comments.length > 0
+                ? comments
+                      ?.sort((a: CommentDetails, b: CommentDetails) =>
+                          a.id > b.id ? 1 : -1
+                      )
+                      .map((commentData: CommentDetails) => (
+                          <Comments
+                              key={commentData.id}
+                              comments={commentData}
+                          />
+                      ))
+                : NoComment}
         </Suspense>
     );
 }
