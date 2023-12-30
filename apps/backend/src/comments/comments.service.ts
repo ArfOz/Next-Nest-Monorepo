@@ -167,6 +167,16 @@ export class CommentsService {
             );
         }
 
+        if (updateData.star) {
+            const updateStarValue: PrismaMongoDb.RestaurantsUpdateArgs = {
+                where: { id: permission.restaurantId },
+                data: {
+                    stars: { decrement: permission.star - updateData.star }
+                }
+            };
+            await this.restaurantDBService.update(updateStarValue);
+        }
+
         const data: PrismaPostgres.CommentUpdateInput = {
             ...updateData,
             updatedAt: new Date()
