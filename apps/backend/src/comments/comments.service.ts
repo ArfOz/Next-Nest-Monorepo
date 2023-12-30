@@ -129,6 +129,16 @@ export class CommentsService {
             );
         }
 
+        const updateData: PrismaMongoDb.RestaurantsUpdateArgs = {
+            where: { id: permission.restaurantId },
+            data: {
+                stars: { decrement: permission.star },
+                comments: { decrement: 1 }
+            }
+        };
+
+        await this.restaurantDBService.update(updateData);
+
         const comment = await this.commentDBService.delete(where);
         return {
             Success: true,
@@ -155,6 +165,16 @@ export class CommentsService {
                 new Error('No permission to delete this comment'),
                 404
             );
+        }
+
+        if (updateData.star) {
+            const updateStarValue: PrismaMongoDb.RestaurantsUpdateArgs = {
+                where: { id: permission.restaurantId },
+                data: {
+                    stars: { decrement: permission.star - updateData.star }
+                }
+            };
+            await this.restaurantDBService.update(updateStarValue);
         }
 
         const data: PrismaPostgres.CommentUpdateInput = {

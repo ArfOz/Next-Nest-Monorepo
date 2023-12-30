@@ -139,7 +139,6 @@ export const Comments = ({
                 <Stack spacing={1}>
                     <Rating
                         value={starValue}
-                        precision={0.1}
                         readOnly={!isEditing}
                         onChange={(event, newValue) => {
                             setStarValue(newValue!);
