@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { Rating, Stack } from '@mui/material';
-import { SendCommentDto } from '../Dtos';
+import { SendCommentDto } from './dtos';
 import { useSession } from 'next-auth/react';
 import { RequestNextNest } from '@frontendlibs';
 

@@ -1,5 +1,5 @@
 import { RequestNextNest } from '@frontendlibs';
-import { CitiesJsonDto } from './Dtos';
+import { CitiesJsonDto } from './components/dtos';
 import SimpleMap from './components/HomePage';
 
 const defaultCity = {

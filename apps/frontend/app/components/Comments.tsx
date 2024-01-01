@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { CommentDetails } from '../Dtos/CityDetails.dto';
+import { CommentDetails } from './dtos/CityDetails.dto';
 import { Stack } from '@mui/material';
 import Rating from '@mui/material/Rating';
 import Modal from './Modal/Modal';

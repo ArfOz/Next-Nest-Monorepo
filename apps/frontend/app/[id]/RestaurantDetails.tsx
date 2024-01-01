@@ -1,5 +1,5 @@
 import React from 'react';
-import { CityDetailsJsonDto } from '../Dtos/CityDetails.dto';
+import { CityDetailsJsonDto } from '../components/dtos/CityDetails.dto';
 import { Stack } from '@mui/material';
 import Rating from '@mui/material/Rating';
 import { AvgCalculator } from '@frontendlibs';

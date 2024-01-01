@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import React, { useState } from 'react';
-import { LoginData } from './Dtos/Login.dto';
+import { LoginData } from './Login.dto';
 import { signIn, useSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';

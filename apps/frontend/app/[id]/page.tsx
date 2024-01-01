@@ -1,5 +1,5 @@
 import { RequestNextNest } from '@frontendlibs';
-import { CityDetailsJsonDto } from '../Dtos/CityDetails.dto';
+import { CityDetailsJsonDto } from '../components/dtos/CityDetails.dto';
 import { CityDetailsPage } from './CityDetailsPage';
 
 async function GetData(id: string) {
