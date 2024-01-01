@@ -1,14 +1,13 @@
 'use client';
 import React, { useState } from 'react';
-import { CommentDetails } from './dtos/CityDetails.dto';
 import { Stack } from '@mui/material';
 import Rating from '@mui/material/Rating';
-import Modal from './Modal/Modal';
 
-import DropdownThreedots from './Dropdown/Dropdown';
 import { useSession } from 'next-auth/react';
-import { UpdateCommentDataDto } from './dtos/navigate.type';
 import { RequestNextNest } from '@frontendlibs';
+import { CommentDetails, UpdateCommentDataDto } from '../dtos';
+import DropdownThreedots from '../Dropdown/Dropdown';
+import Modal from '../Modal/Modal';
 
 export const Comments = ({
     comments: comment

@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { Comments } from '../../components/Comments';
+import { Comments } from '../../components/Comments/Comments';
 import { CommentDetails } from '../../components/dtos';
 import { Suspense } from 'react';
 import { RequestNextNest } from '@frontendlibs';
