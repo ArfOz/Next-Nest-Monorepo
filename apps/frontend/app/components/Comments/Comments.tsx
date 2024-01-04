@@ -125,7 +125,7 @@ export const Comments = ({
     };
 
     return (
-        <div className="bg-white p-4 shadow-md rounded-md max-w-md mx-auto mt-8">
+        <div className="bg-white p-4 shadow-md rounded-md  mt-8 max-w-[480px] grid grid-cols-1">
             <div className="flex items-center gap-x-4 text-sm w-full justify-between">
                 <div>
                     <p className="font-semibold">{comment.user.username}</p>
