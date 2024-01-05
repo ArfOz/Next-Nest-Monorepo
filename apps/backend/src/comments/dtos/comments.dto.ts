@@ -51,3 +51,10 @@ export class UpdateCommentsJsonDto {
     @IsNumber()
     star?: number;
 }
+
+export class LikeDislikeCommentJsonDto {
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    commentId: string;
+}
