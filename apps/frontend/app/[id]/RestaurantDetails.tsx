@@ -1,8 +1,8 @@
 import React from 'react';
-import { CityDetailsJsonDto } from '../Dtos/CityDetails.dto';
 import { Stack } from '@mui/material';
 import Rating from '@mui/material/Rating';
 import { AvgCalculator } from '@frontendlibs';
+import { CityDetailsJsonDto } from '../components';
 
 const RestaurantDetails = ({ data }: { data: CityDetailsJsonDto }) => {
     const average = AvgCalculator(data.restaurant);

@@ -1,6 +1,6 @@
 import { RequestNextNest } from '@frontendlibs';
-import { CityDetailsJsonDto } from '../Dtos/CityDetails.dto';
 import { CityDetailsPage } from './CityDetailsPage';
+import { CityDetailsJsonDto } from '../components';
 
 async function GetData(id: string) {
     const data = await RequestNextNest(`restaurant/getrestaurant/${id}`, 'GET');
