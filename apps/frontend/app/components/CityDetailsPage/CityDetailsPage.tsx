@@ -1,9 +1,9 @@
 'use client';
 import React from 'react';
-import { CityDetailsJsonDto } from '../Dtos/CityDetails.dto';
-import { Comments } from '../components/Comments';
-import RestaurantDetails from './RestaurantDetails';
-import AddComment from '../components/AddComment';
+import { CityDetailsJsonDto } from '../dtos/CityDetails.dto';
+import { Comments } from '../Comments/Comments';
+import RestaurantDetails from '../RestaurantDetails/RestaurantDetails';
+import AddComment from '../AddComment/AddComment';
 
 export const CityDetailsPage = ({ data }: { data: CityDetailsJsonDto }) => {
     const CommentsMapper = (
