@@ -5,4 +5,3 @@ export * from './Navbar';
 export * from './Skeleton';
 export * from './AddComment';
 export * from './Comments';
-export * from './HomePage';

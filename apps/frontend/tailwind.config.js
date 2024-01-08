@@ -7,14 +7,14 @@ module.exports = {
     mode: 'jit',
     purge: [
         join(__dirname, 'app/**/*.{js,ts,jsx,tsx}'),
-        ...createGlobPatternsForDependencies(__dirname),
+        ...createGlobPatternsForDependencies(__dirname)
     ],
     darkMode: false, // or 'media' or 'class'
     theme: {
-        extend: {},
+        extend: {}
     },
     variants: {
-        extend: {},
+        extend: {}
     },
-    plugins: [],
+    plugins: []
 };

@@ -8,8 +8,8 @@ import {
 } from '@react-google-maps/api';
 import React, { useState } from 'react';
 import '../App.css';
-import { CitiesJsonDto } from './dtos';
 import Link from 'next/link';
+import { CitiesJsonDto } from '../dtos';
 
 const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
     const { isLoaded } = useLoadScript({
@@ -50,7 +50,7 @@ const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
                 <h1>Loading...</h1>
             ) : (
                 <GoogleMap
-                    mapContainerClassName="map-container"
+                    mapContainerStyle={{ height: '100%', width: '100%' }}
                     onLoad={onMapLoad}
                     onClick={() => setIsOpen(false)}
                 >

@@ -2,13 +2,12 @@
 import React, { useState } from 'react';
 import { Stack } from '@mui/material';
 import Rating from '@mui/material/Rating';
-import Modal from './Modal/Modal';
 
-import DropdownThreedots from './Dropdown/Dropdown';
 import { useSession } from 'next-auth/react';
-import { UpdateCommentDataDto } from './dtos/navigate.type';
 import { RequestNextNest } from '@frontendlibs';
-import { CommentDetails } from './dtos';
+import { CommentDetails, UpdateCommentDataDto } from '../dtos';
+import DropdownThreedots from '../Dropdown/Dropdown';
+import Modal from '../Modal/Modal';
 
 export const Comments = ({
     comments: comment
@@ -126,7 +125,7 @@ export const Comments = ({
     };
 
     return (
-        <div className="bg-white p-4 shadow-md rounded-md max-w-md mx-auto mt-8">
+        <div className="bg-white p-4 shadow-md rounded-md  mt-8 max-w-[480px] grid grid-cols-1">
             <div className="flex items-center gap-x-4 text-sm w-full justify-between">
                 <div>
                     <p className="font-semibold">{comment.user.username}</p>

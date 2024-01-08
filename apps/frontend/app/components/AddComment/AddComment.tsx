@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Rating, Stack } from '@mui/material';
 import { useSession } from 'next-auth/react';
 import { RequestNextNest } from '@frontendlibs';
-import { SendCommentDto } from './dtos';
+import { SendCommentDto } from '../dtos';
 
 type Props = {
     restaurant_id: string;
