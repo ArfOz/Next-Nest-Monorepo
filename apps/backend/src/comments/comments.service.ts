@@ -3,6 +3,7 @@ import { CommentsDBService, RestaurantDBService } from '@database';
 import {
     AddCommentsJsonDto,
     DeleteCommentsJsonDto,
+    LikeDislikeCommentJsonDto,
     UpdateCommentsJsonDto
 } from './dtos';
 import { Prisma as PrismaPostgres } from '@prisma/postgres/client';
@@ -191,5 +192,19 @@ export class CommentsService {
             Success: true,
             Data: comment
         };
+    }
+
+    async likeComment(
+        user: UserParamsDto,
+        updateData: LikeDislikeCommentJsonDto
+    ) {
+        return null;
+    }
+
+    async dislikeComment(
+        user: UserParamsDto,
+        updateData: LikeDislikeCommentJsonDto
+    ) {
+        return null;
     }
 }

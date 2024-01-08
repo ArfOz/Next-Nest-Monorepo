@@ -1,10 +1,14 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
+<<<<<<< HEAD
+=======
 import { Comments } from '../../components/Comments/Comments';
 import { CommentDetails } from '../../components/dtos';
+>>>>>>> 09ced75659f1d5817d041045a953e976fa435a50
 import { Suspense } from 'react';
 import { RequestNextNest } from '@frontendlibs';
+import { CommentDetails, Comments } from '../../components';
 
 export default function MyComments() {
     const { data: session, status, update } = useSession();

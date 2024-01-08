@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
-import { CityDetailsJsonDto } from '../dtos/CityDetails.dto';
-import { Comments } from '../Comments/Comments';
+import { CityDetailsJsonDto } from '../dtos';
+import { Comments } from '../Comments';
 import RestaurantDetails from '../RestaurantDetails/RestaurantDetails';
 import AddComment from '../AddComment/AddComment';
 
