@@ -2,6 +2,8 @@
 import React from 'react';
 import { CityDetailsJsonDto } from '../dtos';
 import { Comments } from '../Comments';
+import RestaurantDetails from '../RestaurantDetails/RestaurantDetails';
+import AddComment from '../AddComment/AddComment';
 
 export const CityDetailsPage = ({ data }: { data: CityDetailsJsonDto }) => {
     const CommentsMapper = (
