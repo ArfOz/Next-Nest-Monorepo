@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CommentsDBService, RestaurantDBService } from '@database';
+import {
+    CommentLikeDBService,
+    CommentsDBService,
+    RestaurantDBService
+} from '@database';
 import {
     AddCommentsJsonDto,
     DeleteCommentsJsonDto,
@@ -21,7 +25,8 @@ import { ResponseController } from '@dtos';
 export class CommentsService {
     constructor(
         private readonly commentDBService: CommentsDBService,
-        private readonly restaurantDBService: RestaurantDBService
+        private readonly restaurantDBService: RestaurantDBService,
+        private readonly commentLikeDBService: CommentLikeDBService
     ) {}
 
     async addComments(
@@ -194,11 +199,40 @@ export class CommentsService {
         };
     }
 
-    async likeComment(
-        user: UserParamsDto,
-        updateData: LikeDislikeCommentJsonDto
-    ) {
-        return null;
+    async likeComment(user: UserParamsDto, like: LikeDislikeCommentJsonDto) {
+        const where: PrismaPostgres.CommentWhereUniqueInput = {
+            id: like.commentId
+        };
+
+        const comment = await this.commentDBService.findUnique(where);
+
+        if (!comment) {
+            throw new BadRequestException(
+                BadRequestExceptionType.BAD_REQUEST,
+                new Error('Comment not found!!!'),
+                404
+            );
+        }
+
+        const likedData: PrismaPostgres.CommentLikeCreateInput = {
+            comment: {
+                connect: {
+                    id: like.commentId
+                }
+            },
+            user: {
+                connect: {
+                    id: user.sub
+                }
+            }
+        };
+
+        const data = await this.commentLikeDBService.addCommentsLike(likedData);
+
+        return {
+            Success: true,
+            Data: comment
+        };
     }
 
     async dislikeComment(

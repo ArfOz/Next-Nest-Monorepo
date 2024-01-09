@@ -7,11 +7,10 @@ import {
     useLoadScript
 } from '@react-google-maps/api';
 import React, { useState } from 'react';
-import '../App.css';
 import Link from 'next/link';
 import { CitiesJsonDto } from '../dtos';
 
-const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
+const SimpleMap = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: process.env.NX_REACT_APP_GOOGLE_API_KEY as string
     });
@@ -93,7 +92,7 @@ const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
     );
 };
 
-export default App;
+export default SimpleMap;
 
 // 'use client';
 // import React from 'react';
