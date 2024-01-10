@@ -1,11 +1,14 @@
 import { HttpStatus } from '@nestjs/common';
 import { GeneralException } from './general.exception';
-import { BadRequestExceptionType } from './exception.enum.type';
+import {
+    BadRequestExceptionType,
+    CommentLikeExceptionType
+} from './exception.enum.type';
 
 export class BadRequestException extends GeneralException {
     constructor(
         // eslint-disable-next-line default-param-last
-        type: keyof typeof BadRequestExceptionType,
+        type: BadRequestExceptionType | CommentLikeExceptionType,
         // error?: Error,
         error: Error,
         code: number

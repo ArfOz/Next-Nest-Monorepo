@@ -21,6 +21,7 @@ export class CommentsDBService {
                     select: {
                         user: {
                             select: {
+                                _count: true,
                                 username: true
                             }
                         }
@@ -48,8 +49,16 @@ export class CommentsDBService {
                 },
                 usersLiked: {
                     select: {
-                        // userId: true,
-                        user: true
+                        user: {
+                            select: {
+                                _count: {
+                                    select: {
+                                        usersLiked: true
+                                    }
+                                },
+                                username: true
+                            }
+                        }
                     }
                 }
             }

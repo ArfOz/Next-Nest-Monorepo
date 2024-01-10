@@ -16,6 +16,7 @@ import { UserParamsDto } from './dtos/userparams.dto';
 import {
     BadRequestException,
     BadRequestExceptionType,
+    CommentLikeExceptionType,
     UnauthorizedException,
     UnauthorizedExceptionType
 } from '@exceptions';
@@ -214,6 +215,22 @@ export class CommentsService {
             );
         }
 
+        const alreadyLiked = await this.commentLikeDBService.findMany({
+            commentId: like.commentId,
+
+            user: {
+                id: user.sub
+            }
+        });
+
+        if (alreadyLiked.length > 0) {
+            throw new BadRequestException(
+                CommentLikeExceptionType.COMMENT_ALREADY_LIKED,
+                new Error('Comment Already liked by user'),
+                404
+            );
+        }
+
         const likedData: PrismaPostgres.CommentLikeCreateInput = {
             comment: {
                 connect: {
@@ -231,14 +248,27 @@ export class CommentsService {
 
         return {
             Success: true,
-            Data: comment
+            Data: data
         };
     }
 
     async dislikeComment(
         user: UserParamsDto,
-        updateData: LikeDislikeCommentJsonDto
+        dislike: LikeDislikeCommentJsonDto
     ) {
+        const where: PrismaPostgres.CommentWhereUniqueInput = {
+            id: dislike.commentId
+        };
+
+        const comment = await this.commentDBService.findUnique(where);
+
+        if (!comment) {
+            throw new BadRequestException(
+                BadRequestExceptionType.BAD_REQUEST,
+                new Error('Comment not found!!!'),
+                404
+            );
+        }
         return null;
     }
 }
