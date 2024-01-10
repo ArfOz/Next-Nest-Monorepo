@@ -215,15 +215,14 @@ export class CommentsService {
             );
         }
 
-        const alreadyLiked = await this.commentLikeDBService.findMany({
-            commentId: like.commentId,
-
-            user: {
-                id: user.sub
+        const alreadyLiked = await this.commentLikeDBService.findUnique({
+            likeId: {
+                commentId: like.commentId,
+                userId: user.sub
             }
         });
 
-        if (alreadyLiked.length > 0) {
+        if (alreadyLiked) {
             throw new BadRequestException(
                 CommentLikeExceptionType.COMMENT_ALREADY_LIKED,
                 new Error('Comment Already liked by user'),
@@ -269,6 +268,34 @@ export class CommentsService {
                 404
             );
         }
-        return null;
+
+        const alreadyLiked = await this.commentLikeDBService.findMany({
+            commentId: dislike.commentId,
+            userId: user.sub
+        });
+
+        if (alreadyLiked.length < 1) {
+            throw new BadRequestException(
+                CommentLikeExceptionType.COMMENT_ALREADY_LIKED,
+                new Error('Comments Already disliked by user'),
+                404
+            );
+        }
+
+        const dislikedData: PrismaPostgres.CommentLikeWhereUniqueInput = {
+            likeId: {
+                commentId: alreadyLiked[0].commentId,
+                userId: user.sub
+            }
+        };
+
+        const data = await this.commentLikeDBService.deleteCommentLike(
+            dislikedData
+        );
+
+        return {
+            Success: true,
+            Data: data
+        };
     }
 }
