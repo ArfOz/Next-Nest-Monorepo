@@ -8,6 +8,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import generalConfig from '@config/src/general.config';
+import { EventsModule } from './events/events.module';
 
 @Module({
     imports: [
@@ -16,7 +17,8 @@ import generalConfig from '@config/src/general.config';
         RestaurantModule,
         CommentsModule,
         CommentLikeModule,
-        UserModule
+        UserModule,
+        EventsModule
     ],
     controllers: [],
     providers: [
