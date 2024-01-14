@@ -1,5 +1,6 @@
 import { Logger } from '@nestjs/common';
 import {
+    MessageBody,
     SubscribeMessage,
     WebSocketGateway,
     WebSocketServer
@@ -17,13 +18,19 @@ export class EventsGateway {
         this.logger.log('Initialized');
     }
 
-    @SubscribeMessage('message')
-    handleMessage(client: any, payload: any): string {
-        return 'Hello SERverrrrrrrr';
+    onModuleInit() {
+        this.server.on('connection', (socket) => {
+            console.log(socket.id);
+            console.log('Connected');
+        });
     }
 
-    sendMessage(client: Socket, message) {
-        client.emit('selammmmmm');
-        // this.server.emit('newMessage', 'heelo world from server');
+    @SubscribeMessage('newMessage')
+    onNewMessage(@MessageBody() body: any) {
+        console.log(body);
+        this.server.emit('onMessage', {
+            msg: 'New Message',
+            content: body
+        });
     }
 }
