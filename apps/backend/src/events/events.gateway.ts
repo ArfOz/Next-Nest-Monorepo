@@ -9,7 +9,12 @@ import {
 import { Server, Socket } from 'socket.io';
 
 @Injectable()
-@WebSocketGateway(80, { namespace: 'events' })
+@WebSocketGateway(80, {
+    namespace: 'events',
+    cors: {
+        origin: '*'
+    }
+})
 // @UseGuards(AuthGuard)
 export class EventsGateway {
     @WebSocketServer()
@@ -28,11 +33,20 @@ export class EventsGateway {
         });
     }
 
-    @SubscribeMessage('newMessage')
-    onNewMessage(@MessageBody() body: any) {
+    @SubscribeMessage('like')
+    onLiked(@MessageBody() body: any) {
         console.log(body);
-        this.server.emit('onMessage', {
-            msg: 'New Message',
+        this.server.emit('like', {
+            msg: 'User liked',
+            content: body
+        });
+    }
+
+    @SubscribeMessage('like')
+    onDisliked(@MessageBody() body: any) {
+        console.log(body);
+        this.server.emit('dislike', {
+            msg: 'User disliked',
             content: body
         });
     }
