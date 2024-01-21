@@ -13,7 +13,6 @@ import { isDefined } from 'class-validator';
 import { ConfigType } from '@nestjs/config';
 import generalConfig from '@config/src/general.config';
 
-import { Socket } from 'socket.io';
 @Injectable()
 export class AuthGuard implements CanActivate {
     constructor(
@@ -35,15 +34,15 @@ export class AuthGuard implements CanActivate {
                 ctx = context.switchToHttp();
                 req = ctx.getRequest();
                 break;
-            case 'ws':
-                let client: Socket = context.switchToWs().getClient();
+            // case 'ws':
+            //     let client: Socket = context.switchToWs().getClient();
 
-                let { authorization } = client.handshake.headers;
+            //     let { authorization } = client.handshake.headers;
 
-                console.log('arif context', authorization);
-                // ctx = context.switchToHttp();
-                // req = ctx.getRequest();
-                break;
+            //     console.log('arif context', authorization);
+            //     // ctx = context.switchToHttp();
+            //     // req = ctx.getRequest();
+            //     break;
             default:
                 return false;
             // throw new ForbiddenException(
