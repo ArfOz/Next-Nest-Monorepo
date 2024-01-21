@@ -22,27 +22,14 @@ export class WsGuard implements CanActivate {
         // for testing support, fallback to token header
         // const token =
         // socket.handshake.auth.token || socket.handshake.headers['token'];
-
         return this.validateRequest(context, false);
-        // try {
-        //     console.log('bearer Token', token);
-        //     if (token) {
-        //         return true;
-        //     }
-        //     // console.log(new WsException('Invalid credentials.'));
-        //     // throw new WsException('Invalid credentials.');
-        //     throw new WsUnauthorizedException('No token provided');
-        // } catch (ex) {
-        //     // throw new WsException('Invalid credentials.');
-        //     throw new WsUnauthorizedException('No token provided');
-        // }
     }
 
     private async validateRequest(
         req: any,
         staticTokenRequired: boolean
     ): Promise<boolean> {
-        const socket = req.context.switchToWs().getClient();
+        const socket = req.switchToWs().getClient();
         const token = this.getBearerToken(socket);
         try {
             const payload = await this.jwtService.verifyAsync(token, {
