@@ -34,15 +34,6 @@ export class AuthGuard implements CanActivate {
                 ctx = context.switchToHttp();
                 req = ctx.getRequest();
                 break;
-            // case 'ws':
-            //     let client: Socket = context.switchToWs().getClient();
-
-            //     let { authorization } = client.handshake.headers;
-
-            //     console.log('arif context', authorization);
-            //     // ctx = context.switchToHttp();
-            //     // req = ctx.getRequest();
-            //     break;
             default:
                 return false;
             // throw new ForbiddenException(
