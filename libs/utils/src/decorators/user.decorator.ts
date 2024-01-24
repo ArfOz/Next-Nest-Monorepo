@@ -7,11 +7,21 @@ export const UserParam = createParamDecorator(
         let ctx = null;
         let req = null;
 
+        console.log('ctxtypessssssssss', ctxType);
+
         switch (ctxType) {
             case 'http':
                 ctx = context.switchToHttp();
-                req = ctx.getRequest();
+                req = ctx.getRequest().user;
                 break;
+
+            case 'ws':
+                ctx = context.switchToWs();
+                req = ctx;
+
+                console.log('req user decorator', req);
+                break;
+
             default:
                 throw new ForbiddenException(
                     ForbiddenExceptionType.FORBIDDEN,

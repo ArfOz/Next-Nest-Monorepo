@@ -7,7 +7,9 @@ import {
     WebSocketGateway,
     WebSocketServer
 } from '@nestjs/websockets';
+import { UserParam } from '@utils';
 import { Server, Socket } from 'socket.io';
+import { UserParamsDto } from '../comments/dtos/userparams.dto';
 
 @Injectable()
 @WebSocketGateway(80, {
@@ -35,8 +37,8 @@ export class EventsGateway {
     @UseGuards(WsGuard)
     @UseFilters(new AllExceptionsSocketFilter())
     @SubscribeMessage('like')
-    onLiked(@MessageBody() body: any) {
-        console.log(body);
+    onLiked(@MessageBody() body: any, @UserParam() user: UserParamsDto) {
+        console.log(body, user);
         this.server.emit('like', {
             msg: 'User liked',
             content: body
