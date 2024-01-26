@@ -1,13 +1,13 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { ForbiddenException, ForbiddenExceptionType } from '@exceptions';
+import { writeFile } from 'fs/promises';
+const path = './config.json';
 
 export const UserParam = createParamDecorator(
     (data: string, context: ExecutionContext) => {
         const ctxType = context.getType() as string;
         let ctx = null;
         let req = null;
-
-        console.log('ctxtypessssssssss', ctxType);
 
         switch (ctxType) {
             case 'http':
@@ -17,9 +17,7 @@ export const UserParam = createParamDecorator(
 
             case 'ws':
                 ctx = context.switchToWs();
-                req = ctx;
-
-                console.log('req user decorator', req);
+                req = ctx.getClient();
                 break;
 
             default:

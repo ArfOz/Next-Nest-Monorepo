@@ -37,8 +37,8 @@ export class WsGuard implements CanActivate {
             });
             // 💡 We're assigning the payload to the request object here
             // so that we can access it in our route handlers
-            req['user'] = payload;
-            console.log('req ws guard', req);
+            // req['args']['user'] = payload;
+            req.switchToHttp().getRequest().user = payload;
         } catch {
             throw new WsUnauthorizedException('Token yok!');
         }
