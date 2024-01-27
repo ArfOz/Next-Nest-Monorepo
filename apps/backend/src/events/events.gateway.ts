@@ -1,17 +1,25 @@
-import { AllExceptionsSocketFilter } from '@exceptions';
+import {
+    AllExceptionsSocketFilter,
+    BadRequestException,
+    BadRequestExceptionType,
+    CommentLikeExceptionType
+} from '@exceptions';
 import { WsGuard } from '@guard';
 import { Injectable, Logger, UseFilters, UseGuards } from '@nestjs/common';
 import {
     MessageBody,
     SubscribeMessage,
     WebSocketGateway,
-    WebSocketServer
+    WebSocketServer,
+    WsException
 } from '@nestjs/websockets';
 import { UserParam } from '@utils';
 import { Server, Socket } from 'socket.io';
 import { UserParamsDto } from '../comments/dtos/userparams.dto';
+import { CommentLikeDBService, CommentsDBService } from '@database';
+import { Prisma as PrismaPostgres } from '@prisma/postgres/client';
+import { LikeDislikeCommentJsonDto } from '../comments/dtos';
 
-@Injectable()
 @WebSocketGateway(80, {
     namespace: 'events',
     cors: {
@@ -19,6 +27,10 @@ import { UserParamsDto } from '../comments/dtos/userparams.dto';
     }
 })
 export class EventsGateway {
+    constructor(
+        private readonly commentDBService: CommentsDBService,
+        private readonly commentLikeDBService: CommentLikeDBService
+    ) {}
     @WebSocketServer() server: Server = new Server();
 
     private readonly logger = new Logger('Websocketgatewayyyy');
@@ -37,12 +49,61 @@ export class EventsGateway {
     @UseGuards(WsGuard)
     @UseFilters(new AllExceptionsSocketFilter())
     @SubscribeMessage('like')
-    onLiked(@MessageBody() body: any, @UserParam() user: UserParamsDto) {
-        console.log(body, user);
-        this.server.emit('like', {
-            msg: 'User liked',
-            content: body
+    async onLiked(
+        @MessageBody() like: LikeDislikeCommentJsonDto,
+        @UserParam() user: UserParamsDto
+    ) {
+        const where: PrismaPostgres.CommentWhereUniqueInput = {
+            id: like.commentId
+        };
+
+        const comment = await this.commentDBService.findUnique(where);
+
+        console.log('arif', comment);
+
+        if (!comment) {
+            throw new BadRequestException(
+                BadRequestExceptionType.BAD_REQUEST,
+                new Error('Comment not found!!!'),
+                404
+            );
+        }
+
+        const alreadyLiked = await this.commentLikeDBService.findUnique({
+            likeId: {
+                commentId: like.commentId,
+                userId: user.sub
+            }
         });
+
+        if (alreadyLiked) {
+            throw new WsException('Invalid Data');
+        }
+
+        const likedData: PrismaPostgres.CommentLikeCreateInput = {
+            comment: {
+                connect: {
+                    id: like.commentId
+                }
+            },
+            user: {
+                connect: {
+                    id: user.sub
+                }
+            }
+        };
+
+        const data = await this.commentLikeDBService.addCommentsLike(likedData);
+
+        return {
+            Success: true,
+            Data: data
+        };
+
+        // this.server.emit('like', {
+        //     msg: 'User liked',
+        //     content: like
+        // });
     }
 
     @SubscribeMessage('dislike')
