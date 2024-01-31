@@ -2,6 +2,7 @@ import {
     AllExceptionsSocketFilter,
     BadRequestException,
     BadRequestExceptionType,
+    BadRequestExceptionWS,
     CommentLikeExceptionType
 } from '@exceptions';
 import { WsGuard } from '@guard';
@@ -47,7 +48,7 @@ export class EventsGateway {
     }
 
     @UseGuards(WsGuard)
-    @UseFilters(new AllExceptionsSocketFilter())
+    @UseFilters()
     @SubscribeMessage('like')
     async onLiked(
         @MessageBody() like: LikeDislikeCommentJsonDto,
@@ -75,9 +76,13 @@ export class EventsGateway {
                 userId: user.sub
             }
         });
+        console.log('alreadyyyyy', alreadyLiked);
 
         if (alreadyLiked) {
-            throw new WsException('Invalid Data');
+            throw new BadRequestExceptionWS(
+                'hata',
+                new Error('Comment Length Must be at Least 20 Characater')
+            );
         }
 
         const likedData: PrismaPostgres.CommentLikeCreateInput = {

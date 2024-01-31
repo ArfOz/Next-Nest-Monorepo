@@ -5,7 +5,7 @@ export class BadRequestExceptionWS extends AllExceptionsSocketFilter {
         // eslint-disable-next-line default-param-last
         type = 'asdasd',
         // error?: Error,
-        error?: Error
+        error: Error
     ) {
         super(type, error);
     }
