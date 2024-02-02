@@ -1,4 +1,3 @@
-import { BadRequestExceptionWS } from '@exceptions';
 // import { WsUnauthorizedException } from '@exceptions';
 import { CanActivate, Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
@@ -8,7 +7,6 @@ import { isDefined } from 'class-validator';
 import { Observable } from 'rxjs';
 import { Socket } from 'socket.io';
 import generalConfig from '@config/src/general.config';
-import { error } from 'console';
 
 @Injectable()
 export class WsGuard implements CanActivate {
@@ -20,7 +18,7 @@ export class WsGuard implements CanActivate {
 
     canActivate(
         context: any
-    ): Promise<boolean | any> | Observable<boolean | any> {
+    ): Promise<boolean | any> | Observable<boolean | any> | any {
         // for testing support, fallback to token header
         // const token =
         // socket.handshake.auth.token || socket.handshake.headers['token'];
@@ -59,8 +57,12 @@ export class WsGuard implements CanActivate {
             console.log('validate', req);
         } catch (error) {
             // return true;
-            console.log('false', error);
-            throw new BadRequestExceptionWS('arif', error);
+            console.log('false', error, typeof error);
+            // throw new BadRequestExceptionWS(
+            //     'arif',
+            //     new Error('Comment not found!!!')
+            // );
+            throw new WsException(error);
         }
 
         return true;

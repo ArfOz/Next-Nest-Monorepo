@@ -1,4 +1,4 @@
-import { AllExceptionsSocketFilter } from '@exceptions';
+// import { AllExceptionsSocketFilter } from '@exceptions';
 import { WsGuard } from '@guard';
 import { Injectable, Logger, UseFilters, UseGuards } from '@nestjs/common';
 import {
@@ -6,7 +6,8 @@ import {
     MessageBody,
     SubscribeMessage,
     WebSocketGateway,
-    WebSocketServer
+    WebSocketServer,
+    WsException
 } from '@nestjs/websockets';
 import { UserParam } from '@utils';
 import { Server, Socket } from 'socket.io';
@@ -14,6 +15,7 @@ import { UserParamsDto } from '../comments/dtos/userparams.dto';
 import { CommentLikeDBService, CommentsDBService } from '@database';
 import { Prisma as PrismaPostgres } from '@prisma/postgres/client';
 import { LikeDislikeCommentJsonDto } from '../comments/dtos';
+import { AllExceptionsSocketFilter } from '@exceptions';
 
 @WebSocketGateway(80, {
     namespace: 'events',
@@ -41,12 +43,12 @@ export class EventsGateway {
         });
     }
 
-    @UseGuards(WsGuard)
-    @UseFilters(BaseWsExceptionFilter)
     @SubscribeMessage('like')
+    @UseGuards(WsGuard)
+    @UseFilters(new AllExceptionsSocketFilter())
     async onLiked(
-        @MessageBody() like: LikeDislikeCommentJsonDto,
-        @UserParam() user: UserParamsDto
+        @MessageBody() like: LikeDislikeCommentJsonDto
+        // @UserParam() user: UserParamsDto
     ) {
         console.log('arif0', like);
         const where: PrismaPostgres.CommentWhereUniqueInput = {

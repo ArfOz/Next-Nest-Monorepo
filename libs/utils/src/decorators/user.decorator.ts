@@ -8,6 +8,7 @@ export const UserParam = createParamDecorator(
         const ctxType = context.getType() as string;
         let ctx = null;
         let req = null;
+        console.log('userparam', context);
 
         switch (ctxType) {
             case 'http':
