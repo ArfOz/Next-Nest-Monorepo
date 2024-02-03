@@ -45,7 +45,7 @@ export class EventsGateway {
 
     @SubscribeMessage('like')
     @UseGuards(WsGuard)
-    @UseFilters(new AllExceptionsSocketFilter())
+    @UseFilters(AllExceptionsSocketFilter)
     async onLiked(
         @MessageBody() like: LikeDislikeCommentJsonDto
         // @UserParam() user: UserParamsDto

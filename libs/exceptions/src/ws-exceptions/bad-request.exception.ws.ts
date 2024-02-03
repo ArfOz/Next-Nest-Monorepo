@@ -1,12 +1,15 @@
-// import { AllExceptionsSocketFilter } from './general.ws.exception';
+import { ArgumentsHost, Catch, HostParam } from '@nestjs/common';
+import { AllExceptionsSocketFilter } from './general.ws.exception';
 
-// export class BadRequestExceptionWS extends AllExceptionsSocketFilter {
-//     constructor(
-//         // eslint-disable-next-line default-param-last
-//         type = 'asdasd',
-//         // error?: Error,
-//         error: Error
-//     ) {
-//         super(type, error);
-//     }
-// }
+@Catch()
+export class BadRequestExceptionWS extends AllExceptionsSocketFilter {
+    constructor(
+        // type = 'asdasd',
+        // error?: Error,
+        error: Error,
+        host: ArgumentsHost
+    ) {
+        super();
+        super.catch(error, host);
+    }
+}

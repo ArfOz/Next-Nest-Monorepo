@@ -1,5 +1,5 @@
-// import { WsUnauthorizedException } from '@exceptions';
-import { CanActivate, Inject, Injectable } from '@nestjs/common';
+import { BadRequestExceptionWS } from '@exceptions';
+import { CanActivate, Inject, Injectable, ArgumentsHost } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { WsException } from '@nestjs/websockets';
@@ -7,6 +7,7 @@ import { isDefined } from 'class-validator';
 import { Observable } from 'rxjs';
 import { Socket } from 'socket.io';
 import generalConfig from '@config/src/general.config';
+import { hostname } from 'os';
 
 @Injectable()
 export class WsGuard implements CanActivate {
@@ -58,11 +59,11 @@ export class WsGuard implements CanActivate {
         } catch (error) {
             // return true;
             console.log('false', error, typeof error);
-            // throw new BadRequestExceptionWS(
-            //     'arif',
-            //     new Error('Comment not found!!!')
-            // );
-            throw new WsException(error);
+            throw new BadRequestExceptionWS(
+                new Error('Comment not found!!!'),
+                req.host
+            );
+            // throw new WsException(error);
         }
 
         return true;
