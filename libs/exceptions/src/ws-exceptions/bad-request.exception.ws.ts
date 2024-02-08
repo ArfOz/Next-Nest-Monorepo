@@ -6,10 +6,11 @@ export class BadRequestExceptionWS extends AllExceptionsSocketFilter {
     constructor(
         // type = 'asdasd',
         // error?: Error,
-        error: Error,
+        error: string,
         host: ArgumentsHost
     ) {
-        super();
-        super.catch(error, host);
+        console.log('bad request ici ', error, host);
+        // super.catch(error, host);
+        super(error, host);
     }
 }

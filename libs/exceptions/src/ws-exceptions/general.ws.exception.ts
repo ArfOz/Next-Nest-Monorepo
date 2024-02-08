@@ -40,27 +40,30 @@ import { PacketType } from 'socket.io-parser';
 
 @Catch()
 export class AllExceptionsSocketFilter extends BaseWsExceptionFilter {
+    constructor(exception: string, host: ArgumentsHost) {
+        super();
+        this.catch(exception, host);
+    }
     catch(exception: any, host: ArgumentsHost) {
-        const client = host.switchToWs().getClient() as WebSocket;
+        console.log('ana catch', exception);
+        const client = host.switchToWs().getClient();
         const data = host.switchToWs().getData();
-        const error =
-            exception instanceof WsException
-                ? exception.getError()
-                : exception.getResponse();
 
-        const details =
-            error instanceof Object ? { ...error } : { message: error };
+        // client.send(
+        //     JSON.stringify({
+        //         event: 'error',
+        //         data: {
+        //             id: (client as any).id,
+        //             rid: exception.message
+        //         }
+        //     })
+        // );
 
-        client.send(
-            JSON.stringify({
-                event: 'error',
-                data: {
-                    id: (client as any).id,
-                    rid: data.rid,
-                    ...details
-                }
-            })
-        );
+        client.packet({
+            type: PacketType.ACK,
+            data: [{ error: exception }],
+            id: client.nsp._ids++
+        });
     }
 
     // catch(exception: any, host: ArgumentsHost) {

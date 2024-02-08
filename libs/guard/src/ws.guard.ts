@@ -59,10 +59,7 @@ export class WsGuard implements CanActivate {
         } catch (error) {
             // return true;
             console.log('false', error, typeof error);
-            throw new BadRequestExceptionWS(
-                new Error('Comment not found!!!'),
-                req.host
-            );
+            throw new BadRequestExceptionWS('Comment not found!!!', req);
             // throw new WsException(error);
         }
 
