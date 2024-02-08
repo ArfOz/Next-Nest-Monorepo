@@ -3,6 +3,7 @@ import { WsGuard } from '@guard';
 import { Injectable, Logger, UseFilters, UseGuards } from '@nestjs/common';
 import {
     BaseWsExceptionFilter,
+    ConnectedSocket,
     MessageBody,
     SubscribeMessage,
     WebSocketGateway,
@@ -15,7 +16,7 @@ import { UserParamsDto } from '../comments/dtos/userparams.dto';
 import { CommentLikeDBService, CommentsDBService } from '@database';
 import { Prisma as PrismaPostgres } from '@prisma/postgres/client';
 import { LikeDislikeCommentJsonDto } from '../comments/dtos';
-import { AllExceptionsSocketFilter } from '@exceptions';
+import { AllExceptionsSocketFilter, BadRequestExceptionWS } from '@exceptions';
 
 @WebSocketGateway(80, {
     namespace: 'events',
@@ -47,25 +48,22 @@ export class EventsGateway {
     @UseGuards(WsGuard)
     @UseFilters(BaseWsExceptionFilter)
     async onLiked(
+        @ConnectedSocket() client: Socket,
         @MessageBody() like: LikeDislikeCommentJsonDto
         // @UserParam() user: UserParamsDto
     ) {
-        console.log('arif0', like);
+        console.log('arif0', like, client);
         const where: PrismaPostgres.CommentWhereUniqueInput = {
             id: like.commentId
         };
 
         const comment = await this.commentDBService.findUnique(where);
 
-        console.log('arif', comment);
+        // console.log('arif', comment);
 
-        // if (!comment) {
-        //     throw new BadRequestException(
-        //         BadRequestExceptionType.BAD_REQUEST,
-        //         new Error('Comment not found!!!'),
-        //         404
-        //     );
-        // }
+        if (!comment) {
+            throw new BadRequestExceptionWS('No comment', client);
+        }
 
         // const alreadyLiked = await this.commentLikeDBService.findUnique({
         //     likeId: {

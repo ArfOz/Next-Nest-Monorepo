@@ -58,9 +58,7 @@ export class WsGuard implements CanActivate {
             console.log('validate', req);
         } catch (error) {
             // return true;
-            console.log('false', error, typeof error);
-            throw new BadRequestExceptionWS('Comment not found!!!', req);
-            // throw new WsException(error);
+            throw new BadRequestExceptionWS(error, socket);
         }
 
         return true;
@@ -69,6 +67,7 @@ export class WsGuard implements CanActivate {
     private getBearerToken(socket: Socket) {
         if (this.isNotExistsBearerToken(socket)) {
             // throw new WsUnauthorizedException('Token yok!');
+            throw new BadRequestExceptionWS('Token yok', socket);
         }
         const auth =
             socket.handshake.auth.token || socket.handshake.headers['token'];
