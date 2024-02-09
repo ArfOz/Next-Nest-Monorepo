@@ -54,7 +54,7 @@ export class WsGuard implements CanActivate {
             // 💡 We're assigning the payload to the request object here
             // so that we can access it in our route handlers
             // req['args']['user'] = payload;
-            // req.switchToHttp().getRequest().user = payload;
+            req.switchToHttp().getRequest().user = payload;
             console.log('validate', req);
         } catch (error) {
             // return true;

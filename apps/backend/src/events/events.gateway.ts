@@ -49,10 +49,13 @@ export class EventsGateway {
     @UseFilters(BaseWsExceptionFilter)
     async onLiked(
         @ConnectedSocket() client: Socket,
-        @MessageBody() like: LikeDislikeCommentJsonDto
-        // @UserParam() user: UserParamsDto
+        @MessageBody() like: LikeDislikeCommentJsonDto,
+        @UserParam() user: UserParamsDto
     ) {
-        console.log('arif0', like, client);
+        console.log('arif0', user);
+        if (!like.commentId) {
+            throw new BadRequestExceptionWS('No comment Id', client);
+        }
         const where: PrismaPostgres.CommentWhereUniqueInput = {
             id: like.commentId
         };
@@ -65,20 +68,17 @@ export class EventsGateway {
             throw new BadRequestExceptionWS('No comment', client);
         }
 
-        // const alreadyLiked = await this.commentLikeDBService.findUnique({
-        //     likeId: {
-        //         commentId: like.commentId,
-        //         userId: user.sub
-        //     }
-        // });
-        // console.log('alreadyyyyy', alreadyLiked);
+        const alreadyLiked = await this.commentLikeDBService.findUnique({
+            likeId: {
+                commentId: like.commentId,
+                userId: user.sub
+            }
+        });
+        console.log('alreadyyyyy', alreadyLiked);
 
-        // if (alreadyLiked) {
-        //     throw new BadRequestExceptionWS(
-        //         'hata',
-        //         new Error('Comment Length Must be at Least 20 Characater')
-        //     );
-        // }
+        if (alreadyLiked) {
+            throw new BadRequestExceptionWS('you already Liked', client);
+        }
 
         // const likedData: PrismaPostgres.CommentLikeCreateInput = {
         //     comment: {
