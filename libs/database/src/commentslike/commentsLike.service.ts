@@ -10,6 +10,14 @@ export class CommentLikeDBService {
         return data;
     }
 
+    async countComments(where: Prisma.CommentLikeWhereInput) {
+        const data = await this.prisma.commentLike.count({
+            where
+        });
+
+        return data;
+    }
+
     async findMany(where: Prisma.CommentLikeWhereInput) {
         const data = await this.prisma.commentLike.findMany({
             where

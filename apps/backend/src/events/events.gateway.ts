@@ -66,14 +66,7 @@ export class EventsGateway {
             throw new BadRequestExceptionWS('No comment', client);
         }
 
-        const likeNum = await this.commentLikeDBService.findMany({
-            commentId: like.commentId
-        });
-
-        this.server.emit('like', {
-            msg: 'User liked',
-            likeNum
-        });
+        console.log('burada');
 
         const alreadyLiked = await this.commentLikeDBService.findUnique({
             likeId: {
@@ -101,52 +94,18 @@ export class EventsGateway {
 
         const data = await this.commentLikeDBService.addCommentsLike(likedData);
 
-        // const likeNum = await this.commentLikeDBService.findMany({
-        //     commentId: like.commentId
-        // });
+        const likeNum = await this.commentLikeDBService.countComments({
+            commentId: like.commentId
+        });
 
-        // this.server.emit('like', {
-        //     msg: 'User liked',
-        //     likeNum
-        // });
+        this.server.emit('like', {
+            msg: 'User liked',
+            likeNum
+        });
+
         return {
             Success: true,
             Data: data
         };
     }
-
-    @SubscribeMessage('dislike')
-    onDisliked(@MessageBody() body: any) {
-        console.log(body);
-        this.server.emit('dislike', {
-            msg: 'User disliked',
-            content: body
-        });
-    }
-
-    // @SubscribeMessage('likecounts')
-    // async likeCounter(
-    //     @MessageBody() body: LikeDislikeCommentJsonDto,
-    //     @ConnectedSocket() client: Socket
-    // ) {
-    //     console.log(body);
-
-    //     if (!body.commentId) {
-    //         throw new BadRequestExceptionWS('No comment Id', client);
-    //     }
-    //     const where: PrismaPostgres.CommentLikeWhereInput = {
-    //         commentId: body.commentId
-    //     };
-
-    //     const comment = await this.commentLikeDBService.findMany(where);
-
-    //     if (!comment) {
-    //         throw new BadRequestExceptionWS('No comment', client);
-    //     }
-
-    //     this.server.emit('likecounts', {
-    //         msg: 'User liked',
-    //         content: body
-    //     });
-    // }
 }
