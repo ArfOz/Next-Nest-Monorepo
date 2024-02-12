@@ -62,11 +62,18 @@ export class EventsGateway {
 
         const comment = await this.commentDBService.findUnique(where);
 
-        // console.log('arif', comment);
-
         if (!comment) {
             throw new BadRequestExceptionWS('No comment', client);
         }
+
+        const likeNum = await this.commentLikeDBService.findMany({
+            commentId: like.commentId
+        });
+
+        this.server.emit('like', {
+            msg: 'User liked',
+            likeNum
+        });
 
         const alreadyLiked = await this.commentLikeDBService.findUnique({
             likeId: {
@@ -74,36 +81,38 @@ export class EventsGateway {
                 userId: user.sub
             }
         });
-        console.log('alreadyyyyy', alreadyLiked);
 
         if (alreadyLiked) {
             throw new BadRequestExceptionWS('you already Liked', client);
         }
 
-        // const likedData: PrismaPostgres.CommentLikeCreateInput = {
-        //     comment: {
-        //         connect: {
-        //             id: like.commentId
-        //         }
-        //     },
-        //     user: {
-        //         connect: {
-        //             id: user.sub
-        //         }
-        //     }
-        // };
-
-        // const data = await this.commentLikeDBService.addCommentsLike(likedData);
-
-        return {
-            Success: true
-            // Data: data
+        const likedData: PrismaPostgres.CommentLikeCreateInput = {
+            comment: {
+                connect: {
+                    id: like.commentId
+                }
+            },
+            user: {
+                connect: {
+                    id: user.sub
+                }
+            }
         };
+
+        const data = await this.commentLikeDBService.addCommentsLike(likedData);
+
+        // const likeNum = await this.commentLikeDBService.findMany({
+        //     commentId: like.commentId
+        // });
 
         // this.server.emit('like', {
         //     msg: 'User liked',
-        //     content: like
+        //     likeNum
         // });
+        return {
+            Success: true,
+            Data: data
+        };
     }
 
     @SubscribeMessage('dislike')
@@ -115,12 +124,29 @@ export class EventsGateway {
         });
     }
 
-    @SubscribeMessage('likecounts')
-    likeCounter(@MessageBody() body: any) {
-        console.log(body);
-        this.server.emit('likecounts', {
-            msg: 'User liked',
-            content: body
-        });
-    }
+    // @SubscribeMessage('likecounts')
+    // async likeCounter(
+    //     @MessageBody() body: LikeDislikeCommentJsonDto,
+    //     @ConnectedSocket() client: Socket
+    // ) {
+    //     console.log(body);
+
+    //     if (!body.commentId) {
+    //         throw new BadRequestExceptionWS('No comment Id', client);
+    //     }
+    //     const where: PrismaPostgres.CommentLikeWhereInput = {
+    //         commentId: body.commentId
+    //     };
+
+    //     const comment = await this.commentLikeDBService.findMany(where);
+
+    //     if (!comment) {
+    //         throw new BadRequestExceptionWS('No comment', client);
+    //     }
+
+    //     this.server.emit('likecounts', {
+    //         msg: 'User liked',
+    //         content: body
+    //     });
+    // }
 }
