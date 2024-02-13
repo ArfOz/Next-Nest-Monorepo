@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+    IsBoolean,
+    IsNotEmpty,
+    IsNumber,
+    IsOptional,
+    IsString
+} from 'class-validator';
 
 export class AddCommentsJsonDto {
     @ApiProperty()
@@ -57,4 +63,9 @@ export class LikeDislikeCommentJsonDto {
     @IsNotEmpty()
     @IsString()
     commentId: string;
+
+    @ApiProperty()
+    @IsOptional()
+    @IsBoolean()
+    liked: string;
 }

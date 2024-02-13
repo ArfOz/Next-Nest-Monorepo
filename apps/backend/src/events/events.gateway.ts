@@ -52,7 +52,6 @@ export class EventsGateway {
         @MessageBody() like: LikeDislikeCommentJsonDto,
         @UserParam() user: UserParamsDto
     ) {
-        console.log('arif0', user);
         if (!like.commentId) {
             throw new BadRequestExceptionWS('No comment Id', client);
         }
@@ -65,8 +64,6 @@ export class EventsGateway {
         if (!comment) {
             throw new BadRequestExceptionWS('No comment', client);
         }
-
-        console.log('burada');
 
         const alreadyLiked = await this.commentLikeDBService.findUnique({
             likeId: {
@@ -92,7 +89,15 @@ export class EventsGateway {
             }
         };
 
-        const data = await this.commentLikeDBService.addCommentsLike(likedData);
+        let data;
+
+        if (like.liked) {
+            data = await this.commentLikeDBService.addCommentsLike(likedData);
+        } else if (!like.liked) {
+            data = await this.commentLikeDBService.deleteCommentLike({
+                likeId: alreadyLiked
+            });
+        }
 
         const likeNum = await this.commentLikeDBService.countComments({
             commentId: like.commentId
