@@ -76,6 +76,10 @@ export class EventsGateway {
             throw new BadRequestExceptionWS('you already Liked', client);
         }
 
+        if (!alreadyLiked && !like.liked) {
+            throw new BadRequestExceptionWS('you already disliked', client);
+        }
+
         const likedData: PrismaPostgres.CommentLikeCreateInput = {
             comment: {
                 connect: {
