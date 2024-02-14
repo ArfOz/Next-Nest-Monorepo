@@ -23,7 +23,6 @@ export class WsGuard implements CanActivate {
         // for testing support, fallback to token header
         // const token =
         // socket.handshake.auth.token || socket.handshake.headers['token'];
-        console.log('burada');
         return this.validateRequest(context);
     }
 
@@ -40,22 +39,14 @@ export class WsGuard implements CanActivate {
         //     this.generalCfg.jwt_secret_key
         // );
         try {
-            console.log(
-                'validaterequest',
-                // socket,
-                token,
-                this.generalCfg.jwt_secret_key
-            );
             const payload = await this.jwtService.verifyAsync(token, {
                 secret: this.generalCfg.jwt_secret_key
             });
-            console.log('payload', payload);
 
             // 💡 We're assigning the payload to the request object here
             // so that we can access it in our route handlers
             // req['args']['user'] = payload;
             req.switchToHttp().getRequest().user = payload;
-            console.log('validate', req);
         } catch (error) {
             // return true;
             throw new BadRequestExceptionWS(error, socket);

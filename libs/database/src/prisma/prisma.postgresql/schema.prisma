@@ -34,9 +34,8 @@ model Comment {
 }
 
 model CommentLike {
-    userId String
-    user   User   @relation(fields: [userId], references: [id])
-
+    userId     String
+    user       User     @relation(fields: [userId], references: [id])
     commentId  String
     comment    Comment  @relation(fields: [commentId], references: [id])
     created_at DateTime @default(now())

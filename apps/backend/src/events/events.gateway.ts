@@ -72,7 +72,7 @@ export class EventsGateway {
             }
         });
 
-        if (alreadyLiked) {
+        if (alreadyLiked && like.liked) {
             throw new BadRequestExceptionWS('you already Liked', client);
         }
 
@@ -89,14 +89,21 @@ export class EventsGateway {
             }
         };
 
+        const dislikedData: PrismaPostgres.CommentLikeWhereUniqueInput = {
+            likeId: {
+                commentId: like.commentId,
+                userId: user.sub
+            }
+        };
+
         let data;
 
         if (like.liked) {
             data = await this.commentLikeDBService.addCommentsLike(likedData);
         } else if (!like.liked) {
-            data = await this.commentLikeDBService.deleteCommentLike({
-                likeId: alreadyLiked
-            });
+            data = await this.commentLikeDBService.deleteCommentLike(
+                dislikedData
+            );
         }
 
         const likeNum = await this.commentLikeDBService.countComments({
@@ -110,7 +117,7 @@ export class EventsGateway {
 
         return {
             Success: true,
-            Data: data
+            Data: data.commentId
         };
     }
 }

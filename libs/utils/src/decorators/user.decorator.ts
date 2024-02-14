@@ -6,7 +6,6 @@ export const UserParam = createParamDecorator(
         const ctxType = context.getType() as string;
         let ctx = null;
         let req = null;
-        console.log('userparam', context);
 
         switch (ctxType) {
             case 'http':
@@ -17,8 +16,6 @@ export const UserParam = createParamDecorator(
             case 'ws':
                 ctx = context.switchToWs();
                 req = ctx.getClient();
-
-                console.log('ws ici', req);
                 break;
 
             default:
