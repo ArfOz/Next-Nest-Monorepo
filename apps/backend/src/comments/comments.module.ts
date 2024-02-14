@@ -1,7 +1,8 @@
 import {
+    CommentLikeDBService,
     CommentsDBService,
     DatabaseModule,
-    RestaurantDBService,
+    RestaurantDBService
 } from '@database';
 import { Module } from '@nestjs/common';
 import { CommentsController } from './comments.controller';
@@ -10,6 +11,11 @@ import { CommentsService } from './comments.service';
 @Module({
     imports: [DatabaseModule],
     controllers: [CommentsController],
-    providers: [CommentsService, CommentsDBService, RestaurantDBService],
+    providers: [
+        CommentsService,
+        CommentsDBService,
+        RestaurantDBService,
+        CommentLikeDBService
+    ]
 })
 export class CommentsModule {}

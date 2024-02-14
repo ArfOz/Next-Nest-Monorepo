@@ -9,12 +9,13 @@ datasource db {
 }
 
 model User {
-    id       String    @id @default(uuid())
-    username String
-    password String
-    email    String
-    created  DateTime  @default(now())
-    Comment  Comment[]
+    id         String        @id @default(uuid())
+    username   String
+    password   String
+    email      String
+    created    DateTime      @default(now())
+    comments   Comment[]
+    usersLiked CommentLike[]
 }
 
 model Comment {
@@ -24,10 +25,22 @@ model Comment {
     title        String   @db.VarChar(255)
     comment      String
     star         Int
-    user         User?    @relation(fields: [userId], references: [id])
-    userId       String
-    // restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
     restaurantId String
+    // restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+
+    user       User          @relation(fields: [userId], references: [id])
+    userId     String
+    usersLiked CommentLike[]
+}
+
+model CommentLike {
+    userId     String
+    user       User     @relation(fields: [userId], references: [id])
+    commentId  String
+    comment    Comment  @relation(fields: [commentId], references: [id])
+    created_at DateTime @default(now())
+
+    @@id(name: "likeId", [commentId, userId])
 }
 
 // model Restaurant {

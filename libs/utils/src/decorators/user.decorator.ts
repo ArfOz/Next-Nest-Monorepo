@@ -10,8 +10,14 @@ export const UserParam = createParamDecorator(
         switch (ctxType) {
             case 'http':
                 ctx = context.switchToHttp();
-                req = ctx.getRequest();
+                req = ctx.getRequest().user;
                 break;
+
+            case 'ws':
+                ctx = context.switchToWs();
+                req = ctx.getClient();
+                break;
+
             default:
                 throw new ForbiddenException(
                     ForbiddenExceptionType.FORBIDDEN,

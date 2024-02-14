@@ -19,3 +19,6 @@ export enum BadRequestExceptionType {
     MISSING_FILE_TYPE = 'MISSING_FILE_TYPE',
     MISSING_FILE = 'MISSING_FILE'
 }
+export enum CommentLikeExceptionType {
+    COMMENT_ALREADY_LIKED = 'COMMENT_ALREADY_LIKED'
+}

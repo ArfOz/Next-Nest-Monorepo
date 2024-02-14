@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import {
     AddCommentsJsonDto,
     DeleteCommentsJsonDto,
+    LikeDislikeCommentJsonDto,
     UpdateCommentsJsonDto
 } from './dtos';
 import { CommentsService } from './comments.service';
@@ -52,5 +53,21 @@ export class CommentsController {
         @Body() input: UpdateCommentsJsonDto
     ): Promise<ResponseController> {
         return await this.commentsService.updateComment(user, input);
+    }
+
+    @Post('likecomment')
+    async likeComment(
+        @UserParam() user: UserParamsDto,
+        @Body() input: LikeDislikeCommentJsonDto
+    ): Promise<ResponseController> {
+        return await this.commentsService.likeComment(user, input);
+    }
+
+    @Post('dislikecomment')
+    async dislikeComment(
+        @UserParam() user: UserParamsDto,
+        @Body() input: LikeDislikeCommentJsonDto
+    ): Promise<ResponseController> {
+        return await this.commentsService.dislikeComment(user, input);
     }
 }

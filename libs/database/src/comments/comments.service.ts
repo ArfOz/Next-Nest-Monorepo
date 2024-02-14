@@ -6,7 +6,29 @@ import { Prisma } from '@prisma/postgres/client';
 export class CommentsDBService {
     constructor(private prisma: PrismaServicePGDB) {}
     async findUnique(where: Prisma.CommentWhereUniqueInput) {
-        const data = await this.prisma.comment.findUnique({ where });
+        const data = await this.prisma.comment.findUnique({
+            where,
+            select: {
+                id: true,
+                createdAt: true,
+                updatedAt: true,
+                title: true,
+                comment: true,
+                star: true,
+                userId: true,
+                restaurantId: true,
+                usersLiked: {
+                    select: {
+                        user: {
+                            select: {
+                                _count: true,
+                                username: true
+                            }
+                        }
+                    }
+                }
+            }
+        });
         return data;
     }
 
@@ -23,6 +45,20 @@ export class CommentsDBService {
                     select: {
                         username: true,
                         id: true
+                    }
+                },
+                usersLiked: {
+                    select: {
+                        user: {
+                            select: {
+                                _count: {
+                                    select: {
+                                        usersLiked: true
+                                    }
+                                },
+                                username: true
+                            }
+                        }
                     }
                 }
             }

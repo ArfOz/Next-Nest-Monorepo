@@ -1,3 +1,4 @@
+export * from './ws-exceptions';
 export * from './bad-request.exception';
 export * from './exception.enum.type';
 export * from './forbidden.exception';

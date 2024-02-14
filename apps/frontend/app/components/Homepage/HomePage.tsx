@@ -6,16 +6,16 @@ import {
     Marker,
     useLoadScript
 } from '@react-google-maps/api';
-import { useState } from 'react';
-import { CitiesJsonDto } from '../dtos';
+import React, { useState } from 'react';
 import Link from 'next/link';
+import { CitiesJsonDto } from '../dtos';
 
-const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
+const SimpleMap = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: process.env.NX_REACT_APP_GOOGLE_API_KEY as string
     });
     const [mapRef, setMapRef] = useState({
-        panTo: { lat: 0, lng: 0 }
+        panTo: { lat: 1.2, lng: 1.2 }
     });
     const [isOpen, setIsOpen] = useState(false);
     const [infoWindowData, setInfoWindowData] = useState({
@@ -23,7 +23,7 @@ const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
         Name: ''
     });
 
-    const onMapLoad = (map) => {
+    const onMapLoad = (map: typeof GoogleMap.arguments) => {
         setMapRef(map);
         const bounds = new google.maps.LatLngBounds();
         cities?.forEach(({ lat, lon }) =>
@@ -34,11 +34,11 @@ const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
 
     const handleMarkerClick = (
         Id: string,
-        lat: string,
-        lon: string,
+        lat: number,
+        lon: number,
         Name: string
     ) => {
-        mapRef?.panTo({ lat: parseFloat(lat), lng: parseFloat(lon) });
+        setMapRef({ panTo: { lat, lng: lon } });
         setInfoWindowData({ Id, Name });
         setIsOpen(true);
     };
@@ -60,14 +60,14 @@ const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
                                 lat: parseFloat(city.lat),
                                 lng: parseFloat(city.lon)
                             }}
-                            onClick={() => {
+                            onClick={() =>
                                 handleMarkerClick(
                                     city.id,
-                                    city.lat,
-                                    city.lon,
+                                    parseFloat(city.lat),
+                                    parseFloat(city.lon),
                                     city.name
-                                );
-                            }}
+                                )
+                            }
                         >
                             {isOpen && infoWindowData?.Id === city.id && (
                                 <InfoWindow
@@ -75,13 +75,13 @@ const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
                                         setIsOpen(false);
                                     }}
                                 >
-                                    <>
+                                    <React.Fragment>
                                         <h3>{infoWindowData?.Name}</h3>
                                         {/* {AvgCalculator()} */}
                                         <Link href={`/${city.id}`}>
                                             Click for more details
                                         </Link>
-                                    </>
+                                    </React.Fragment>
                                 </InfoWindow>
                             )}
                         </Marker>
@@ -92,7 +92,7 @@ const App = ({ cities }: { cities: Array<CitiesJsonDto> }) => {
     );
 };
 
-export default App;
+export default SimpleMap;
 
 // 'use client';
 // import React from 'react';

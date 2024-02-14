@@ -1,8 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { CommentsDBService, RestaurantDBService } from '@database';
+import {
+    CommentLikeDBService,
+    CommentsDBService,
+    RestaurantDBService
+} from '@database';
 import {
     AddCommentsJsonDto,
     DeleteCommentsJsonDto,
+    LikeDislikeCommentJsonDto,
     UpdateCommentsJsonDto
 } from './dtos';
 import { Prisma as PrismaPostgres } from '@prisma/postgres/client';
@@ -11,6 +16,7 @@ import { UserParamsDto } from './dtos/userparams.dto';
 import {
     BadRequestException,
     BadRequestExceptionType,
+    CommentLikeExceptionType,
     UnauthorizedException,
     UnauthorizedExceptionType
 } from '@exceptions';
@@ -20,7 +26,8 @@ import { ResponseController } from '@dtos';
 export class CommentsService {
     constructor(
         private readonly commentDBService: CommentsDBService,
-        private readonly restaurantDBService: RestaurantDBService
+        private readonly restaurantDBService: RestaurantDBService,
+        private readonly commentLikeDBService: CommentLikeDBService
     ) {}
 
     async addComments(
@@ -190,6 +197,105 @@ export class CommentsService {
         return {
             Success: true,
             Data: comment
+        };
+    }
+
+    async likeComment(user: UserParamsDto, like: LikeDislikeCommentJsonDto) {
+        const where: PrismaPostgres.CommentWhereUniqueInput = {
+            id: like.commentId
+        };
+
+        const comment = await this.commentDBService.findUnique(where);
+
+        if (!comment) {
+            throw new BadRequestException(
+                BadRequestExceptionType.BAD_REQUEST,
+                new Error('Comment not found!!!'),
+                404
+            );
+        }
+
+        const alreadyLiked = await this.commentLikeDBService.findUnique({
+            likeId: {
+                commentId: like.commentId,
+                userId: user.sub
+            }
+        });
+
+        if (alreadyLiked) {
+            throw new BadRequestException(
+                CommentLikeExceptionType.COMMENT_ALREADY_LIKED,
+                new Error('Comment Already liked by user'),
+                404
+            );
+        }
+
+        const likedData: PrismaPostgres.CommentLikeCreateInput = {
+            comment: {
+                connect: {
+                    id: like.commentId
+                }
+            },
+            user: {
+                connect: {
+                    id: user.sub
+                }
+            }
+        };
+
+        const data = await this.commentLikeDBService.addCommentsLike(likedData);
+
+        return {
+            Success: true,
+            Data: data
+        };
+    }
+
+    async dislikeComment(
+        user: UserParamsDto,
+        dislike: LikeDislikeCommentJsonDto
+    ) {
+        const where: PrismaPostgres.CommentWhereUniqueInput = {
+            id: dislike.commentId
+        };
+
+        const comment = await this.commentDBService.findUnique(where);
+
+        if (!comment) {
+            throw new BadRequestException(
+                BadRequestExceptionType.BAD_REQUEST,
+                new Error('Comment not found!!!'),
+                404
+            );
+        }
+
+        const alreadyLiked = await this.commentLikeDBService.findMany({
+            commentId: dislike.commentId,
+            userId: user.sub
+        });
+
+        if (alreadyLiked.length < 1) {
+            throw new BadRequestException(
+                CommentLikeExceptionType.COMMENT_ALREADY_LIKED,
+                new Error('Comments Already disliked by user'),
+                404
+            );
+        }
+
+        const dislikedData: PrismaPostgres.CommentLikeWhereUniqueInput = {
+            likeId: {
+                commentId: alreadyLiked[0].commentId,
+                userId: user.sub
+            }
+        };
+
+        const data = await this.commentLikeDBService.deleteCommentLike(
+            dislikedData
+        );
+
+        return {
+            Success: true,
+            Data: data
         };
     }
 }
