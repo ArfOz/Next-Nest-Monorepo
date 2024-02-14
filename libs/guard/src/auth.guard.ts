@@ -81,7 +81,7 @@ export class AuthGuard implements CanActivate {
         } catch {
             throw new UnauthorizedException(
                 UnauthorizedExceptionType.NO_AUTHORIZATION_TOKEN,
-                new Error('Geçersiz Token'),
+                new Error('Invalid Token'),
                 500
             );
         }
@@ -93,7 +93,7 @@ export class AuthGuard implements CanActivate {
         if (this.isNotExistsBearerToken(headers)) {
             throw new UnauthorizedException(
                 UnauthorizedExceptionType.NO_AUTHORIZATION_TOKEN,
-                new Error('Token yok!'),
+                new Error('No tkeon sent!'),
                 500
             );
         }

@@ -49,7 +49,7 @@ export class WsGuard implements CanActivate {
             req.switchToHttp().getRequest().user = payload;
         } catch (error) {
             // return true;
-            throw new BadRequestExceptionWS(error, socket);
+            throw new BadRequestExceptionWS('Invalid Token', socket);
         }
 
         return true;
@@ -57,8 +57,7 @@ export class WsGuard implements CanActivate {
 
     private getBearerToken(socket: Socket) {
         if (this.isNotExistsBearerToken(socket)) {
-            // throw new WsUnauthorizedException('Token yok!');
-            throw new BadRequestExceptionWS('Token yok', socket);
+            throw new BadRequestExceptionWS('No token sent!', socket);
         }
         const auth =
             socket.handshake.auth.token || socket.handshake.headers['token'];
