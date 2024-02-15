@@ -52,6 +52,8 @@ export class EventsGateway {
         @MessageBody() like: LikeDislikeCommentJsonDto,
         @UserParam() user: UserParamsDto
     ) {
+        this.server.emit('selam');
+
         if (!like.commentId) {
             throw new BadRequestExceptionWS('No comment Id', client);
         }
