@@ -33,6 +33,7 @@ export class EventsGateway {
 
     private readonly logger = new Logger('Websocketgatewayyyy');
 
+    private clients: Set<Socket> = new Set();
     afterInit(client: Socket) {
         this.logger.log('Initialized');
     }
@@ -44,6 +45,12 @@ export class EventsGateway {
         });
     }
 
+    handleConnection(client: Socket) {
+        console.log(`Client connected: ${client.id}`);
+        client.emit('like', { selam: 'selam' });
+        this.clients.add(client);
+    }
+
     @SubscribeMessage('like')
     @UseGuards(WsGuard)
     @UseFilters(BaseWsExceptionFilter)
@@ -52,7 +59,8 @@ export class EventsGateway {
         @MessageBody() like: LikeDislikeCommentJsonDto,
         @UserParam() user: UserParamsDto
     ) {
-        this.server.emit('selam');
+        // this.server.emit('selam');
+        client.broadcast.emit('like', { selam: 'selam' });
 
         if (!like.commentId) {
             throw new BadRequestExceptionWS('No comment Id', client);
