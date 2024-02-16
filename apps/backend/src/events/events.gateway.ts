@@ -45,9 +45,12 @@ export class EventsGateway {
         });
     }
 
-    handleConnection(client: Socket) {
+    async handleConnection(client: Socket) {
         console.log(`Client connected: ${client.id}`);
-        client.emit('like', { selam: 'selam' });
+        // client.emit('like', { selam: 'selam' });
+        // const likeNum = await this.commentLikeDBService.countComments({
+        //     commentId: likeData.commentId
+        // });
         this.clients.add(client);
     }
 
@@ -56,17 +59,17 @@ export class EventsGateway {
     @UseFilters(BaseWsExceptionFilter)
     async onLiked(
         @ConnectedSocket() client: Socket,
-        @MessageBody() like: LikeDislikeCommentJsonDto,
+        @MessageBody() likeData: LikeDislikeCommentJsonDto,
         @UserParam() user: UserParamsDto
     ) {
         // this.server.emit('selam');
-        client.broadcast.emit('like', { selam: 'selam' });
+        // client.broadcast.emit('like', { selam: 'selam' });
 
-        if (!like.commentId) {
+        if (!likeData.commentId) {
             throw new BadRequestExceptionWS('No comment Id', client);
         }
         const where: PrismaPostgres.CommentWhereUniqueInput = {
-            id: like.commentId
+            id: likeData.commentId
         };
 
         const comment = await this.commentDBService.findUnique(where);
@@ -77,23 +80,23 @@ export class EventsGateway {
 
         const alreadyLiked = await this.commentLikeDBService.findUnique({
             likeId: {
-                commentId: like.commentId,
+                commentId: likeData.commentId,
                 userId: user.sub
             }
         });
 
-        if (alreadyLiked && like.liked) {
+        if (alreadyLiked && likeData.liked) {
             throw new BadRequestExceptionWS('you already Liked', client);
         }
 
-        if (!alreadyLiked && !like.liked) {
+        if (!alreadyLiked && !likeData.liked) {
             throw new BadRequestExceptionWS('you already disliked', client);
         }
 
         const likedData: PrismaPostgres.CommentLikeCreateInput = {
             comment: {
                 connect: {
-                    id: like.commentId
+                    id: likeData.commentId
                 }
             },
             user: {
@@ -105,23 +108,23 @@ export class EventsGateway {
 
         const dislikedData: PrismaPostgres.CommentLikeWhereUniqueInput = {
             likeId: {
-                commentId: like.commentId,
+                commentId: likeData.commentId,
                 userId: user.sub
             }
         };
 
         let data;
 
-        if (like.liked) {
+        if (likeData.liked) {
             data = await this.commentLikeDBService.addCommentsLike(likedData);
-        } else if (!like.liked) {
+        } else if (!likeData.liked) {
             data = await this.commentLikeDBService.deleteCommentLike(
                 dislikedData
             );
         }
 
         const likeNum = await this.commentLikeDBService.countComments({
-            commentId: like.commentId
+            commentId: likeData.commentId
         });
 
         this.server.emit('like', {
