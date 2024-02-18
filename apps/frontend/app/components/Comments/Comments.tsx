@@ -8,6 +8,8 @@ import { RequestNextNest } from '@frontendlibs';
 import { CommentDetails, UpdateCommentDataDto } from '../dtos';
 import DropdownThreedots from '../Dropdown/Dropdown';
 import Modal from '../Modal/Modal';
+import { HandThumbUpIcon } from "@heroicons/react/24/outline";
+
 
 export const Comments = ({
     comments: comment
@@ -16,7 +18,10 @@ export const Comments = ({
 }) => {
     const { data: session, status, update } = useSession();
     const [showModal, setShowModal] = useState(false);
+
+    // Search to short this area 
     const [starValue, setStarValue] = useState(comment.star);
+    const [likeCount, setLikeCount] = useState(comment.usersLiked.length)
 
     const [isEditing, setIsEditing] = useState(false);
     const [commentText, setCommentText] = useState(comment.comment);
@@ -30,6 +35,8 @@ export const Comments = ({
     const UpdatePost = () => {
         setIsEditing(true);
     };
+
+    console.log("comment", comment)
 
     const DeletePost = async () => {
         const response = await RequestNextNest(
@@ -176,6 +183,15 @@ export const Comments = ({
                     <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
                         {comment.comment}
                     </p>
+                    <div className='flex'>
+                    <HandThumbUpIcon className="h-6 w-6 text-blue-500"/>
+                    <p>{likeCount}</p>                   
+
+
+                    </div>
+
+
+
                 </div>
             )}
             <div className="flex items-center mt-4">

@@ -48,9 +48,6 @@ export class EventsGateway {
     async handleConnection(client: Socket) {
         console.log(`Client connected: ${client.id}`);
         // client.emit('like', { selam: 'selam' });
-        // const likeNum = await this.commentLikeDBService.countComments({
-        //     commentId: likeData.commentId
-        // });
         this.clients.add(client);
     }
 

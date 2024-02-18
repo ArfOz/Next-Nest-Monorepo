@@ -11,6 +11,7 @@ export class CommentDetails {
         username: string;
         id: string;
     };
+    'usersLiked': [];
 }
 
 export class CityDetailsJsonDto {
