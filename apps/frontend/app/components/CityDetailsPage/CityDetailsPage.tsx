@@ -8,7 +8,7 @@ import AddComment from '../AddComment/AddComment';
 export const CityDetailsPage = ({ data }: { data: CityDetailsJsonDto }) => {
     const CommentsMapper = (
         <div className="flex flex-col items-center">
-            {data.comments.map((commentData) => (
+            {data?.comments?.map((commentData) => (
                 <Comments key={commentData.id} comments={commentData} />
             ))}
         </div>
@@ -21,8 +21,8 @@ export const CityDetailsPage = ({ data }: { data: CityDetailsJsonDto }) => {
     return (
         <>
             <RestaurantDetails data={data} />
-            {data.comments.length > 0 ? CommentsMapper : NoComment}
-            <AddComment restaurant_id={data.restaurant.id} />
+            {data?.comments?.length > 0 ? CommentsMapper : NoComment}
+            <AddComment restaurant_id={data?.restaurant.id} />
         </>
     );
 };

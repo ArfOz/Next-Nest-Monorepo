@@ -5,7 +5,7 @@ import { AvgCalculator } from '@frontendlibs';
 import { CityDetailsJsonDto } from '../dtos';
 
 const RestaurantDetails = ({ data }: { data: CityDetailsJsonDto }) => {
-    const average = AvgCalculator(data.restaurant);
+    const average = AvgCalculator(data?.restaurant);
 
     return (
         <div className="h-32 w-full border-2  flex items-center justify-center bg-emerald-500 text-white">
