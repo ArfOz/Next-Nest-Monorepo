@@ -1,14 +1,13 @@
 'use client';
-import React, { useState } from 'react';
+import { RequestNextNest } from '@frontendlibs';
 import { Stack } from '@mui/material';
 import Rating from '@mui/material/Rating';
-
 import { useSession } from 'next-auth/react';
-import { RequestNextNest } from '@frontendlibs';
-import { CommentDetails, UpdateCommentDataDto } from '../dtos';
+import { useState } from 'react';
 import DropdownThreedots from '../Dropdown/Dropdown';
 import Modal from '../Modal/Modal';
-import { HandThumbUpIcon } from '@heroicons/react/24/outline';
+import { CommentDetails, UpdateCommentDataDto } from '../dtos';
+
 import { LikeButton } from './LikeButton';
 
 export const Comments = ({

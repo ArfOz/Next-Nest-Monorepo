@@ -3,6 +3,8 @@
 	"useTabs": true,
 	"trailingComma": "none",
 	"endOfLine": "auto",
+	"semi": true,
+	"bracketSpacing": true,
 	"overrides": [
 		{
 			"files": ["*.js", "*.ts", "*.jsx", "*.tsx", "*.mjs", "*.cjs"],
