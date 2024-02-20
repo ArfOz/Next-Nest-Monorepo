@@ -3,7 +3,7 @@
 	"useTabs": true,
 	"trailingComma": "none",
 	"endOfLine": "auto",
-	"semi": true,
+	"semi": false,
 	"bracketSpacing": true,
 	"overrides": [
 		{
