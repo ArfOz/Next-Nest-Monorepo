@@ -47,7 +47,7 @@ export class AuthGuard implements CanActivate {
 			context.getHandler()
 		)
 
-		console.log('reqqqq', req)
+		// console.log('reqqqq', req)
 
 		const isPublic = this.reflector.get<boolean>(
 			'AllType',
@@ -60,7 +60,18 @@ export class AuthGuard implements CanActivate {
 		)
 
 		if (isPublic) {
-			return true
+			const token = this.getBearerToken(
+				req.headers ?? req[Symbol('kHeaders')]
+			)
+
+			console.log('tokennnn publicc', token)
+			if (token) {
+				return this.validateRequest(req, false)
+			} else if (!token) {
+				return true
+			}
+
+			return false
 		}
 
 		return (
@@ -104,7 +115,7 @@ export class AuthGuard implements CanActivate {
 		if (this.isNotExistsBearerToken(headers)) {
 			throw new UnauthorizedException(
 				UnauthorizedExceptionType.NO_AUTHORIZATION_TOKEN,
-				new Error('No tkeon sent!'),
+				new Error('No token sent!'),
 				500
 			)
 		}
