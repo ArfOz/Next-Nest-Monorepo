@@ -49,7 +49,7 @@ export class AuthGuard implements CanActivate {
 
 		// console.log('reqqqq', req)
 
-		const isPublic = this.reflector.get<boolean>(
+		const allType = this.reflector.get<boolean>(
 			'AllType',
 			context.getHandler()
 		)
@@ -59,15 +59,14 @@ export class AuthGuard implements CanActivate {
 			context.getHandler()
 		)
 
-		if (isPublic) {
-			const token = this.getBearerToken(
-				req.headers ?? req[Symbol('kHeaders')]
-			)
+		if (allType) {
+			const headers = req.headers ?? req[Symbol('kHeaders')]
 
-			console.log('tokennnn publicc', token)
-			if (token) {
+			const notExistBearerToken = this.isNotExistsBearerToken(headers)
+
+			if (!notExistBearerToken) {
 				return this.validateRequest(req, false)
-			} else if (!token) {
+			} else if (notExistBearerToken) {
 				return true
 			}
 
