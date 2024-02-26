@@ -37,7 +37,6 @@ export class RestaurantService {
 	}
 
 	async getRestaurant(restaurantId: string, user: UserParamsDto) {
-		console.log('user', user)
 		const where: PrismaPostgresql.CommentWhereInput = {
 			restaurantId: restaurantId
 		}
