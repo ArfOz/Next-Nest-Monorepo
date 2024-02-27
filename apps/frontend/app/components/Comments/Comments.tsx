@@ -1,41 +1,51 @@
-'use client';
-import { RequestNextNest } from '@frontendlibs';
-import { Stack } from '@mui/material';
-import Rating from '@mui/material/Rating';
-import { useSession } from 'next-auth/react';
-import { useState } from 'react';
-import DropdownThreedots from '../Dropdown/Dropdown';
-import Modal from '../Modal/Modal';
-import { CommentDetails, UpdateCommentDataDto } from '../dtos';
+'use client'
+import { RequestNextNest } from '@frontendlibs'
+import { Stack } from '@mui/material'
+import Rating from '@mui/material/Rating'
+import { useSession } from 'next-auth/react'
+import { useEffect, useState } from 'react'
+import io from 'socket.io-client'
+import DropdownThreedots from '../Dropdown/Dropdown'
+import Modal from '../Modal/Modal'
+import { CommentDetails, UpdateCommentDataDto } from '../dtos'
 
-import { LikeButton } from './LikeButton';
+import { LikeButton } from './LikeButton'
+
+const socket = io('http://localhost:80/events') // Replace with your server URL
 
 export const Comments = ({
 	comments: comment
 }: {
-	comments: CommentDetails;
+	comments: CommentDetails
 }) => {
-	const { data: session, status, update } = useSession();
-	const [showModal, setShowModal] = useState(false);
+	const { data: session, status, update } = useSession()
+	const [showModal, setShowModal] = useState(false)
+
+	useEffect(() => {
+		// Listen for incoming messages
+		socket.on('like', (message: any) => {
+			console.log('arif', message)
+		})
+	}, [])
 
 	// Search to short this area
-	const [starValue, setStarValue] = useState(comment.star);
-	const [likeCount, setLikeCount] = useState(comment.usersLiked.length);
+	const [starValue, setStarValue] = useState(comment.star)
+	const [likeCount, setLikeCount] = useState(comment.usersLiked.length)
 
-	const [isEditing, setIsEditing] = useState(false);
-	const [commentText, setCommentText] = useState(comment.comment);
-	const [commentTitle, setCommentTitle] = useState(comment.title);
+	const [isEditing, setIsEditing] = useState(false)
+	const [commentText, setCommentText] = useState(comment.comment)
+	const [commentTitle, setCommentTitle] = useState(comment.title)
 
-	const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-	const [showFailureMessage, setShowFailureMessage] = useState(false);
-	const [error, setError] = useState('');
-	const [modalMessage, setModalMessage] = useState('');
+	const [showSuccessMessage, setShowSuccessMessage] = useState(false)
+	const [showFailureMessage, setShowFailureMessage] = useState(false)
+	const [error, setError] = useState('')
+	const [modalMessage, setModalMessage] = useState('')
 
 	const UpdatePost = () => {
-		setIsEditing(true);
-	};
+		setIsEditing(true)
+	}
 
-	console.log('comment', comment);
+	console.log('comment', comment)
 
 	const DeletePost = async () => {
 		const response = await RequestNextNest(
@@ -45,90 +55,90 @@ export const Comments = ({
 			{
 				id: comment.id
 			}
-		);
+		)
 
 		if (response?.Error) {
-			setShowSuccessMessage(false);
-			setShowFailureMessage(true);
-			setModalMessage(response.Error);
-			setShowModal(true);
+			setShowSuccessMessage(false)
+			setShowFailureMessage(true)
+			setModalMessage(response.Error)
+			setShowModal(true)
 			// Reset form fields
-			setError(response.Details);
+			setError(response.Details)
 
-			return;
+			return
 		}
 
 		if (response?.Success) {
-			setError('');
-			setShowSuccessMessage(true);
-			setModalMessage('Successfully deleted');
-			setShowFailureMessage(false);
-			setShowModal(true);
+			setError('')
+			setShowSuccessMessage(true)
+			setModalMessage('Successfully deleted')
+			setShowFailureMessage(false)
+			setShowModal(true)
 
 			setTimeout(function () {
-				window.location.reload();
-			}, 2000);
+				window.location.reload()
+			}, 2000)
 		}
-	};
+	}
 
 	const closeModal = () => {
 		// Close the modal
-		setShowModal(false);
-	};
+		setShowModal(false)
+	}
 
 	const handleCancelClick = () => {
 		// Close the modal
-		setIsEditing(false);
-	};
+		setIsEditing(false)
+	}
 
 	const handleSaveClick = async () => {
-		setIsEditing(false);
+		setIsEditing(false)
 
 		const updatedData: UpdateCommentDataDto = {
 			id: comment.id,
 			comment: commentText,
 			star: starValue,
 			title: commentTitle
-		};
+		}
 
 		const response = await RequestNextNest(
 			'comments/updatecomment',
 			'PUT',
 			session?.accessToken,
 			updatedData
-		);
+		)
 
 		if (response?.Error) {
 			// setShowSuccessMessage(false);
 			// setShowFailureMessage(true);
-			setModalMessage(response.Error);
-			setShowModal(true);
+			setModalMessage(response.Error)
+			setShowModal(true)
 			// Reset form fields
-			setError(response.Details);
+			setError(response.Details)
 
-			return;
+			return
 		}
 
 		if (response?.Success) {
-			setError('');
-			setModalMessage('Successfully updated');
+			setError('')
+			setModalMessage('Successfully updated')
 			// setShowSuccessMessage(true);
 			// setShowFailureMessage(false);
-			setShowModal(true);
+			setShowModal(true)
 
 			setTimeout(function () {
-				window.location.reload();
-			}, 2000);
+				window.location.reload()
+			}, 2000)
 		}
-	};
+	}
 
 	const isEditDeleteAble = () => {
 		if (session?.user?.id === comment.user.id) {
-			return true;
+			return true
 		}
 
-		return false;
-	};
+		return false
+	}
 
 	return (
 		<div className="bg-white p-4 shadow-md rounded-md  mt-8 max-w-[480px] grid grid-cols-1">
@@ -146,7 +156,7 @@ export const Comments = ({
 						value={starValue}
 						readOnly={!isEditing}
 						onChange={(event, newValue) => {
-							setStarValue(newValue!);
+							setStarValue(newValue!)
 						}}
 					/>
 				</Stack>
@@ -183,7 +193,7 @@ export const Comments = ({
 						{comment.comment}
 					</p>
 					<div className="flex">
-						<LikeButton />
+						<LikeButton like={true} />
 						<p>{likeCount}</p>
 					</div>
 				</div>
@@ -238,5 +248,5 @@ export const Comments = ({
 				data={modalMessage}
 			/>
 		</div>
-	);
-};
+	)
+}
