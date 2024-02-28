@@ -3,15 +3,13 @@ import { RequestNextNest } from '@frontendlibs'
 import { Stack } from '@mui/material'
 import Rating from '@mui/material/Rating'
 import { useSession } from 'next-auth/react'
-import { useEffect, useState } from 'react'
-import io from 'socket.io-client'
+import { useState } from 'react'
+
 import DropdownThreedots from '../Dropdown/Dropdown'
 import Modal from '../Modal/Modal'
 import { CommentDetails, UpdateCommentDataDto } from '../dtos'
 
 import { LikeButton } from './LikeButton'
-
-const socket = io('http://localhost:80/events') // Replace with your server URL
 
 export const Comments = ({
 	comments: comment
@@ -20,13 +18,6 @@ export const Comments = ({
 }) => {
 	const { data: session, status, update } = useSession()
 	const [showModal, setShowModal] = useState(false)
-
-	useEffect(() => {
-		// Listen for incoming messages
-		socket.on('like', (message: any) => {
-			console.log('arif', message)
-		})
-	}, [])
 
 	// Search to short this area
 	const [starValue, setStarValue] = useState(comment.star)
