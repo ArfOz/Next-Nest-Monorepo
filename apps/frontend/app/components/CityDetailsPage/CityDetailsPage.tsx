@@ -12,15 +12,21 @@ export const CityDetailsPage = ({ data }: { data: CityDetailsJsonDto }) => {
 	useEffect(() => {
 		// Listen for incoming messages
 		socket.on('like', (message: any) => {
+			const result = data.comments.find(
+				({ id }) => id === message.commentId
+			)
+			console.log('arif', message, result)
 
-			const result = data.comments.find((id)=> id === )
-			console.log('arif', message)
+			var foundIndex = data.comments.findIndex(
+				(x) => x.id == message.commentId
+			)
+			data.comments[foundIndex].usersLiked = message.likeNum
 		})
 	}, [])
 
 	const CommentsMapper = (
 		<div className="flex flex-col items-center">
-			{data?.comments?.map((commentData:CommentDetails) => (
+			{data?.comments?.map((commentData: CommentDetails) => (
 				<Comments
 					key={commentData.id}
 					comments={commentData}
