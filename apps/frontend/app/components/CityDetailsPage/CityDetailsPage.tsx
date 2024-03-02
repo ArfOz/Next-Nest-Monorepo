@@ -9,7 +9,11 @@ import { CityDetailsJsonDto, CommentDetails } from '../dtos'
 const socket = io('http://localhost:80/events') // Replace with your server URL
 
 export const CityDetailsPage = ({ data }: { data: CityDetailsJsonDto }) => {
-	const [likeCount, setLikeCount] = useState()
+	const [likeData, setLikeData] = useState({
+		msg: '',
+		commentId: '',
+		likeNum: 0
+	})
 
 	useEffect(() => {
 		// Listen for incoming messages
@@ -23,7 +27,7 @@ export const CityDetailsPage = ({ data }: { data: CityDetailsJsonDto }) => {
 				(x) => x.id == message.commentId
 			)
 			data.comments[foundIndex].usersLiked = message.likeNum
-			setLikeCount(message)
+			setLikeData(message)
 		})
 	}, [])
 
@@ -33,7 +37,9 @@ export const CityDetailsPage = ({ data }: { data: CityDetailsJsonDto }) => {
 				<Comments
 					key={commentData.id}
 					comments={commentData}
-					like={likeCount}
+					like={
+						commentData.id === likeData?.commentId ? likeData : ''
+					}
 				/>
 			))}
 		</div>
