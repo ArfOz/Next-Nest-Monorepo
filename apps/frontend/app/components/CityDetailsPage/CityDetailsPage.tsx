@@ -1,5 +1,5 @@
 'use client'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import io from 'socket.io-client'
 import AddComment from '../AddComment/AddComment'
 import { Comments } from '../Comments'
@@ -9,10 +9,12 @@ import { CityDetailsJsonDto, CommentDetails } from '../dtos'
 const socket = io('http://localhost:80/events') // Replace with your server URL
 
 export const CityDetailsPage = ({ data }: { data: CityDetailsJsonDto }) => {
+	const [likeCount, setLikeCount] = useState()
+
 	useEffect(() => {
 		// Listen for incoming messages
 		socket.on('like', (message: any) => {
-			const result = data.comments.find(
+			const result = data?.comments?.find(
 				({ id }) => id === message.commentId
 			)
 			console.log('arif', message, result)
@@ -21,6 +23,7 @@ export const CityDetailsPage = ({ data }: { data: CityDetailsJsonDto }) => {
 				(x) => x.id == message.commentId
 			)
 			data.comments[foundIndex].usersLiked = message.likeNum
+			setLikeCount(message)
 		})
 	}, [])
 
@@ -30,7 +33,7 @@ export const CityDetailsPage = ({ data }: { data: CityDetailsJsonDto }) => {
 				<Comments
 					key={commentData.id}
 					comments={commentData}
-					// like={like}
+					like={likeCount}
 				/>
 			))}
 		</div>

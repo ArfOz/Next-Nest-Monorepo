@@ -3,7 +3,7 @@ import { RequestNextNest } from '@frontendlibs'
 import { Stack } from '@mui/material'
 import Rating from '@mui/material/Rating'
 import { useSession } from 'next-auth/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import DropdownThreedots from '../Dropdown/Dropdown'
 import Modal from '../Modal/Modal'
@@ -12,9 +12,11 @@ import { CommentDetails, UpdateCommentDataDto } from '../dtos'
 import { LikeButton } from './LikeButton'
 
 export const Comments = ({
-	comments: comment
+	comments: comment,
+	like
 }: {
 	comments: CommentDetails
+	like: any
 }) => {
 	const { data: session, status, update } = useSession()
 	const [showModal, setShowModal] = useState(false)
@@ -35,6 +37,10 @@ export const Comments = ({
 	const UpdatePost = () => {
 		setIsEditing(true)
 	}
+
+	useEffect(() => {
+		setLikeCount(like)
+	}, [like])
 
 	console.log('comment', comment)
 
@@ -185,7 +191,7 @@ export const Comments = ({
 					</p>
 					<div className="flex">
 						<LikeButton like={true} />
-						<p>{likeCount}</p>
+						<p>{like?.likeNum}</p>
 					</div>
 				</div>
 			)}

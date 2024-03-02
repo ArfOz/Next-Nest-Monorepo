@@ -5,7 +5,7 @@ import { CityDetailsJsonDto } from '../components/dtos/CityDetails.dto'
 async function GetData(id: string) {
 	const data = await RequestNextNest(`restaurant/getrestaurant/${id}`, 'GET')
 
-	return data.Data
+	return data?.Data
 }
 
 export default async function Page({ params }: { params: { id: string } }) {
