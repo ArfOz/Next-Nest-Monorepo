@@ -4,3 +4,4 @@ export * from './Login.dto';
 export * from './navigate.type';
 export * from './page';
 export * from './SendCommentDto';
+export * from './WebSocket.dto';
