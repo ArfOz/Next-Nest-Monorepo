@@ -4,7 +4,11 @@ import io from 'socket.io-client'
 import AddComment from '../AddComment/AddComment'
 import { Comments } from '../Comments'
 import RestaurantDetails from '../RestaurantDetails/RestaurantDetails'
-import { CityDetailsJsonDto, CommentDetails } from '../dtos'
+import {
+	CityDetailsJsonDto,
+	CommentDetails,
+	WebSocketMessageDto
+} from '../dtos'
 
 const socket = io('http://localhost:80/events') // Replace with your server URL
 
@@ -17,16 +21,11 @@ export const CityDetailsPage = ({ data }: { data: CityDetailsJsonDto }) => {
 
 	useEffect(() => {
 		// Listen for incoming messages
-		socket.on('like', (message: any) => {
+		socket.on('like', (message: WebSocketMessageDto) => {
 			const result = data?.comments?.find(
 				({ id }) => id === message.commentId
 			)
-			console.log('arif', message, result)
 
-			var foundIndex = data.comments.findIndex(
-				(x) => x.id == message.commentId
-			)
-			data.comments[foundIndex].usersLiked = message.likeNum
 			setLikeData(message)
 		})
 	}, [])
