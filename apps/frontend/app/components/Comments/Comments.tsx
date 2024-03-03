@@ -16,7 +16,7 @@ export const Comments = ({
 	like
 }: {
 	comments: CommentDetails
-	like: any
+	like?: any
 }) => {
 	const { data: session, status, update } = useSession()
 	const [showModal, setShowModal] = useState(false)
@@ -38,11 +38,15 @@ export const Comments = ({
 		setIsEditing(true)
 	}
 
+	console.log('comment', comment)
+
 	useEffect(() => {
 		setLikeCount(like)
 	}, [like])
 
-	console.log('comment', comment)
+	const userLiked = (data: Array<object>): boolean => {
+		return false
+	}
 
 	const DeletePost = async () => {
 		const response = await RequestNextNest(
@@ -190,7 +194,7 @@ export const Comments = ({
 						{comment.comment}
 					</p>
 					<div className="flex">
-						<LikeButton like={true} />
+						<LikeButton like={userLiked(comment.usersLiked)} />
 						<p>{like?.likeNum}</p>
 					</div>
 				</div>

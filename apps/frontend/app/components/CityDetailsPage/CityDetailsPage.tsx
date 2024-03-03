@@ -37,7 +37,7 @@ export const CityDetailsPage = ({ data }: { data: CityDetailsJsonDto }) => {
 					key={commentData.id}
 					comments={commentData}
 					like={
-						commentData.id === likeData?.commentId ? likeData : ''
+						commentData.id === likeData?.commentId ? likeData : null
 					}
 				/>
 			))}
