@@ -44,8 +44,10 @@ export const Comments = ({
 		setLikeCount(like)
 	}, [like])
 
-	const userLiked = (data: Array<object>): boolean => {
-		return false
+	const userLiked = (data: CommentDetails['usersLiked']): boolean => {
+		const res = data.find((item) => item.user.username === 'Ariff')
+		console.log('res', !!res)
+		return !!res
 	}
 
 	const DeletePost = async () => {
