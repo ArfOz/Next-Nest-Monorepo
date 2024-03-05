@@ -13,17 +13,17 @@ import { LikeButton } from './LikeButton'
 
 export const Comments = ({
 	comments: comment,
-	like
+	likeData
 }: {
 	comments: CommentDetails
-	like?: any
+	likeData?: any
 }) => {
 	const { data: session, status, update } = useSession()
 	const [showModal, setShowModal] = useState(false)
 
 	// Search to short this area
 	const [starValue, setStarValue] = useState(comment.star)
-	const [likeCount, setLikeCount] = useState(comment.usersLiked.length)
+	const [likeCount, setLikeCount] = useState(comment?.usersLiked?.length)
 
 	const [isEditing, setIsEditing] = useState(false)
 	const [commentText, setCommentText] = useState(comment.comment)
@@ -41,8 +41,8 @@ export const Comments = ({
 	console.log('comment', comment)
 
 	useEffect(() => {
-		setLikeCount(like)
-	}, [like])
+		likeData && setLikeCount(likeData?.likeNum)
+	}, [likeData])
 
 	const userLiked = (data: CommentDetails['usersLiked']): boolean => {
 		const res = data.find((item) => item.user.username === 'Ariff')
@@ -197,7 +197,7 @@ export const Comments = ({
 					</p>
 					<div className="flex">
 						<LikeButton like={userLiked(comment.usersLiked)} />
-						<p>{like?.likeNum}</p>
+						<p>{likeCount}</p>
 					</div>
 				</div>
 			)}
