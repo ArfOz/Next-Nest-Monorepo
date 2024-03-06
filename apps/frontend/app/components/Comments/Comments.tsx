@@ -45,8 +45,8 @@ export const Comments = ({
 	}, [likeData])
 
 	const userLiked = (data: CommentDetails['usersLiked']): boolean => {
-		const res = data.find((item) => item.user.username === 'Ariff')
-		console.log('res', !!res)
+		const res = data.find((item) => item.user.username === data.Data)
+		console.log('res', !!res, data)
 		return !!res
 	}
 
