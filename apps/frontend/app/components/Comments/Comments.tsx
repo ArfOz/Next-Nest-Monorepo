@@ -2,7 +2,6 @@
 import { RequestNextNest } from '@frontendlibs'
 import { Stack } from '@mui/material'
 import Rating from '@mui/material/Rating'
-import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 
 import DropdownThreedots from '../Dropdown/Dropdown'
@@ -13,12 +12,13 @@ import { LikeButton } from './LikeButton'
 
 export const Comments = ({
 	comments: comment,
-	likeData
+	likeData,
+	session
 }: {
 	comments: CommentDetails
 	likeData?: any
+	session: any
 }) => {
-	const { data: session, status, update } = useSession()
 	const [showModal, setShowModal] = useState(false)
 
 	// Search to short this area
@@ -45,9 +45,10 @@ export const Comments = ({
 	}, [likeData])
 
 	const userLiked = (data: CommentDetails['usersLiked']): boolean => {
-		const res = data.find((item) => item.user.username === data.Data)
-		console.log('res', !!res, data)
-		return !!res
+		// const res = data.find((item) => item.user.username === data.Data)
+		// console.log('res', !!res, data)
+		// return !!res
+		return false
 	}
 
 	const DeletePost = async () => {

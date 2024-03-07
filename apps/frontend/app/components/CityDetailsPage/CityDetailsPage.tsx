@@ -1,4 +1,5 @@
 'use client'
+import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import io from 'socket.io-client'
 import AddComment from '../AddComment/AddComment'
@@ -13,6 +14,7 @@ import {
 const socket = io('http://localhost:80/events') // Replace with your server URL
 
 export const CityDetailsPage = ({ data }: { data: CityDetailsJsonDto }) => {
+	const { data: session, status, update } = useSession()
 	const [likeData, setLikeData] = useState({
 		msg: '',
 		commentId: '',
@@ -39,6 +41,7 @@ export const CityDetailsPage = ({ data }: { data: CityDetailsJsonDto }) => {
 					likeData={
 						commentData.id === likeData?.commentId ? likeData : null
 					}
+					session={session}
 				/>
 			))}
 		</div>
