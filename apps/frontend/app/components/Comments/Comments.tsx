@@ -8,6 +8,7 @@ import DropdownThreedots from '../Dropdown/Dropdown'
 import Modal from '../Modal/Modal'
 import { CommentDetails, UpdateCommentDataDto } from '../dtos'
 
+import { Session } from 'next-auth'
 import { LikeButton } from './LikeButton'
 
 export const Comments = ({
@@ -17,7 +18,7 @@ export const Comments = ({
 }: {
 	comments: CommentDetails
 	likeData?: any
-	session: any
+	session: Session | null
 }) => {
 	const [showModal, setShowModal] = useState(false)
 
@@ -45,10 +46,11 @@ export const Comments = ({
 	}, [likeData])
 
 	const userLiked = (data: CommentDetails['usersLiked']): boolean => {
-		// const res = data.find((item) => item.user.username === data.Data)
-		// console.log('res', !!res, data)
-		// return !!res
-		return false
+		const res = data.find(
+			(item) => item.user.username === session?.user?.name
+		)
+		console.log('res', !!res, data)
+		return !!res
 	}
 
 	const DeletePost = async () => {

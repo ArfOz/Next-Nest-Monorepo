@@ -21,6 +21,8 @@ export const CityDetailsPage = ({ data }: { data: CityDetailsJsonDto }) => {
 		likeNum: 0
 	})
 
+	console.log('dataxxxxxxxxxx', session)
+
 	useEffect(() => {
 		// Listen for incoming messages
 		socket.on('like', (message: WebSocketMessageDto) => {
