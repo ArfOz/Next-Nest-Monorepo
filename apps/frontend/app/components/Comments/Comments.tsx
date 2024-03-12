@@ -199,7 +199,10 @@ export const Comments = ({
 						{comment.comment}
 					</p>
 					<div className="flex">
-						<LikeButton like={userLiked(comment.usersLiked)} />
+						<LikeButton
+							like={userLiked(comment.usersLiked)}
+							commentId={comment.id}
+						/>
 						<p>{likeCount}</p>
 					</div>
 				</div>
