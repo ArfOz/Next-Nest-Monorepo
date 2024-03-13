@@ -202,6 +202,7 @@ export const Comments = ({
 						<LikeButton
 							like={userLiked(comment.usersLiked)}
 							commentId={comment.id}
+							session={session}
 						/>
 						<p>{likeCount}</p>
 					</div>
