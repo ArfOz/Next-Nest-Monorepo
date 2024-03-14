@@ -1,4 +1,5 @@
 import { HandThumbUpIcon } from '@heroicons/react/24/outline'
+import { Session } from 'next-auth'
 import { useState } from 'react'
 import { io } from 'socket.io-client'
 
@@ -6,15 +7,19 @@ const socket = io('http://localhost:80/events') // Replace with your server URL
 
 export const LikeButton = ({
 	like = false,
-	commentId
+	commentId,
+	session
 }: {
 	like: boolean
 	commentId: string
+	session: Session | null
 }) => {
 	const sendMessage = (commentId: string, liked: boolean) => {
-		socket.emit('like', {
+		socket.send({
 			commentId,
-			liked
+			liked: true,
+
+			token: 'Bearer ' + session?.accessToken
 		})
 	}
 	const [liked, setLiked] = useState(like)
