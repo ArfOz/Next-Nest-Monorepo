@@ -1,127 +1,134 @@
 // import { AllExceptionsSocketFilter } from '@exceptions';
-import { WsGuard } from '@guard';
-import { Injectable, Logger, UseFilters, UseGuards } from '@nestjs/common';
+import { CommentLikeDBService, CommentsDBService } from '@database'
+import { BadRequestExceptionWS } from '@exceptions'
+import { WsGuard } from '@guard'
+import { Logger, UseFilters, UseGuards } from '@nestjs/common'
 import {
-    BaseWsExceptionFilter,
-    ConnectedSocket,
-    MessageBody,
-    SubscribeMessage,
-    WebSocketGateway,
-    WebSocketServer,
-    WsException
-} from '@nestjs/websockets';
-import { UserParam } from '@utils';
-import { Server, Socket } from 'socket.io';
-import { UserParamsDto } from '../comments/dtos/userparams.dto';
-import { CommentLikeDBService, CommentsDBService } from '@database';
-import { Prisma as PrismaPostgres } from '@prisma/postgres/client';
-import { LikeDislikeCommentJsonDto } from '../comments/dtos';
-import { AllExceptionsSocketFilter, BadRequestExceptionWS } from '@exceptions';
+	BaseWsExceptionFilter,
+	ConnectedSocket,
+	MessageBody,
+	SubscribeMessage,
+	WebSocketGateway,
+	WebSocketServer
+} from '@nestjs/websockets'
+import { Prisma as PrismaPostgres } from '@prisma/postgres/client'
+import { UserParam } from '@utils'
+import { Server, Socket } from 'socket.io'
+import { LikeDislikeCommentJsonDto } from '../comments/dtos'
+import { UserParamsDto } from '../comments/dtos/userparams.dto'
 
 @WebSocketGateway(80, {
-    namespace: 'events',
-    cors: {
-        origin: '*'
-    }
+	namespace: 'events',
+	cors: {
+		origin: '*'
+	}
 })
 export class EventsGateway {
-    constructor(
-        private readonly commentDBService: CommentsDBService,
-        private readonly commentLikeDBService: CommentLikeDBService
-    ) {}
-    @WebSocketServer() server: Server = new Server();
+	constructor(
+		private readonly commentDBService: CommentsDBService,
+		private readonly commentLikeDBService: CommentLikeDBService
+	) {}
+	@WebSocketServer() server: Server = new Server()
 
-    private readonly logger = new Logger('Websocketgatewayyyy');
+	private readonly logger = new Logger('Websocketgatewayyyy')
 
-    afterInit(client: Socket) {
-        this.logger.log('Initialized');
-    }
+	private clients: Set<Socket> = new Set()
+	afterInit(client: Socket) {
+		this.logger.log('Initialized')
+	}
 
-    onModuleInit() {
-        this.server.on('connection', (socket) => {
-            console.log(socket.id);
-            console.log('Connected');
-        });
-    }
+	onModuleInit() {
+		this.server.on('connection', (socket) => {
+			console.log(socket.id)
+			console.log('Connected')
+		})
+	}
 
-    @SubscribeMessage('like')
-    @UseGuards(WsGuard)
-    @UseFilters(BaseWsExceptionFilter)
-    async onLiked(
-        @ConnectedSocket() client: Socket,
-        @MessageBody() like: LikeDislikeCommentJsonDto,
-        @UserParam() user: UserParamsDto
-    ) {
-        if (!like.commentId) {
-            throw new BadRequestExceptionWS('No comment Id', client);
-        }
-        const where: PrismaPostgres.CommentWhereUniqueInput = {
-            id: like.commentId
-        };
+	async handleConnection(client: Socket) {
+		console.log(`Client connected: ${client.id}`)
+		// client.emit('like', { selam: 'selam' });
+		this.clients.add(client)
+	}
 
-        const comment = await this.commentDBService.findUnique(where);
+	@SubscribeMessage('like')
+	@UseGuards(WsGuard)
+	@UseFilters(BaseWsExceptionFilter)
+	async onLiked(
+		@ConnectedSocket() client: Socket,
+		@MessageBody() likeData: LikeDislikeCommentJsonDto,
+		@UserParam() user: UserParamsDto
+	) {
+		if (!likeData.commentId) {
+			throw new BadRequestExceptionWS('No comment Id', client)
+		}
+		const where: PrismaPostgres.CommentWhereUniqueInput = {
+			id: likeData.commentId
+		}
 
-        if (!comment) {
-            throw new BadRequestExceptionWS('No comment', client);
-        }
+		const comment = await this.commentDBService.findUnique(where)
 
-        const alreadyLiked = await this.commentLikeDBService.findUnique({
-            likeId: {
-                commentId: like.commentId,
-                userId: user.sub
-            }
-        });
+		if (!comment) {
+			throw new BadRequestExceptionWS('No comment', client)
+		}
 
-        if (alreadyLiked && like.liked) {
-            throw new BadRequestExceptionWS('you already Liked', client);
-        }
+		const alreadyLiked = await this.commentLikeDBService.findUnique({
+			likeId: {
+				commentId: likeData.commentId,
+				userId: user.sub
+			}
+		})
 
-        if (!alreadyLiked && !like.liked) {
-            throw new BadRequestExceptionWS('you already disliked', client);
-        }
+		if (alreadyLiked && likeData.liked) {
+			throw new BadRequestExceptionWS('you already Liked', client)
+		}
 
-        const likedData: PrismaPostgres.CommentLikeCreateInput = {
-            comment: {
-                connect: {
-                    id: like.commentId
-                }
-            },
-            user: {
-                connect: {
-                    id: user.sub
-                }
-            }
-        };
+		if (!alreadyLiked && !likeData.liked) {
+			throw new BadRequestExceptionWS('you already disliked', client)
+		}
 
-        const dislikedData: PrismaPostgres.CommentLikeWhereUniqueInput = {
-            likeId: {
-                commentId: like.commentId,
-                userId: user.sub
-            }
-        };
+		const likedData: PrismaPostgres.CommentLikeCreateInput = {
+			comment: {
+				connect: {
+					id: likeData.commentId
+				}
+			},
+			user: {
+				connect: {
+					id: user.sub
+				}
+			}
+		}
 
-        let data;
+		const dislikedData: PrismaPostgres.CommentLikeWhereUniqueInput = {
+			likeId: {
+				commentId: likeData.commentId,
+				userId: user.sub
+			}
+		}
 
-        if (like.liked) {
-            data = await this.commentLikeDBService.addCommentsLike(likedData);
-        } else if (!like.liked) {
-            data = await this.commentLikeDBService.deleteCommentLike(
-                dislikedData
-            );
-        }
+		let data
 
-        const likeNum = await this.commentLikeDBService.countComments({
-            commentId: like.commentId
-        });
+		if (likeData.liked) {
+			data = await this.commentLikeDBService.addCommentsLike(likedData)
+		} else if (!likeData.liked) {
+			data = await this.commentLikeDBService.deleteCommentLike(
+				dislikedData
+			)
+		}
 
-        this.server.emit('like', {
-            msg: 'User liked',
-            likeNum
-        });
+		const likeNum = await this.commentLikeDBService.countComments({
+			commentId: likeData.commentId
+		})
 
-        return {
-            Success: true,
-            Data: data.commentId
-        };
-    }
+		this.server.emit('like', {
+			msg: likeData.liked ? 'liked' : 'disliked',
+			commentId: likeData.commentId,
+			likeNum
+		})
+
+		return {
+			Success: true,
+			Data: data.commentId
+		}
+	}
 }
