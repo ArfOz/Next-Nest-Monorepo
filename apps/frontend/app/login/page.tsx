@@ -66,7 +66,7 @@ const Page = () => {
 					password: password
 				})
 				if (!res?.error) {
-					router.push('http://localhost:3000/profile')
+					router.push(`${process.env.FRONTEND_URL}profile`)
 				}
 				if (res?.error) {
 					setShowSuccessMessage(false)
